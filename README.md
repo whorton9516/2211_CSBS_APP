@@ -1,3 +1,4 @@
+# 2211_CSBS_APP
 # Navigation Example
 
 <p>
@@ -15,7 +16,7 @@
   </a>
 </p>
 
-## 🚀 How to use
+## ?? How to use
 
 - Install packages with `yarn` or `npm install`.
 - Run `yarn start` or `npm run start` to start the bundler.
@@ -30,7 +31,7 @@
 - Deploy the native app to the App store and Play store using this guide: [Deployment](https://docs.expo.dev/distribution/app-stores/).
 - Deploy the website using this guide: [Web deployment](https://docs.expo.dev/distribution/publishing-websites/).
 
-## 📝 Notes
+## ?? Notes
 
 - Learn more about [Universal React](https://docs.expo.dev/).
 - See what API and components are [available in the React runtimes](https://docs.expo.dev/versions/latest/).
