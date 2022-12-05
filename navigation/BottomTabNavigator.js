@@ -8,6 +8,7 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
+import CalculatorScreen from "../screens/CalculatorScreen"
 
 const BottomTab = createBottomTabNavigator();
 
@@ -16,9 +17,19 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Calculator"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
+      <BottomTab.Screen
+        name="Calculator"
+        component={CalculatorNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-code" color={color} />
+          ),
+        }}
+      />
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
@@ -77,4 +88,18 @@ function TabTwoNavigator() {
       />
     </TabTwoStack.Navigator>
   );
+}
+
+const CalculatorStack = createStackNavigator();
+
+function CalculatorNavigator() {
+  return (
+    <CalculatorStack.Navigator>
+      <CalculatorStack.Screen
+      name="CalculatorScreen"
+      component={CalculatorScreen}
+      options={{headerTitle: "Calculator Title"}}
+      />
+    </CalculatorStack.Navigator>
+  )
 }
