@@ -1,6 +1,6 @@
-# 2211_CSBS_APP
-### MathViz
-# Contributors
+#### 2211_CSBS_APP
+# MathViz
+### Contributors
 - Sam Whorton
 - Erand Pelinku
 
