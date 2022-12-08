@@ -9,12 +9,14 @@ import Colors from "../constants/Colors";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import CalculatorScreen from "../screens/CalculatorScreen"
+import SettingsScreen from "../screens/SettingsScreen"
+
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-
+  const buttoncolor = Colors.dark.buttoncolor;
   return (
     <BottomTab.Navigator
       initialRouteName="Calculator"
@@ -26,27 +28,27 @@ export default function BottomTabNavigator() {
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="calculator" color={buttoncolor} />
           ),
         }}
       />
       <BottomTab.Screen
-        name="TabOne"
+        name="Quizes"
         component={TabOneNavigator}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="book" color={buttoncolor} />
           ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Settings"
+        component={SettingNavigator}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="settings" color={buttoncolor} />
           ),
         }}
       />
@@ -70,7 +72,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title" }}
+        options={{ headerTitle: "Tab One Title", headerTitleAlign: 'center' }}
       />
     </TabOneStack.Navigator>
   );
@@ -84,7 +86,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
+        options={{ headerTitle: "Tab Two Title", headerTitleAlign: 'center' }}
       />
     </TabTwoStack.Navigator>
   );
@@ -98,8 +100,22 @@ function CalculatorNavigator() {
       <CalculatorStack.Screen
       name="CalculatorScreen"
       component={CalculatorScreen}
-      options={{headerTitle: "Calculator Title"}}
+      options={{headerTitle: "Calculator", headerTitleAlign: 'center'}}
       />
     </CalculatorStack.Navigator>
+  )
+}
+
+const SettingStack = createStackNavigator();
+
+function SettingNavigator() {
+  return (
+    <SettingStack.Navigator>
+      <SettingStack.Screen
+      name="SettingsScreen"
+      component={SettingsScreen}
+      options={{headerTitle: "Settings", headerTitleAlign: 'center'}}
+      />
+    </SettingStack.Navigator>
   )
 }
