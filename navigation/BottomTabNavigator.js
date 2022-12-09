@@ -10,6 +10,7 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import CalculatorScreen from "../screens/CalculatorScreen"
 import SettingsScreen from "../screens/SettingsScreen"
+import QuizScreen from "../screens/QuizScreen"
 
 
 const BottomTab = createBottomTabNavigator();
@@ -34,7 +35,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Quizes"
-        component={TabOneNavigator}
+        component={QuizNavigator}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
@@ -117,5 +118,19 @@ function SettingNavigator() {
       options={{headerTitle: "Settings", headerTitleAlign: 'center'}}
       />
     </SettingStack.Navigator>
+  )
+}
+
+const QuizStack = createStackNavigator();
+
+function QuizNavigator() {
+  return (
+    <QuizStack.Navigator>
+      <QuizStack.Screen
+      name="QuizScreen"
+      component={QuizScreen}
+      options={{headerTitle: "Quizes", headerTitleAlign: 'center'}}
+      />
+    </QuizStack.Navigator>
   )
 }
