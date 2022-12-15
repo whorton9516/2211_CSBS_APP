@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, StatusBar, Button } from "react-native";
-import MaterialButtonViolet from "../components/MaterialButtonViolet";
+import CustomButton from "../components/CustomButton";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Colors from "../constants/Colors";
 
@@ -12,30 +12,45 @@ export default function SettingsScreen() {
           <Col size={1}></Col>
         <Col size={3}>
         <View style={styles.space} />
-        <MaterialButtonViolet
-          caption="Color Blind Mode"
+        <CustomButton
+          title="Color Blind Mode"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
           style={styles.firstrow}
-        ></MaterialButtonViolet>
+        ></CustomButton>
                 <View style={styles.space} />
-                <MaterialButtonViolet
-          caption="Dark Mode"
+                <CustomButton
+          title="Dark Mode"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
           style={styles.firstrow}
-        ></MaterialButtonViolet>
+        ></CustomButton>
                 <View style={styles.space} />
-                <MaterialButtonViolet
-          caption="Show History"
+                <CustomButton
+          title="Show History"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
           style={styles.firstrow}
-        ></MaterialButtonViolet>
+        ></CustomButton>
                 <View style={styles.space} />
-                <MaterialButtonViolet
-          caption="Save History"
+                <CustomButton
+          title="Save History"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
           style={styles.firstrow}
-        ></MaterialButtonViolet>
+        ></CustomButton>
                 <View style={styles.space} />
-                <MaterialButtonViolet
-          caption="Clear History"
+                <CustomButton
+          title="Clear History"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
           style={styles.firstrow}
-        ></MaterialButtonViolet></Col>
+        ></CustomButton></Col>
           <Col size={1}></Col>
         </Grid>
       </View>
@@ -62,8 +77,7 @@ export default function SettingsScreen() {
     },
     firstrow: {
       right: 27,
-      height: 36,
-      width: 300,
+      width: 240,
       top: 300
     },
   });

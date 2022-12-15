@@ -3,47 +3,25 @@ import { StyleSheet, View, StatusBar, TextInput, Keyboard, Dimensions, SafeAreaV
 import CustomButton from "../components/CustomButton";
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-// Basic Calculation method
-//  a = first number
-//  b = second number
-//  sym = calculation to perform
-function calculate(a, b, sym){
-  switch(sym) {
-    case 1:
-      return a + b;
-    case 2:
-      return a - b;
-    case 3:
-      return a * b;
-    case 4:
-      return a / b;
-  }
-}
-
 const {width, height} = Dimensions.get('window');
 
-export default function CalculatorScreen () {
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus("Keyboard Shown");
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus("Keyboard Hidden");
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
+export default function QuizScreen () {
+    const [defaultStyle, setDefaultStyle] = useState(true);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <TextInput
+        style={styles.TextDisplay}
+        placeholder="Question here"
+        textAlign='center'
+        keyboardType="numeric"
+        color='white'
+        placeholderTextColor='white'
+        editable={false}
+      ></TextInput>
+            <TextInput
         style={styles.TextInput}
-        placeholder="Calculate Here"
+        placeholder="Answer here"
         textAlign='center'
         keyboardType="numeric"
         color='white'
@@ -52,22 +30,18 @@ export default function CalculatorScreen () {
       <Grid>
     <Row></Row>
     <Row><Col><CustomButton
-          title="Calculate"
+          title="Submit"
           btop={styles.firstrow.top}
           bleft={styles.firstrow.left}
+          onPress={() => setDefaultStyle(!defaultStyle)}
           style={styles.firstrow}
         ></CustomButton></Col>
-          <Col><CustomButton
-          title="Clear"
-          btop={styles.firstrow.top}
-          bleft={styles.firstrow.left}
-          style={styles.firstrow}
-        ></CustomButton></Col>
+          <Col></Col>
            <Col><CustomButton
-          title="Undo"
-          btop={styles.firstrow.top}
-          bleft={styles.firstrow.left}
-          style={styles.firstrow}
+           title={defaultStyle ? "Clear" : "Next"}
+           btop={styles.firstrow.top}
+           bleft={styles.firstrow.left}
+          style={defaultStyle ? styles.clear : styles.next}
         ></CustomButton></Col></Row>
       </Grid>
     </View>
@@ -88,18 +62,24 @@ const styles = StyleSheet.create({
   },
   firstrow: {
     order: 2,
-    height: 36,
-    width: 100,
     top: 200,
     left: 25
   },
-  secondrow: {
+  clear: {
     order: 2,
+    title: "Clear",
     height: 36,
     width: 100,
-    top: 500
+    top: 200
   },
-  TextInput: {
+  next: {
+    order: 2,
+    title: "Next Question",
+    height: 36,
+    width: 100,
+    top: 200
+  },
+  TextDisplay: {
     order: 1,
     color : "white",
     borderColor: 'gray', 
@@ -108,6 +88,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 43,
+    right: 0
+  },
+  TextInput: {
+    order: 2,
+    color : "white",
+    borderColor: 'gray', 
+    borderWidth: 1, 
+    height: 98,
+    position: "absolute",
+    left: 0,
+    top: 200,
     right: 0
   }
 });
