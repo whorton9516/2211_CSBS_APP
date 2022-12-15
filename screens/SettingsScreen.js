@@ -3,8 +3,25 @@ import { StyleSheet, View, StatusBar, Button } from "react-native";
 import CustomButton from "../components/CustomButton";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Colors from "../constants/Colors";
+import Expo from 'expo'
 
 export default function SettingsScreen() {
+
+  const [colorTheme, setColorTheme] = useState(0);
+  const [colorBlindMode, setColorBlindMode] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const savePreferences = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS userSettings (colorTheme INTEGER, colorBlindMode INTEGER, darkMode BOOLEAN);'
+      );
+      tx.executeSql(
+        'INSERT INTO preferences (colorTheme, colorBlindMode, darkMode) VALUES (?, ?, ?);',
+        [colorTheme, colorBlindMode, darkMode]
+      );
+    });
+  }
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -18,6 +35,7 @@ export default function SettingsScreen() {
           bright={styles.firstrow.right}
           bwidth={styles.firstrow.width}
           style={styles.firstrow}
+          onPress = {colorBlindMode => setColorBlindMode(1)}
         ></CustomButton>
                 <View style={styles.space} />
                 <CustomButton
