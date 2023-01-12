@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   firstrow: {
     order: 2,
     top: 200,
-    left: 25
+    left: 18
   },
   clear: {
     order: 2,

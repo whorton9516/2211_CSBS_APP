@@ -50,7 +50,8 @@ const CustomButton = ({
   btop,
   bbottom,
   bright,
-  bleft
+  bleft,
+  bdisabled
 }) => {
   return (
     <TouchableOpacity
@@ -63,7 +64,8 @@ const CustomButton = ({
       top: btop || 0,
       bottom: bbottom || 0,
       right: bright || 0,
-      left: bleft || 0}}
+      left: bleft || 0,
+      disabled: bdisabled || 0}}
       onPress={onPress}>
       <Text
         style={{...styles.title, ...textStyle, color: titleColor || '#05131D'}}>

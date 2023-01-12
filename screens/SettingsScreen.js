@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, StatusBar, Button } from "react-native";
+import { StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
 import CustomButton from "../components/CustomButton";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Colors from "../constants/Colors";
 
 export default function SettingsScreen() {
     return (
+      <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <Grid>
@@ -54,6 +55,7 @@ export default function SettingsScreen() {
           <Col size={1}></Col>
         </Grid>
       </View>
+      </SafeAreaView>
     );
   }
   
@@ -70,6 +72,10 @@ export default function SettingsScreen() {
       marginBottom: 10,
       marginTop: 10,
       padding: 10
+    },
+    safe: {
+      flex: 1,
+      paddingTop: StatusBar.currentHeight,
     },
     space: {
       width: 20,
