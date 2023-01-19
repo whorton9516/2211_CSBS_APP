@@ -10,7 +10,6 @@ import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 
 export default function App() {
-  console.log('App Started');         // Print to the terminal while debugging
   const [isLoading, setIsLoading] = useState(true);
   const isLoadingComplete = useLoadedAssets();
   const colorScheme = useColorScheme();
