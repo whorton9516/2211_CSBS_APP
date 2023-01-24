@@ -4,8 +4,10 @@ import Draggable from 'react-native-draggable';
 
 const CalculatorButton = props => {
 
+    const releasePosition = 100;
+
     function handleRelease() {
-        console.log('Button Released')
+        console.log(props);
     }
 
 

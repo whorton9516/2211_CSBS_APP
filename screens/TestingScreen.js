@@ -3,6 +3,9 @@ import {Text, View, StyleSheet} from 'react-native';
 import CalculatorButton from '../components/CalculatorButton';
 
 const TestingScreen = () => {
+
+    
+
     return (
         <View>
             <CalculatorButton x= {75} y= {400} value = {1} />
