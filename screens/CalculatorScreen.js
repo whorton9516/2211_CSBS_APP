@@ -3,6 +3,7 @@ import { StyleSheet, View, StatusBar, TextInput, Keyboard, Dimensions, ScrollVie
 import CustomButton from "../components/CustomButton";
 import { Overlay } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import CalculatorButton from "../components/CalculatorButton";
 
 // Basic Calculation method
 //  a = first number
@@ -23,7 +24,7 @@ function calculate(a, b, sym){
 
 const {width, height} = Dimensions.get('window');
 
-export default function CalculatorScreen () {
+const CalculatorScreen = () => {
   updateMath = () => {
     const payload = {
       leinput: " ",
@@ -260,3 +261,5 @@ const styles = StyleSheet.create({
     right: 0
   },
 });
+
+export default CalculatorScreen;

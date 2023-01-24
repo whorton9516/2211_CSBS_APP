@@ -24,7 +24,7 @@ const QuizScreen = () => {
         }}
         />
         <Button title="Submit" />
-        <View style={{height: 100, width: 100, backgroundColor: CheckAnswer(GetAnswer(num1, num2, sym), 4)}}/> 
+        <View style={{height: 100, width: 100, backgroundColor: CheckAnswer(GetAnswer(num1, num2, sym), 4)}}/>
     </View>
   );
 }
