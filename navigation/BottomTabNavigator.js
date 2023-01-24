@@ -6,11 +6,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
 import CalculatorScreen from "../screens/CalculatorScreen"
 import SettingsScreen from "../screens/SettingsScreen"
 import QuizScreen from "../screens/QuizScreen"
+import TestingScreen from "../screens/TestingScreen";
 
 
 const BottomTab = createBottomTabNavigator();
@@ -53,6 +52,13 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+      <BottomTab.Screen
+        name="Testing"
+        component={TestingNavigator}
+        options={{
+          headerShown: false
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -65,33 +71,6 @@ function TabBarIcon(props) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator();
-
-function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title", headerTitleAlign: 'center' }}
-      />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title", headerTitleAlign: 'center' }}
-      />
-    </TabTwoStack.Navigator>
-  );
-}
 
 const CalculatorStack = createStackNavigator();
 
@@ -132,5 +111,19 @@ function QuizNavigator() {
       options={{headerTitle: "Quizes", headerTitleAlign: 'center'}}
       />
     </QuizStack.Navigator>
+  )
+}
+
+const TestingStack = createStackNavigator();
+
+function TestingNavigator() {
+  return (
+    <TestingStack.Navigator>
+      <TestingStack.Screen
+      name="Testing"
+      component={TestingScreen}
+      options={{headerTitle: "Testing", headerTitleAlign: 'center'}}
+      />
+    </TestingStack.Navigator>
   )
 }
