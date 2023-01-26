@@ -20,13 +20,45 @@ function calculate(a, b, sym){
       return a / b;
   }
 }
+function checkempty(text) { 
+  if (text == undefined ||
+      text == null || 
+      text.length == 0) { 
+      return false; 
+  } else {  
+      return true; 
+  } 
+}
 
+function splitinput(text) {
+  const words = text.split(/[*-/+]+/);
+  if (text.indexOf('+') > -1)
+  {
+    words[2] = '1'
+  }
+  if (text.indexOf('-') > -1)
+  {
+    words[2] = '2'
+  }
+  if (text.indexOf('*') > -1)
+  {
+    words[2] = '3'
+  }
+  if (text.indexOf('/') > -1)
+  {
+    words[2] = '4'
+  }
+  return words
+}
 const {width, height} = Dimensions.get('window');
 
 export default function CalculatorScreen () {
+  this.textInput = React.createRef();
+  const [result, setresult] = useState('');
   updateMath = () => {
     const payload = {
       leinput: " ",
+      //result: ' ',
     }
     
     console.log(payload)
@@ -38,28 +70,25 @@ onChangeText = (key, val) => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+  const runMath = () => {
+    var nums = [];
+   if (checkempty(this.leinput)){
+      tinput = splitinput(this.leinput)
+      console.log('tinput:',tinput)
+      for (let i = 0; i < 3; i++) {
+        nums[i] = Number(tinput[i])
+      }
+        setresult(calculate(nums[0], nums[1], nums[2]).toString())
+     // if (checkempty(nums[0]) && checkempty(nums[1]) && checkempty(nums[2])){
+     // this.result = calculate(tinput[0], tinput[1], tinput[2]).toString()
+      console.log('res:',result)
+      }
+  };
   const submit = () => {
     toggleOverlay();
     console.log(this.leinput)
-    //updateMath();
   };
-  const [defaultStyle, setDefaultStyle] = useState(true);
   let tinput = " ";
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus("Keyboard Shown");
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus("Keyboard Hidden");
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -70,18 +99,29 @@ onChangeText = (key, val) => {
         keyboardType="numeric"
         color='white'
         placeholderTextColor='white'
+        //onChangeText={(text) => runMath(text)}
         onChangeText={(text) => this.leinput = text}
+        ref={this.textInput}
       ></TextInput>
       <TextInput
       style={styles.res}
-      placeholder={this.leinput}
+      placeholder={result}
       textAlign='center'
       color='white'
       placeholderTextColor='white'
       editable={false}
     ></TextInput>
       <Grid>
-    <Row></Row>
+    <Row><Col></Col>
+          <Col><CustomButton
+          title="Calculate"
+          btop={styles.secondrow.top}
+          bleft={styles.secondrow.left}
+          bwidth={styles.secondrow.width}
+          style={styles.secondrow}
+          onPress={runMath}
+        ></CustomButton></Col>
+           <Col></Col></Row>
     <Row><Col><CustomButton
           title="Show Me"
           btop={styles.firstrow.top}
@@ -94,6 +134,7 @@ onChangeText = (key, val) => {
           btop={styles.firstrow.top}
           bleft={styles.firstrow.left}
           style={styles.firstrow}
+          //onPress={this.textInput.current.clear}
         ></CustomButton></Col>
            <Col><CustomButton
           title="Undo"
@@ -171,9 +212,9 @@ Never gonna tell a lie and hurt you
     <Row><Col></Col>
           <Col><CustomButton
           title="Back"
-          btop={styles.secondrow.top}
-          bleft={styles.secondrow.left}
-          style={styles.secondrow}
+          btop={styles.back.top}
+          bleft={styles.back.left}
+          style={styles.back}
           onPress={toggleOverlay}
         ></CustomButton></Col>
            <Col></Col></Row>
@@ -203,6 +244,13 @@ const styles = StyleSheet.create({
     left: 20
   },
   secondrow: {
+    order: 2,
+    height: 36,
+    width: 150,
+    top: 475,
+    left: -5
+  },
+  back: {
     order: 2,
     height: 36,
     width: 100,
