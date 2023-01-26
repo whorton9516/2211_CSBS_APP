@@ -1,8 +1,8 @@
-import React, {useState, useReducer} from 'react';
-import { Text, View, StyleSheet, PanResponder } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import CalculatorButton from '../components/CalculatorButton';
 
-const TestingScreen = props => {
+const TestingScreen = () => {
 
     const [equation, setEquation] = useState('');
 

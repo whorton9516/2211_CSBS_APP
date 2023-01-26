@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Draggable from 'react-native-draggable';
-import { Layout } from 'react-native-reanimated';
 
 const CalculatorButton = ({x, y, value, handleRelease}) => {
 
