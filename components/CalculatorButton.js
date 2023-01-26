@@ -7,8 +7,8 @@ const CalculatorButton = props => {
     const releasePosition = 100;
 
     function handleRelease() {
-        console.log(props);
-    }
+        console.log('Button Released')
+    };
 
 
     return (
@@ -20,7 +20,7 @@ const CalculatorButton = props => {
                 renderColor='blue'
                 shouldReverse
                 isCircle
-                onRelease= {handleRelease}
+                // onRelease= {handleRelease}
                 />
             
         </View>
