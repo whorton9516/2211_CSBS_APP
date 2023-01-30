@@ -46,14 +46,14 @@ const CalculatorScreen = () => {
         <View height={50}>
           <Text style={styles.text}>Calculate Here!</Text>
         </View>
-          <View style={styles.dropZone}> 
+          <View style={styles.dropZone}>
               <Text style={styles.text}>{equation}</Text>
           </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity style={styles.buttons}
               onPress={() => {
                 console.log('Clear button was pressed');
-                setEquation('');
+                setEquation([]);
                 setElementsInEquation(0);
                 setAnswer(145);
                 setNullAnswer(true);
@@ -74,6 +74,9 @@ const CalculatorScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttons} onPress={() => {
               handleUndo();
+              setElementsInEquation(elementsInEquation - 1);
+              setAnswer(145);
+              setNullAnswer(true);
             }}>
               <Image
                 source={require('../assets/images/undo.png')}
@@ -86,6 +89,7 @@ const CalculatorScreen = () => {
               <Text style={styles.text}>Drag the numbers into the box above!</Text>
               ) : (
               <Text style={styles.text}>{answer}</Text>
+
               )}
           </View>
 
