@@ -3,12 +3,9 @@ import { StyleSheet, View, StatusBar, TextInput, Keyboard, Dimensions, ScrollVie
 import CustomButton from "../components/CustomButton";
 import { Overlay } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import CalculatorButton from "../components/CalculatorButton";
 
-// Basic Calculation method
-//  a = first number
-//  b = second number
-//  sym = calculation to perform
-function calculate(a, b, sym){
+const calculate = (a, b, sym) => {
   switch(sym) {
     case 1:
       return a + b;
@@ -20,7 +17,8 @@ function calculate(a, b, sym){
       return a / b;
   }
 }
-function checkempty(text) { 
+
+const checkempty = (text) => { 
   if (text == undefined ||
       text == null || 
       text.length == 0) { 
@@ -30,7 +28,7 @@ function checkempty(text) {
   } 
 }
 
-function splitinput(text) {
+const splitinput = (text) => {
   const words = text.split(/[*-/+]+/);
   if (text.indexOf('+') > -1)
   {
@@ -52,179 +50,50 @@ function splitinput(text) {
 }
 const {width, height} = Dimensions.get('window');
 
-export default function CalculatorScreen () {
-  this.textInput = React.createRef();
-  const [result, setresult] = useState('');
-  updateMath = () => {
-    const payload = {
-      leinput: " ",
-      //result: ' ',
-    }
-    
-    console.log(payload)
+const CalculatorScreen = () => {
+
+  const [equation, setEquation] = useState('');
+
+  const GetPosition = (value, xRel, yRel) => {
+      console.log('button ' + value + ' released at x:' + xRel + ' y:' + yRel);
+      if (yRel < 200){
+          console.log('button ' + value + ' was logged');
+          setEquation(equation + value + ' ');
+          console.log(equation);
+      }
   }
-onChangeText = (key, val) => {
-  this.setState({ [key]: val})
-}
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-  const runMath = () => {
-    var nums = [];
-   if (checkempty(this.leinput)){
-      tinput = splitinput(this.leinput)
-      console.log('tinput:',tinput)
-      for (let i = 0; i < 3; i++) {
-        nums[i] = Number(tinput[i])
-      }
-        setresult(calculate(nums[0], nums[1], nums[2]).toString())
-     // if (checkempty(nums[0]) && checkempty(nums[1]) && checkempty(nums[2])){
-     // this.result = calculate(tinput[0], tinput[1], tinput[2]).toString()
-      console.log('res:',result)
-      }
-  };
-  const submit = () => {
-    toggleOverlay();
-    console.log(this.leinput)
-  };
-  let tinput = " ";
+
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      <TextInput
-        style={styles.TextInput}
-        placeholder="Calculate Here"
-        textAlign='center'
-        keyboardType="numeric"
-        color='white'
-        placeholderTextColor='white'
-        //onChangeText={(text) => runMath(text)}
-        onChangeText={(text) => this.leinput = text}
-        ref={this.textInput}
-      ></TextInput>
-      <TextInput
-      style={styles.res}
-      placeholder={result}
-      textAlign='center'
-      color='white'
-      placeholderTextColor='white'
-      editable={false}
-    ></TextInput>
-      <Grid>
-    <Row><Col></Col>
-          <Col><CustomButton
-          title="Calculate"
-          btop={styles.secondrow.top}
-          bleft={styles.secondrow.left}
-          bwidth={styles.secondrow.width}
-          style={styles.secondrow}
-          onPress={runMath}
-        ></CustomButton></Col>
-           <Col></Col></Row>
-    <Row><Col><CustomButton
-          title="Show Me"
-          btop={styles.firstrow.top}
-          bleft={styles.firstrow.left}
-          onPress={submit}
-          style={styles.firstrow}
-        ></CustomButton></Col>
-          <Col><CustomButton
-          title="Clear"
-          btop={styles.firstrow.top}
-          bleft={styles.firstrow.left}
-          style={styles.firstrow}
-          //onPress={this.textInput.current.clear}
-        ></CustomButton></Col>
-           <Col><CustomButton
-          title="Undo"
-          btop={styles.firstrow.top}
-          bleft={styles.firstrow.left}
-          style={styles.firstrow}
-        ></CustomButton></Col></Row>
-      </Grid>
-      <Overlay style={styles.overlay} isVisible={visible} onBackdropPress={toggleOverlay} fullScreen={true}>
-      <TextInput
-      style={styles.explanation}
-      placeholder={this.leinput}
-      textAlign='center'
-      keyboardType="numeric"
-      editable={false}>
-      </TextInput>
-      <Grid>
-    <Row><ScrollView
-      style={styles.scroll} >
-      <Text> We're no strangers to love
-You know the rules and so do I (do I)
-A full commitment's what I'm thinking of
-You wouldn't get this from any other guy
-I just wanna tell you how I'm feeling
-Gotta make you understand
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-We've known each other for so long
-Your heart's been aching, but you're too shy to say it (say it)
-Inside, we both know what's been going on (going on)
-We know the game and we're gonna play it
-And if you ask me how I'm feeling
-Don't tell me you're too blind to see
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-We've known each other for so long
-Your heart's been aching, but you're too shy to say it (to say it)
-Inside, we both know what's been going on (going on)
-We know the game and we're gonna play it
-I just wanna tell you how I'm feeling
-Gotta make you understand
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-Never gonna give you up
-Never gonna let you down
-Never gonna run around and desert you
-Never gonna make you cry
-Never gonna say goodbye
-Never gonna tell a lie and hurt you
-        </Text></ScrollView></Row>
-    <Row><Col></Col>
-          <Col><CustomButton
-          title="Back"
-          btop={styles.back.top}
-          bleft={styles.back.left}
-          style={styles.back}
-          onPress={toggleOverlay}
-        ></CustomButton></Col>
-           <Col></Col></Row>
-      </Grid>
-      </Overlay>
-    </View>
-  );
+      <View>
+          <View style={styles.dropZone}> 
+              <Text style={styles.text}>{equation}</Text>
+          </View>
+
+          <CalculatorButton imageSource= {require('../assets/images/1.png')} x= {125} y= {200} value= {1} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/2.png')} x= {200} y= {200} value= {2} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/3.png')} x= {275} y= {200} value= {3} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/4.png')} x= {125} y= {275} value= {4} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/5.png')} x= {200} y= {275} value= {5} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/6.png')} x= {275} y= {275} value= {6} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/7.png')} x= {125} y= {350} value= {7} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/8.png')} x= {200} y= {350} value= {8} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/9.png')} x= {275} y= {350} value= {9} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/10.png')} x= {125} y= {425} value= {10} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/11.png')} x= {200} y= {425} value= {11} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/12.png')} x= {275} y= {425} value= {12} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/plus.png')} x= {375} y= {200} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/minus.png')} x= {375} y= {275} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/multiply.png')} x= {375} y= {350} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/divide.png')} x= {375} y= {425} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+      </View>
+  )
 }
 
 const styles = StyleSheet.create({
+  dropZone: {
+    height: 200,
+    width: 200
+  },
   container: {
     flex: 1,
     flexDirection: "row",
@@ -308,3 +177,5 @@ const styles = StyleSheet.create({
     right: 0
   },
 });
+
+export default CalculatorScreen;

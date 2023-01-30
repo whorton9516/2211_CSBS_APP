@@ -2,17 +2,15 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native'
 import Draggable from 'react-native-draggable';
 
-const CalculatorButton = ({x, y, value, handleRelease}) => {
+const CalculatorButton = ({imageSource, x, y, value, handleRelease}) => {
 
     return (
         <View>
-            <Draggable 
+            <Draggable
+                imageSource={imageSource}
                 x= {x}
                 y= {y}
-                renderText= {value}
-                renderColor='blue'
                 shouldReverse
-                isCircle
                 onDragRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY - 50)}
                 />
             
