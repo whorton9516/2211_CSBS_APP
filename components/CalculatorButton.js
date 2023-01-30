@@ -8,8 +8,9 @@ const CalculatorButton = ({imageSource, x, y, value, handleRelease}) => {
         <View>
             <Draggable
                 imageSource={imageSource}
-                x= {x}
-                y= {y}
+                renderSize={50}
+                x= {x - 25}
+                y= {y - 25}
                 shouldReverse
                 onDragRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY - 50)}
                 />

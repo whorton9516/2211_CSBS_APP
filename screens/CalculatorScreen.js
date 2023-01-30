@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, StatusBar, TextInput, Keyboard, Dimensions, ScrollView, Text } from "react-native";
+import {StyleSheet, 
+        View,
+        TouchableOpacity, 
+        StatusBar, 
+        TextInput, 
+        Keyboard, 
+        Dimensions, 
+        ScrollView, 
+        Text,
+        Image } from "react-native";
 import CustomButton from "../components/CustomButton";
-import { Overlay } from 'react-native-elements';
+import { Overlay, Button } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import CalculatorButton from "../components/CalculatorButton";
 
@@ -56,7 +65,7 @@ const CalculatorScreen = () => {
 
   const GetPosition = (value, xRel, yRel) => {
       console.log('button ' + value + ' released at x:' + xRel + ' y:' + yRel);
-      if (yRel < 200){
+      if (yRel < 125 && xRel > 25 && xRel < width-25){
           console.log('button ' + value + ' was logged');
           setEquation(equation + value + ' ');
           console.log(equation);
@@ -65,34 +74,83 @@ const CalculatorScreen = () => {
 
   return (
       <View>
+        <View height={50}>
+          <Text style={styles.text}>Calculate Here!</Text>
+        </View>
           <View style={styles.dropZone}> 
               <Text style={styles.text}>{equation}</Text>
           </View>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.buttons} onPress={() => console.log('Clear button was pressed')}>
+              <Image
+                source={require('../assets/images/clear.png')}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={() => console.log('Calculate button was pressed')}>
+              <Image
+                source={require('../assets/images/calculate.png')}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={() => console.log('Undo button was pressed')}>
+              <Image
+                source={require('../assets/images/undo.png')}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+          </View>
 
-          <CalculatorButton imageSource= {require('../assets/images/1.png')} x= {125} y= {200} value= {1} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/2.png')} x= {200} y= {200} value= {2} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/3.png')} x= {275} y= {200} value= {3} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/4.png')} x= {125} y= {275} value= {4} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/5.png')} x= {200} y= {275} value= {5} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/6.png')} x= {275} y= {275} value= {6} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/7.png')} x= {125} y= {350} value= {7} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/8.png')} x= {200} y= {350} value= {8} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/9.png')} x= {275} y= {350} value= {9} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/10.png')} x= {125} y= {425} value= {10} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/11.png')} x= {200} y= {425} value= {11} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/12.png')} x= {275} y= {425} value= {12} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/plus.png')} x= {375} y= {200} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/minus.png')} x= {375} y= {275} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/multiply.png')} x= {375} y= {350} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
-          <CalculatorButton imageSource= {require('../assets/images/divide.png')} x= {375} y= {425} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/1.png')} x= {width/5} y= {275} value= {1} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/2.png')} x= {width/5*2} y= {275} value= {2} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/3.png')} x= {width/5*3} y= {275} value= {3} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/4.png')} x= {width/5*4} y= {275} value= {4} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/5.png')} x= {width/5} y= {350} value= {5} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/6.png')} x= {width/5*2} y= {350} value= {6} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/7.png')} x= {width/5*3} y= {350} value= {7} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/8.png')} x= {width/5*4} y= {350} value= {8} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/9.png')} x= {width/5} y= {425} value= {9} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/10.png')} x= {width/5*2} y= {425} value= {10} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/11.png')} x= {width/5*3} y= {425} value= {11} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/12.png')} x= {width/5*4} y= {425} value= {12} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/plus.png')} x= {100} y= {200} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/minus.png')} x= {165} y= {200} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/multiply.png')} x= {235} y= {200} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
+          <CalculatorButton imageSource= {require('../assets/images/divide.png')} x= {300} y= {200} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} />
       </View>
   )
 }
 
 const styles = StyleSheet.create({
   dropZone: {
-    height: 200,
-    width: 200
+    alignSelf:'center',
+    height: 125,
+    width: (width - 50),
+    backgroundColor: 'white'
+  },
+  text: {
+    textAlign: "center",
+    color: "black",
+    fontSize: 25,
+    fontWeight: "bold",
+    alignContent: 'center'
+    },
+  buttonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  buttons: {
+    width: 100,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  image: {
+    width: 100,
+    height: 50,
+    borderRadius: 50
   },
   container: {
     flex: 1,
