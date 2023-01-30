@@ -2,6 +2,7 @@
 // https://reactnavigation.org/docs/getting-started
 import {
   DarkTheme,
+  LightTheme,
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";

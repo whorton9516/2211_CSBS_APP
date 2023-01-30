@@ -16,7 +16,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const buttoncolor = Colors.dark.buttoncolor;
+  const buttoncolor = Colors.light.buttoncolor;
   return (
     <BottomTab.Navigator
       initialRouteName="Calculator"
