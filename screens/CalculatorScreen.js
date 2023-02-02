@@ -7,15 +7,20 @@ import {
   Text,
   Image
 } from "react-native";
+import * as SQLite from "expo-sqlite";
 import CalculatorButton from "../components/CalculatorButton";
+import { dismissBrowser } from "expo-web-browser";
+import getDb from "../hooks/GetDB"
 
 const {width, height} = Dimensions.get('window');
 
 const CalculatorScreen = () => {
 
+  const db = getDb();
+
   // State management variables
   const [answer, setAnswer] = useState(145);
-  const [equation, setEquation] = useState([]);
+  const [equation, setEquation] = useState('');
   const [nullAnswer, setNullAnswer] = useState(true);
   const [elementsInEquation, setElementsInEquation] = useState(0);
   const [hasRemainder, setHasRemainder] = useState(false);
@@ -25,7 +30,7 @@ const CalculatorScreen = () => {
   const GetPosition = (value, xRel, yRel) => {
       if (yRel < 0 && xRel > 25 && xRel < width-25){
           setElementsInEquation(elementsInEquation + 1);
-          setEquation(equation + value);
+          setEquation(equation + value + ' ');
       }
   }
 
@@ -36,19 +41,42 @@ const CalculatorScreen = () => {
 
   // Main driver function for the calculator
   const Calculate = (equation) => {
-    switch(equation[1]) {
+    const eq = equation.split(' ');
+    let answer = [];
+    switch(eq[1]) {
       case '+':
-        return [parseInt(equation[0]) + parseInt(equation[2]), 0];
+        answer = [parseInt(eq[0]) + parseInt(eq[2]), 0];
+        break;
       case '-':
-        return [parseInt(equation[0]) - parseInt(equation[2]), 0];
+        answer = [parseInt(eq[0]) - parseInt(eq[2]), 0];
+        break;
       case '*':
-        return [parseInt(equation[0]) * parseInt(equation[2]), 0];
+        answer = [parseInt(eq[0]) * parseInt(eq[2]), 0];
+        break;
       case '/':
-        if(setRemainder(parseInt(equation[0]) % parseInt(equation[2])) > 0){
+        if(setRemainder(parseInt(eq[0]) % parseInt(eq[2])) > 0){
           setHasRemainder(true);
         }
-        return [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
+        answer = [Math.floor((eq[0]) / parseInt(eq[2])), remainder];
+        break;
     }
+    let date = new Date();
+    let dateString = date.toLocaleDateString();
+    
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO calculator_data (date, equation, type) VALUES (?, ?, ?);',
+        [dateString, JSON.stringify(equation), eq[1]],
+        (tx, results) => {
+          console.log('Data inserted successfully');
+        },
+        (tx, error) => {
+          console.log('Error inserting data: ', error);
+        }
+      );
+    });
+    
+    return answer;
   }
 
   return (
