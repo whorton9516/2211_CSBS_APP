@@ -74,6 +74,7 @@ const CalculatorScreen = () => {
               setElementsInEquation(0);
               setAnswer(145);
               setNullAnswer(true);
+              setHasRemainder(false);
               }}>
             <Image
               source={require('../assets/images/clear.png')}
@@ -112,8 +113,8 @@ const CalculatorScreen = () => {
             )}
           </View>
           <View>
-          {hasRemainder ? (<Text></Text>) :
-              (<Text style={styles.text}>With a remainder of {remainder}</Text>)}
+          {hasRemainder ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+              (<Text></Text>)}
           </View>
         </View>
         
