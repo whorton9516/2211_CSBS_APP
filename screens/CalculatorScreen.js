@@ -7,30 +7,27 @@ import {
   Text,
   Image
 } from "react-native";
-import * as SQLite from "expo-sqlite";
 import CalculatorButton from "../components/CalculatorButton";
-import { dismissBrowser } from "expo-web-browser";
 import getDb from "../hooks/GetDB"
 
 const {width, height} = Dimensions.get('window');
+const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
 const CalculatorScreen = () => {
 
   const db = getDb();
 
   // State management variables
-  const [answer, setAnswer] = useState(145);
-  const [equation, setEquation] = useState('');
-  const [nullAnswer, setNullAnswer] = useState(true);
+  const [answer, setAnswer] = useState(defaultAnswerWindow);
+  const [equation, setEquation] = useState([]);
   const [elementsInEquation, setElementsInEquation] = useState(0);
-  const [hasRemainder, setHasRemainder] = useState(false);
   const [remainder, setRemainder] = useState(0);
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
       if (yRel < 0 && xRel > 25 && xRel < width-25){
           setElementsInEquation(elementsInEquation + 1);
-          setEquation(equation + value + ' ');
+          setEquation([...equation, value]);
       }
   }
 
@@ -41,23 +38,20 @@ const CalculatorScreen = () => {
 
   // Main driver function for the calculator
   const Calculate = (equation) => {
-    const eq = equation.split(' ');
     let answer = [];
-    switch(eq[1]) {
+    switch(equation[1]) {
       case '+':
-        answer = [parseInt(eq[0]) + parseInt(eq[2]), 0];
+        answer = [parseInt(equation[0]) + parseInt(equation[2]), setRemainder(0)];
         break;
       case '-':
-        answer = [parseInt(eq[0]) - parseInt(eq[2]), 0];
+        answer = [parseInt(equation[0]) - parseInt(equation[2]), setRemainder(0)];
         break;
       case '*':
-        answer = [parseInt(eq[0]) * parseInt(eq[2]), 0];
+        answer = [parseInt(equation[0]) * parseInt(equation[2]), setRemainder(0)];
         break;
       case '/':
-        if(setRemainder(parseInt(eq[0]) % parseInt(eq[2])) > 0){
-          setHasRemainder(true);
-        }
-        answer = [Math.floor((eq[0]) / parseInt(eq[2])), remainder];
+        setRemainder(parseInt(equation[0]) % parseInt(equation[2]))
+        answer = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
         break;
     }
     let date = new Date();
@@ -66,7 +60,7 @@ const CalculatorScreen = () => {
     db.transaction(tx => {
       tx.executeSql(
         'INSERT INTO calculator_data (date, equation, type) VALUES (?, ?, ?);',
-        [dateString, JSON.stringify(equation), eq[1]],
+        [dateString, JSON.stringify(equation), equation[1]],
         (tx, results) => {
           console.log('Data inserted successfully');
         },
@@ -100,9 +94,8 @@ const CalculatorScreen = () => {
             onPress={() => {
               setEquation([]);
               setElementsInEquation(0);
-              setAnswer(145);
-              setNullAnswer(true);
-              setHasRemainder(false);
+              setAnswer(defaultAnswerWindow);
+              setRemainder(0);
               }}>
             <Image
               source={require('../assets/images/clear.png')}
@@ -111,7 +104,6 @@ const CalculatorScreen = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttons} onPress={() => {
             setAnswer(Calculate(equation)[0]);
-            setNullAnswer(false);
             }}>
             <Image
               source={require('../assets/images/calculate.png')}
@@ -121,8 +113,7 @@ const CalculatorScreen = () => {
           <TouchableOpacity style={styles.buttons} onPress={() => {
             handleUndo();
             setElementsInEquation(elementsInEquation - 1);
-            setAnswer(145);
-            setNullAnswer(true);
+            setAnswer(defaultAnswerWindow);
           }}>
             <Image
               source={require('../assets/images/undo.png')}
@@ -134,14 +125,10 @@ const CalculatorScreen = () => {
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
           <View>
-          {nullAnswer ? (
-            <Text style={styles.text}>Drag the numbers into the box above!</Text>
-            ) : (
             <Text style={styles.text}>{answer}</Text>
-            )}
           </View>
           <View>
-          {hasRemainder ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+          {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
               (<Text></Text>)}
           </View>
         </View>
