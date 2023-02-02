@@ -114,6 +114,8 @@ const App = () => {
   }
 }
 
+
+
 const styles = StyleSheet.create({
   constainer: {
     flex: 1,

@@ -13,7 +13,7 @@ import getDb from "../hooks/GetDB"
 const {width, height} = Dimensions.get('window');
 const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
-const CalculatorScreen = () => {
+const CalculatorScreen = ({navigation}) => {
 
   const db = getDb();
 
@@ -124,13 +124,15 @@ const CalculatorScreen = () => {
 
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
-          <View>
-            <Text style={styles.text}>{answer}</Text>
-          </View>
-          <View>
-          {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
-              (<Text></Text>)}
-          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Explanation')}>
+            <View>
+              <Text style={styles.text}>{answer}</Text>
+            </View>
+            <View>
+            {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+                (<Text></Text>)}
+            </View>
+          </TouchableOpacity>
         </View>
         
         {/* All Calculator buttons

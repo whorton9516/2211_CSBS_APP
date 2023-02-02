@@ -10,6 +10,7 @@ import CalculatorScreen from "../screens/CalculatorScreen"
 import SettingsScreen from "../screens/SettingsScreen"
 import QuizScreen from "../screens/QuizScreen"
 import TestingScreen from "../screens/TestingScreen";
+import ExplanationScreen from "../screens/ExplanationsScreen";
 
 
 const BottomTab = createBottomTabNavigator();
@@ -50,6 +51,13 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="settings" color={buttoncolor} />
           ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Explanation"
+        component={ExplanationNavigator}
+        options={{
+          headerShown: false
         }}
       />
       <BottomTab.Screen
@@ -111,6 +119,20 @@ function QuizNavigator() {
       options={{headerTitle: "Quizes", headerTitleAlign: 'center'}}
       />
     </QuizStack.Navigator>
+  )
+}
+
+const ExplanationStack = createStackNavigator();
+
+function ExplanationNavigator() {
+  return (
+    <ExplanationStack.Navigator>
+      <ExplanationStack.Screen
+      name="ExplanationScreen"
+      component={ExplanationScreen}
+      options={{headerTitle: "Explanation", headerTitleAlign: 'center'}}
+      />
+    </ExplanationStack.Navigator>
   )
 }
 
