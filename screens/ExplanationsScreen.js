@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, Dimensions, Button} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 
-const ExplanationScreen = ({navigation}) => {
+const ExplanationScreen = ({ route }) => {
+
+
     return (
         <View>
-            <Button title='Close' onPress={() => navigation.navigate('Calculator')}/>
+            {/*<Button title='Close' onPress={() => navigation.navigate('Calculator')}/>*/}
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    This is the Explanation Screen
+                    {route.params.eq} = {route.params.ans}
                 </Text>
+                {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {route.params.rem}</Text>) :
+                (<Text></Text>)}
             </View>
         </View>
     );

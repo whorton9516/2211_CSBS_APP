@@ -20,6 +20,7 @@ const CalculatorScreen = ({navigation}) => {
   // State management variables
   const [answer, setAnswer] = useState(defaultAnswerWindow);
   const [equation, setEquation] = useState([]);
+  const [equationString, setEquationString] = useState('');
   const [elementsInEquation, setElementsInEquation] = useState(0);
   const [remainder, setRemainder] = useState(0);
 
@@ -54,13 +55,15 @@ const CalculatorScreen = ({navigation}) => {
         answer = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
         break;
     }
+    setEquationString(JSON.stringify(equation));
+
     let date = new Date();
     let dateString = date.toLocaleDateString();
     
     db.transaction(tx => {
       tx.executeSql(
         'INSERT INTO calculator_data (date, equation, type) VALUES (?, ?, ?);',
-        [dateString, JSON.stringify(equation), equation[1]],
+        [dateString, equationString, equation[1]],
         (tx, results) => {
           console.log('Data inserted successfully');
         },
@@ -124,7 +127,7 @@ const CalculatorScreen = ({navigation}) => {
 
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
-          <TouchableOpacity onPress={() => navigation.navigate('Explanation')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Explanation', {eq: JSON.stringify(equation)}, {ans: answer[0]}, {rem: remainder})}>
             <View>
               <Text style={styles.text}>{answer}</Text>
             </View>

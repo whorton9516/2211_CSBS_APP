@@ -33,9 +33,9 @@ const App = () => {
 
     {
       db.transaction(tx => {
-        tx.executeSql('DELETE FROM calculator_data');
-        tx.executeSql('DELETE FROM quizzes');
-        tx.executeSql('DELETE FROM quiz_questions')
+        //tx.executeSql('DELETE FROM calculator_data');
+        //tx.executeSql('DELETE FROM quizzes');
+        //tx.executeSql('DELETE FROM quiz_questions')
       });
 
       /*
