@@ -1,5 +1,5 @@
 import { Overlay } from 'react-native-elements';
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet, 
   View,
@@ -16,13 +16,12 @@ const QuizScreen = () => {
   const [num1, setNum1] = useState(Math.floor(Math.random() * 12) + 1);
   const [num2, setNum2] = useState(Math.floor(Math.random() * 12) + 1);
   const [sym, setSym] = useState(Math.floor(Math.random() * 4) + 1);
-  const [question, setQues] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2).toString());
+  const [question, setQues] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
   const [corr, setCorr] = useState(' ');
   const [equation, setEquation] = useState("");
   const [nullAnswer, setNullAnswer] = useState(true);
   const [elementsInEquation, setElementsInEquation] = useState(0);
   const [visible, setVisible] = useState(false);
-
 
   // Handles comparing your answer to the actual answer
   const CheckAnswer = (correctAnswer, userAnswer) => {
@@ -42,9 +41,12 @@ const QuizScreen = () => {
           setNum1(Math.floor(Math.random() * 12) + 1);
           setSym(Math.floor(Math.random() * 4) + 1);
           setNum2(Math.floor(Math.random() * 12) + 1);
-          setQues(((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2).toString()))
+          setQues(((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2)))
           console.log(numCorrect);
           console.log(question);
+          setEquation([]);
+          setElementsInEquation(0);
+          setNullAnswer(true);
           if (visible) {
             setVisible(!visible);
           }
@@ -98,8 +100,7 @@ const toggleOverlay = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttons} onPress={() => {
             CheckAnswer(GetAnswer(num1, num2, sym), equation);
-            
-            setNullAnswer(false);
+            //setNullAnswer(false);
             }}>
             <Image
               source={require('../assets/images/submit.png')}
@@ -138,8 +139,8 @@ const toggleOverlay = () => {
         <CalculatorButton imageSource= {require('../assets/images/8.png')}          x= {width/5*4} y= {200} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/9.png')}          x= {width/5}   y= {275} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/10.png')}         x= {width/5*2} y= {275} value= {0}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/11.png')}         x= {width/5*3} y= {275} value= {11}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/12.png')}         x= {width/5*4} y= {275} value= {12}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
+        <CalculatorButton imageSource= {require('../assets/images/minus.png')}      x= {width/5*3} y= {275}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
+        <CalculatorButton imageSource= {require('../assets/images/12.png')}         x= {width/5*4} y= {275} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
 
       <Overlay isVisible={visible} onBackdropPress={NextQuestion}>
      <Text>{corr}

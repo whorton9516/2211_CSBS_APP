@@ -127,7 +127,7 @@ const CalculatorScreen = ({navigation}) => {
 
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
-          <TouchableOpacity onPress={() => navigation.navigate('Explanation', {eq: JSON.stringify(equation)}, {ans: answer[0]}, {rem: remainder})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Explanation', {equationString}, {answer}, {remainder})}>
             <View>
               <Text style={styles.text}>{answer}</Text>
             </View>

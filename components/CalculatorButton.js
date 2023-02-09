@@ -12,7 +12,8 @@ const CalculatorButton = ({imageSource, x, y, value, handleRelease}) => {
                 x= {x - 25}
                 y= {y - 25}
                 shouldReverse
-                onDragRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY - 50)}
+                onRelease= {(e, gesture) => handleRelease(value, -10, 5000, true)}
+                onDragRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY - 50, false)}
                 />
             
         </View>
