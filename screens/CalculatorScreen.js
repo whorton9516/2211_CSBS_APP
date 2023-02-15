@@ -45,7 +45,13 @@ const CalculatorScreen = ({navigation}) => {
 
   // Handles the undo button
   const handleUndo = () => {
-    setEquation(equation.slice(0, equation.length - 1));
+    if(equation[2] != ''){
+      setEquation([equation[0], equation[1], '']);
+    } else if (equation[1] != ''){
+      setEquation([equation[0], '', '']);
+    } else {
+      setEquation(['','','']);
+    }
   }
 
   // Main driver function for the calculator
@@ -112,7 +118,7 @@ const CalculatorScreen = ({navigation}) => {
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.buttons}
             onPress={() => {
-              setEquation([]);
+              setEquation(['','','']);
               setAnswer(defaultAnswerWindow);
               setRemainder(0);
               }}>
