@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "black",
-    fontSize: 25,
+    fontSize: 30,
+    fontFamily: 'Sassoon-Primary',
     fontWeight: "bold",
     alignContent: 'center'
     },

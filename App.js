@@ -3,10 +3,9 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useLoadedAssets } from "./hooks/useLoadedAssets";
 import Navigation from "./navigation";
-import { useColorScheme, StyleSheet, Text, View } from "react-native";
-import * as SQLite from 'expo-sqlite';
+import { useColorScheme, Text, View } from "react-native";
+import {useFonts} from 'expo-font';
 import { useState, useEffect } from 'react';
 import getDb from "./hooks/GetDB"
 
@@ -15,8 +14,13 @@ const App = () => {
   const db = getDb();
 
   const [isLoading, setIsLoading] = useState(true);
-  const isLoadingComplete = useLoadedAssets();
   const colorScheme = useColorScheme();
+
+  const [loaded] = useFonts({
+    'Andika-Regular': require('./assets/fonts/Andika-Regular.ttf'),
+    'KGNeatlyPrinted': require('./assets/fonts/KGNeatlyPrinted.ttf'),
+    'Sassoon-Primary': require('./assets/fonts/Sassoon-Primary.otf'),
+  });
 
   useEffect(() => {
     db.transaction(tx => {
@@ -98,6 +102,10 @@ const App = () => {
     setIsLoading(false);
   }, []);
 
+  if (!loaded) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -113,16 +121,5 @@ const App = () => {
     );
   }
 }
-
-
-
-const styles = StyleSheet.create({
-  constainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
