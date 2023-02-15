@@ -211,9 +211,9 @@ const toggleOverlay = () => {
         <CalculatorButton imageSource= {require('../assets/images/7.png')}          x= {width/5*3} y= {200} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/8.png')}          x= {width/5*4} y= {200} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/9.png')}          x= {width/5}   y= {275} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/10.png')}         x= {width/5*2} y= {275} value= {0}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
+        <CalculatorButton imageSource= {require('../assets/images/0.png')}          x= {width/5*2} y= {275} value= {0}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/minus.png')}      x= {width/5*3} y= {275}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/12.png')}         x= {width/5*4} y= {275} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
+        <CalculatorButton imageSource= {require('../assets/images/decimal.png')}    x= {width/5*4} y= {275} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
 
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         {
