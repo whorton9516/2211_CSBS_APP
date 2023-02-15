@@ -10,6 +10,11 @@ import {
 import CalculatorButton from "../components/CalculatorButton";
 import getDb from "../hooks/GetDB"
 import Colors from "../constants/Colors";
+import {
+  setEq,
+  setAns,
+  setRem,
+} from '../hooks/GetCalcData';
 
 const {width, height} = Dimensions.get('window');
 const defaultAnswerWindow = 'Drag the numbers into the box above!';
@@ -98,6 +103,11 @@ const CalculatorScreen = ({navigation}) => {
     return answer;
   }
 
+  const setData = (equation, answer, remainder) => {
+    setEq(equation);
+    setAns(answer);
+    setRem(remainder);
+  }
 
   return (
 
@@ -148,7 +158,10 @@ const CalculatorScreen = ({navigation}) => {
 
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
-          <TouchableOpacity onPress={() => navigation.navigate('Explanation', {equationString}, {answer}, {remainder})}>
+          <TouchableOpacity onPress={() => {
+            setData(equation, answer, remainder);
+            navigation.navigate('Explanation', {equationString}, {answer}, {remainder});
+          }}>
             <View>
               <Text style={styles.text}>{answer}</Text>
             </View>
