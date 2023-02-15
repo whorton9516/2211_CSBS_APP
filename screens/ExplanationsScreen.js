@@ -2,56 +2,81 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, Dimensions, Button, Animated, Image} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import ExplanationComponent from "../components/ExplanationComponent";
+import GetCalcData from '../hooks/GetCalcData';
+import { useFocusEffect } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-const ExplanationScreen = ({ route }) => {
-let num1 = '7'
-let num2 = '4'
-let ans = '11'
-let sym = '+'
-var views;
-switch(sym) {
+const ExplanationScreen = () => {
+
+  const [num1, setNum1] = useState(GetCalcData.equation[0]);
+  const [num2, setNum2] = useState(GetCalcData.equation[2]);
+  const [sym, setSym] = useState(GetCalcData.equation[1]);
+  const [ans, setAns] = useState(GetCalcData.answer);
+  const [rem, setRem] = useState(GetCalcData.remainder);
+
+  const loadData = () => {
+    setNum1(GetCalcData.equation[0]);
+    setNum2(GetCalcData.equation[2]);
+    setSym(GetCalcData.equation[1]);
+    setAns(GetCalcData.answer);
+    setRem(GetCalcData.remainder);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
+
+  var views;
+  switch(sym) {
     case "+":
-        views = <View style={styles.explanationbox}>
+      views = 
+      <View style={styles.explanationbox}>
         <Row>
         <Col><ExplanationComponent num1={num1} color1={"red"}></ExplanationComponent></Col>
         <Col><Animated.Text style={styles.symbol}>{sym}</Animated.Text></Col>
         <Col><ExplanationComponent num1={num2} color1={"green"}></ExplanationComponent></Col>
         </Row>
-         <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
+        <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
         <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={"green"} num2={num1} color2={"red"}></ExplanationComponent></Col><Col></Col></Row>
         <Row></Row>
-    </View>
-    break;
+      </View>
+      break;
     case "-":
-        views = <View style={styles.explanationbox}>
+      views = 
+      <View style={styles.explanationbox}>
         <Row>
         <Col><ExplanationComponent num1={num1} color1={"red"}></ExplanationComponent></Col>
         <Col><Animated.Text style={styles.symbol}>{sym}</Animated.Text></Col>
         <Col><ExplanationComponent num1={num2} color1={"green"}></ExplanationComponent></Col>
         </Row>
-         <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
+        <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
         <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={"green"} num2={num1} color2={"red"}></ExplanationComponent></Col><Col></Col></Row>
         <Row></Row>
-    </View>
-    break;
-}
-    return (
-        <View>
-            {/*<Button title='Close' onPress={() => navigation.navigate('Calculator')}/>*/}
-            <View style={styles.container}>
-                <Text style={styles.text}>
-                    7+4
-                </Text>
-            <Text>Remainder goes here</Text>
-            </View>
-            <View style={styles.space}></View>
-            {
-              views
-            }
+      </View>
+      break;
+  }
+  return (
+    <View>
+        {/*<Button title='Close' onPress={() => navigation.navigate('Calculator')}/>*/}
+        <View style={styles.container}>
+            <Text style={styles.text}>
+                {num1} {sym} {num2} = {ans}
+            </Text>
+        <Text>Remainder of {rem}</Text>
         </View>
-    );
+        <View style={styles.space}></View>
+        {
+          views
+        }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

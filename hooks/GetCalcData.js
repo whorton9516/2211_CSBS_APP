@@ -1,13 +1,11 @@
-import React from 'react';
 
-let equation;
-let answer;
-let remainder;
 
-const getEq = () => { return equation; }
-const getAns = () => { return answer; }
-const getRem = () => { return remainder; }
+const GetCalcData = () => {
+    let equation;
+    let answer;
+    let remainder;
 
-const setEquation = (eq) => { equation = eq; }
-const setAnswer = (ans) => { answer = ans; }
-const setRemainder = (rem) => { remainder = rem; }
+    return [equation, answer, remainder]
+}
+
+export default GetCalcData;

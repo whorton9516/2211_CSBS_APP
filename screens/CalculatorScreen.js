@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, } from "react";
 import {
   StyleSheet, 
   View,
@@ -10,11 +10,7 @@ import {
 import CalculatorButton from "../components/CalculatorButton";
 import getDb from "../hooks/GetDB"
 import Colors from "../constants/Colors";
-import {
-  setEq,
-  setAns,
-  setRem,
-} from '../hooks/GetCalcData';
+import GetCalcData from '../hooks/GetCalcData';
 
 const {width, height} = Dimensions.get('window');
 const defaultAnswerWindow = 'Drag the numbers into the box above!';
@@ -104,16 +100,15 @@ const CalculatorScreen = ({navigation}) => {
   }
 
   const setData = (equation, answer, remainder) => {
-    setEq(equation);
-    setAns(answer);
-    setRem(remainder);
+    GetCalcData.equation = equation;
+    console.log("GetCalcData equation = " + GetCalcData.equation);
+    GetCalcData.answer = answer;
+    GetCalcData.remainder = remainder;
   }
 
   return (
-
       // Main View
       <View>
-
         {/* Header */}
         <View height={50}>
           <Text style={styles.text}>Calculate Here!</Text>
