@@ -6,52 +6,124 @@ import {
   TouchableOpacity, 
   Dimensions, 
   Text,
-  Image
+  Image,
+  Button
 } from "react-native";
 import CalculatorButton from "../components/CalculatorButton";
 
 let numCorrect = 0;
+let numRun = 1;
+let num1 = (Math.floor(Math.random() * 12) + 1);
+let num2 = (Math.floor(Math.random() * 12) + 1);
+let sym = (Math.floor(Math.random() * 4) + 1); 
 const {width, height} = Dimensions.get('window');
 const QuizScreen = () => {
-  const [num1, setNum1] = useState(Math.floor(Math.random() * 12) + 1);
-  const [num2, setNum2] = useState(Math.floor(Math.random() * 12) + 1);
-  const [sym, setSym] = useState(Math.floor(Math.random() * 4) + 1);
+  //const [num1, setNum1] = useState(Math.floor(Math.random() * 12) + 1);
+ // const [num2, setNum2] = useState(Math.floor(Math.random() * 12) + 1);
+  //const [sym, setSym] = useState(Math.floor(Math.random() * 4) + 1);
   const [question, setQues] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
-  const [corr, setCorr] = useState(' ');
+  console.log(question);
   const [equation, setEquation] = useState("");
   const [nullAnswer, setNullAnswer] = useState(true);
   const [elementsInEquation, setElementsInEquation] = useState(0);
-  const [visible, setVisible] = useState(false);
-
+  const [visible, setVisible] = useState(true);
+  const [overlayView, setOverlay] = useState(<View>
+    <View style={styles.overlayBox}>
+        <Text style={styles.text}>
+        Welcome to the Quizes!
+        </Text>
+        <Text style={styles.text}>
+        You will have 10 questions and will receive your score after.
+        </Text>
+        <Text style={styles.text}>
+        Press Start to begin. Good luck!
+        </Text>
+        <Button title='Start' onPress={() => setVisible(!visible)}/>
+    </View>
+    </View>);
+    let corr = ' ';
   // Handles comparing your answer to the actual answer
   const CheckAnswer = (correctAnswer, userAnswer) => {
     if (userAnswer == correctAnswer){
       numCorrect++;
       console.log('Correct')
-      setCorr('Correct!')
+      corr = 'Correct!';
     } else {
       console.log('Wrong Silly')
-      setCorr('Incorrect')
+      corr = 'Incorrect!'
     }
-    toggleOverlay();
+    if (numRun == 10) {
+      console.log("Done!");
+      changeOverlay(2);
+      toggleOverlay();
+    }
+    else {
+      numRun++;
+      changeOverlay(3);
+    }
   }
 
   // Handles generating a new question
   const NextQuestion = () => {
-          setNum1(Math.floor(Math.random() * 12) + 1);
-          setSym(Math.floor(Math.random() * 4) + 1);
-          setNum2(Math.floor(Math.random() * 12) + 1);
+         // setNum1(Math.floor(Math.random() * 12) + 1);
+         // setSym(Math.floor(Math.random() * 4) + 1);
+         // setNum2(Math.floor(Math.random() * 12) + 1);
+          num1 = Math.floor(Math.random() * 12) + 1;
+          num2 = Math.floor(Math.random() * 12) + 1;
+          sym = Math.floor(Math.random() * 4) + 1; 
           setQues(((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2)))
           console.log(numCorrect);
           console.log(question);
           setEquation([]);
           setElementsInEquation(0);
           setNullAnswer(true);
-          if (visible) {
-            setVisible(!visible);
-          }
   }
-
+  const changeOverlay = (option) => {
+    switch(option) {
+      case 1:
+        setOverlay(
+        <View style={styles.overlayBox}>
+            <Text style={styles.overlayText}>
+            Welcome to the Quizes!
+            </Text>
+            <Text style={styles.overlayText}>
+            You will have 10 questions and will receive your score after.
+            </Text>
+            <Text style={styles.overlayText}>
+            Press Start to begin. Good luck!
+            </Text>
+            <Button title='Start' onPress={() => setVisible(!visible)}/>
+        </View>)
+        break;
+        case 2:
+          setOverlay(
+          <View style={styles.overlayBox}>
+              <Text style={styles.overlayText}>
+              Congrats on completing your quiz with a score of {numCorrect} out of 10!
+              </Text>
+              <Text style={styles.overlayText}>
+              </Text>
+              <Text style={styles.overlayText}>
+              Press anywhere to try another quiz.
+              </Text>
+          </View>)
+          numRun = 1;
+          numCorrect = 0;
+          break;
+        case 3:
+          setOverlay(
+          <View style={styles.overlayBox}>
+              <Text style={styles.overlayText}>
+              You are {corr}
+              </Text>
+              <Text style={styles.overlayText}>
+              Press next to continue.
+              </Text>
+              <Button title='Next' onPress={() => setVisible(!visible)}/>
+          </View>)
+          break;
+    }
+  }
   // Handles draggable buttons input
   const GetPosition = (value, xRel, yRel) => {
     if (yRel < 0 && xRel > 25 && xRel < width-25){
@@ -100,6 +172,7 @@ const toggleOverlay = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttons} onPress={() => {
             CheckAnswer(GetAnswer(num1, num2, sym), equation);
+            NextQuestion();
             //setNullAnswer(false);
             }}>
             <Image
@@ -142,11 +215,10 @@ const toggleOverlay = () => {
         <CalculatorButton imageSource= {require('../assets/images/minus.png')}      x= {width/5*3} y= {275}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
         <CalculatorButton imageSource= {require('../assets/images/12.png')}         x= {width/5*4} y= {275} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
 
-      <Overlay isVisible={visible} onBackdropPress={NextQuestion}>
-     <Text>{corr}
-     </Text>
-     <Text>{numCorrect}
-     </Text>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        {
+          overlayView
+        }
      </Overlay>
       </View>
    );
@@ -226,47 +298,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     numColumns: 2
   },
-  firstrow: {
-    order: 2,
-    top: 200,
-    left: 18
+  overlayBox: {
+    height: (height - 500),
+    width: (width - 100),
+    alignContent: 'center',
   },
-  clear: {
-    order: 2,
-    title: "Clear",
-    height: 36,
-    width: 100,
-    top: 200
-  },
-  next: {
-    order: 2,
-    title: "Next Question",
-    height: 36,
-    width: 100,
-    top: 200
-  },
-  TextDisplay: {
-    order: 1,
-    color : "white",
-    borderColor: 'gray', 
-    borderWidth: 1, 
-    height: 98,
-    position: "absolute",
-    left: 0,
-    top: 43,
-    right: 0
-  },
-  TextInput: {
-    order: 2,
-    color : "white",
-    borderColor: 'gray', 
-    borderWidth: 1, 
-    height: 98,
-    position: "absolute",
-    left: 0,
-    top: 200,
-    right: 0
-  }
+  overlayText: {
+  alignSelf:'center',
+  color: "black",
+  fontSize: 25,
+  fontWeight: "bold",
+  alignContent: 'center',
+  backgroundColor: 'white',
+},
 });
 
 export default QuizScreen;
