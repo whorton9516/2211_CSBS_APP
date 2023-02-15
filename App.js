@@ -17,9 +17,10 @@ const App = () => {
   const colorScheme = useColorScheme();
 
   const [loaded] = useFonts({
-    'Andika-Regular': require('./assets/fonts/Andika-Regular.ttf'),
+    'Andika': require('./assets/fonts/Andika-Regular.ttf'),
     'KGNeatlyPrinted': require('./assets/fonts/KGNeatlyPrinted.ttf'),
-    'Sassoon-Primary': require('./assets/fonts/Sassoon-Primary.otf'),
+    'Sassoon': require('./assets/fonts/Sassoon-Primary.otf'),
+    'MaryKate': require('./assets/fonts/MaryKate.ttf'),
   });
 
   useEffect(() => {
@@ -35,14 +36,13 @@ const App = () => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS quiz_questions (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_id INTEGER, question TEXT, result INTEGER, FOREIGN KEY(quiz_id) REFERENCES quizzes(id))',);
     });
 
-    {
+    {/*
       db.transaction(tx => {
-        //tx.executeSql('DELETE FROM calculator_data');
-        //tx.executeSql('DELETE FROM quizzes');
-        //tx.executeSql('DELETE FROM quiz_questions')
+        tx.executeSql('DELETE FROM calculator_data');
+        tx.executeSql('DELETE FROM quizzes');
+        tx.executeSql('DELETE FROM quiz_questions')
       });
 
-      /*
       db.transaction(tx => {
         tx.executeSql(
           'INSERT INTO quizzes (quiz_date, total_questions, total_correct) VALUES (?, ?, ?);',
@@ -55,10 +55,9 @@ const App = () => {
           }
         );
       });
-      */
 
     
-
+    
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT * FROM calculator_data',
@@ -97,7 +96,8 @@ const App = () => {
         }
       );
     });
-  }
+  */}
+  
 
     setIsLoading(false);
   }, []);

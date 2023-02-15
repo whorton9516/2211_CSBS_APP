@@ -9,7 +9,8 @@ import {
   Image,
   Button
 } from "react-native";
-import CalculatorButton from "../components/CalculatorButton";
+import CalculatorButton from '../components/CalculatorButton';
+import Colors from '../constants/Colors';
 
 let numCorrect = 0;
 let numRun = 1;
@@ -18,13 +19,9 @@ let num2 = (Math.floor(Math.random() * 12) + 1);
 let sym = (Math.floor(Math.random() * 4) + 1); 
 const {width, height} = Dimensions.get('window');
 const QuizScreen = () => {
-  //const [num1, setNum1] = useState(Math.floor(Math.random() * 12) + 1);
- // const [num2, setNum2] = useState(Math.floor(Math.random() * 12) + 1);
-  //const [sym, setSym] = useState(Math.floor(Math.random() * 4) + 1);
   const [question, setQues] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
   console.log(question);
   const [equation, setEquation] = useState("");
-  const [nullAnswer, setNullAnswer] = useState(true);
   const [elementsInEquation, setElementsInEquation] = useState(0);
   const [visible, setVisible] = useState(true);
   const [overlayView, setOverlay] = useState(<View>
@@ -33,7 +30,7 @@ const QuizScreen = () => {
         Welcome to the Quizes!
         </Text>
         <Text style={styles.text}>
-        You will have 10 questions and will receive your score after.
+          You will have 10 questions and will receive your score after.
         </Text>
         <Text style={styles.text}>
         Press Start to begin. Good luck!
@@ -42,6 +39,7 @@ const QuizScreen = () => {
     </View>
     </View>);
     let corr = ' ';
+
   // Handles comparing your answer to the actual answer
   const CheckAnswer = (correctAnswer, userAnswer) => {
     if (userAnswer == correctAnswer){
@@ -65,9 +63,6 @@ const QuizScreen = () => {
 
   // Handles generating a new question
   const NextQuestion = () => {
-         // setNum1(Math.floor(Math.random() * 12) + 1);
-         // setSym(Math.floor(Math.random() * 4) + 1);
-         // setNum2(Math.floor(Math.random() * 12) + 1);
           num1 = Math.floor(Math.random() * 12) + 1;
           num2 = Math.floor(Math.random() * 12) + 1;
           sym = Math.floor(Math.random() * 4) + 1; 
@@ -78,6 +73,7 @@ const QuizScreen = () => {
           setElementsInEquation(0);
           setNullAnswer(true);
   }
+
   const changeOverlay = (option) => {
     switch(option) {
       case 1:
@@ -124,6 +120,7 @@ const QuizScreen = () => {
           break;
     }
   }
+
   // Handles draggable buttons input
   const GetPosition = (value, xRel, yRel) => {
     if (yRel < 0 && xRel > 25 && xRel < width-25){
@@ -143,86 +140,84 @@ onChangeText = (key, val) => {
 const toggleOverlay = () => {
   setVisible(!visible);
 };
-  return (
-      // Main View
-      <View>
 
-        {/* Header */}
-        <View height={50}>
-          <Text style={styles.text}>{question}</Text>
-        </View>
+return (
+    // Main View
+    <View>
 
-        {/* Button Drop Zone */}
-        <View style={styles.dropZone}>
-            <Text style={styles.text}>{equation}</Text>
-        </View>
-
-        {/* Clear, Calculate, and Undo buttons */}
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.buttons}
-            onPress={() => {
-              setEquation([]);
-              setElementsInEquation(0);
-              setNullAnswer(true);
-              }}>
-            <Image
-              source={require('../assets/images/clear.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={() => {
-            CheckAnswer(GetAnswer(num1, num2, sym), equation);
-            NextQuestion();
-            //setNullAnswer(false);
-            }}>
-            <Image
-              source={require('../assets/images/submit.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={() => {
-            handleUndo();
-            setElementsInEquation(elementsInEquation - 1);
-            setNullAnswer(true);
-          }}>
-            <Image
-              source={require('../assets/images/undo.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Box to display the answer */}
-        <View style={styles.answerBox}>
-          <View>
-            <Text style={styles.text}>Drag the numbers into the box above!</Text>
-          </View>
-        </View>
-        
-        {/* All Calculator buttons
-          TODO: Remove extra buttons since we only need 0-9 and a negative button (if we want more complex numbers we could add a period for decimals)
-        */}
-        <CalculatorButton imageSource= {require('../assets/images/1.png')}          x= {width/4}   y= {75} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/2.png')}          x= {width/4*2} y= {75} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/3.png')}          x= {width/4*3} y= {75} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/4.png')}          x= {width/4}   y= {150} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/5.png')}          x= {width/4*2} y= {150} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/6.png')}          x= {width/4*3} y= {150} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/7.png')}          x= {width/4}   y= {225} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/8.png')}          x= {width/4*2} y= {225} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/9.png')}          x= {width/4*3} y= {225} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/minus.png')}      x= {width/4}   y= {300}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/0.png')}          x= {width/4*2} y= {300} value= {0}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-        <CalculatorButton imageSource= {require('../assets/images/decimal.png')}    x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} />
-
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        {
-          overlayView
-        }
-     </Overlay>
+      {/* Header */}
+      <View height={50}>
+        <Text style={styles.text}>{question}</Text>
       </View>
-   );
- }
+
+      {/* Button Drop Zone */}
+      <View style={styles.dropZone}>
+          <Text style={styles.text}>{equation}</Text>
+      </View>
+
+      {/* Clear, Calculate, and Undo buttons */}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.buttons}
+          onPress={() => {
+            setEquation([]);
+            setElementsInEquation(0);
+            }}>
+          <Image
+            source={require('../assets/images/clear.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttons} onPress={() => {
+          CheckAnswer(GetAnswer(num1, num2, sym), equation);
+          NextQuestion();
+          }}>
+          <Image
+            source={require('../assets/images/submit.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttons} onPress={() => {
+          handleUndo();
+          setElementsInEquation(elementsInEquation - 1);
+        }}>
+          <Image
+            source={require('../assets/images/undo.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* Box to display the answer */}
+      <View style={styles.answerBox}>
+        <View>
+          <Text style={styles.text}>Drag the numbers into the box above!</Text>
+        </View>
+      </View>
+      
+      {/* All Calculator buttons
+        TODO: Remove extra buttons since we only need 0-9 and a negative button (if we want more complex numbers we could add a period for decimals)
+      */}
+      <CalculatorButton imageSource= {require('../assets/images/1.png')}          x= {width/4}   y= {75} value= {1}     handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
+      <CalculatorButton imageSource= {require('../assets/images/2.png')}          x= {width/4*2} y= {75} value= {2}     handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
+      <CalculatorButton imageSource= {require('../assets/images/3.png')}          x= {width/4*3} y= {75} value= {3}     handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
+      <CalculatorButton imageSource= {require('../assets/images/4.png')}          x= {width/4}   y= {150} value= {4}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
+      <CalculatorButton imageSource= {require('../assets/images/5.png')}          x= {width/4*2} y= {150} value= {5}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
+      <CalculatorButton imageSource= {require('../assets/images/6.png')}          x= {width/4*3} y= {150} value= {6}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
+      <CalculatorButton imageSource= {require('../assets/images/7.png')}          x= {width/4}   y= {225} value= {7}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
+      <CalculatorButton imageSource= {require('../assets/images/8.png')}          x= {width/4*2} y= {225} value= {8}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
+      <CalculatorButton imageSource= {require('../assets/images/9.png')}          x= {width/4*3} y= {225} value= {9}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
+      <CalculatorButton imageSource= {require('../assets/images/minus.png')}      x= {width/4}   y= {300}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
+      <CalculatorButton imageSource= {require('../assets/images/0.png')}          x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
+      <CalculatorButton imageSource= {require('../assets/images/decimal.png')}    x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
+
+    <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+      {
+        overlayView
+      }
+    </Overlay>
+    </View>
+  );
+}
 
 const GetAnswer = (num1, num2, sym) => {
   switch(sym){
@@ -247,7 +242,7 @@ const ConvertSym = (symbol) => {
         return '*';
     case 4:
         return '/';
-}
+  }
 }
 
 const styles = StyleSheet.create({
