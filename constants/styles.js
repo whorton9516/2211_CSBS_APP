@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     },
     calculatorButtonText: {
         textAlign: "center",
-        fontSize: 50,
+        fontSize: 25,
         fontFamily: 'MaryKate',
         fontWeight: "bold",
         alignContent: 'center',

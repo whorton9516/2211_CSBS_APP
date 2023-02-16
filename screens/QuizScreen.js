@@ -71,7 +71,6 @@ const QuizScreen = () => {
           console.log(question);
           setEquation([]);
           setElementsInEquation(0);
-          setNullAnswer(true);
   }
 
   const changeOverlay = (option) => {

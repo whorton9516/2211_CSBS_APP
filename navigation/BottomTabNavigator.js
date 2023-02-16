@@ -38,6 +38,7 @@ export default function BottomTabNavigator() {
         component={QuizNavigator}
         options={{
           headerShown: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="book" color={buttoncolor} />
           ),
@@ -57,14 +58,8 @@ export default function BottomTabNavigator() {
         name="Explanation"
         component={ExplanationNavigator}
         options={{
-          headerShown: false
-        }}
-      />
-      <BottomTab.Screen
-        name="Testing"
-        component={TestingNavigator}
-        options={{
-          headerShown: false
+          headerShown: false,
+          unmountOnBlur: true
         }}
       />
     </BottomTab.Navigator>

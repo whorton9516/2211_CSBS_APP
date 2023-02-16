@@ -4,6 +4,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import ExplanationComponent from "../components/ExplanationComponent";
 import GetCalcData from '../hooks/GetCalcData';
 import { useFocusEffect } from '@react-navigation/native';
+import Colors from '../constants/Colors';
 
 const {width, height} = Dimensions.get('window');
 
@@ -32,19 +33,80 @@ const ExplanationScreen = () => {
       loadData();
     }, [])
   );
-
+  const getColor = () => {
+    switch(Math.floor(Math.random() * 7)){
+        case 0:
+          if(color1 == 'red') {
+            console.log('oops');
+            return getColor();
+          }
+          else {
+            return 'red';
+          }
+        case 1:
+          if(color1 == 'yellow') {
+            console.log('oops');
+            return getColor();
+          }
+          else {
+            return 'yellow';
+          }
+        case 2:
+          if(color1 == 'green') {
+            console.log('oops');
+            return getColor();
+          }
+          else {
+            return 'green';
+          }
+        case 3:
+          if(color1 == 'orange') {
+            console.log('oops');
+            return getColor();
+          }
+          else {
+            return 'orange';
+          }
+        case 4:
+          if(color1 == 'light blue') {
+            console.log('oops');
+            return getColor();
+          }
+          else {
+            return 'light blue';
+          }
+          case 5:
+            if(color1 == 'fuchsia') {
+              console.log('oops');
+              return getColor();
+            }
+            else {
+              return 'fuchsia';
+            }
+            case 6:
+              if(color1 == 'deeppink') {
+                console.log('oops');
+                return getColor();
+              }
+              else {
+                return 'deeppink';
+              }
+    }
+}
+const [color1, setColor1] = useState(getColor());
+const [color2, setColor2] = useState(getColor());
   var views;
   switch(sym) {
     case "+":
       views = 
       <View style={styles.explanationbox}>
         <Row>
-        <Col><ExplanationComponent num1={num1} color1={"red"}></ExplanationComponent></Col>
+        <Col><ExplanationComponent num1={num1} color1={color1}></ExplanationComponent></Col>
         <Col><Animated.Text style={styles.symbol}>{sym}</Animated.Text></Col>
-        <Col><ExplanationComponent num1={num2} color1={"green"}></ExplanationComponent></Col>
+        <Col><ExplanationComponent num1={num2} color1={color2}></ExplanationComponent></Col>
         </Row>
         <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
-        <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={"green"} num2={num1} color2={"red"}></ExplanationComponent></Col><Col></Col></Row>
+        <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={color2} num2={num1} color2={color1}></ExplanationComponent></Col><Col></Col></Row>
         <Row></Row>
       </View>
       break;
@@ -52,12 +114,12 @@ const ExplanationScreen = () => {
       views = 
       <View style={styles.explanationbox}>
         <Row>
-        <Col><ExplanationComponent num1={num1} color1={"red"}></ExplanationComponent></Col>
+        <Col><ExplanationComponent num1={num1} color1={color1}></ExplanationComponent></Col>
         <Col><Animated.Text style={styles.symbol}>{sym}</Animated.Text></Col>
-        <Col><ExplanationComponent num1={num2} color1={"green"}></ExplanationComponent></Col>
+        <Col><ExplanationComponent num1={num2} color1={color2}></ExplanationComponent></Col>
         </Row>
         <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
-        <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={"green"} num2={num1} color2={"red"}></ExplanationComponent></Col><Col></Col></Row>
+        <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={color2} num2={num1} color2={color1}></ExplanationComponent></Col><Col></Col></Row>
         <Row></Row>
       </View>
       break;

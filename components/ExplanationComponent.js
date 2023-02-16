@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgray',
       },
       cubecontainer: {
-        justifyContent: 'space-evenly',
         flexWrap: 'wrap',
         padding: 12,
         flexDirection: 'row',
