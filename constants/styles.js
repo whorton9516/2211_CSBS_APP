@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
+const {width, height} = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
     calculatorButton:{
@@ -14,7 +16,24 @@ export default styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 25,
         fontFamily: 'MaryKate',
-        fontWeight: "bold",
         alignContent: 'center',
-    }
+    },
+    explanationsText: {
+        textAlign: "center",
+        fontSize: 50,
+        fontFamily: 'Sassoon',
+        alignContent: 'center',
+    },
+    explanationsTextMinor: {
+        textAlign: "center",
+        fontSize: 20,
+        fontFamily: 'KGNeatlyPrinted',
+        alignContent: 'center',
+    },
+    container: {
+        alignSelf:'center',
+        height: 125,
+        width: (width - 50),
+        backgroundColor: 'white',
+      },
 })
