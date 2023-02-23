@@ -36,4 +36,50 @@ export default styles = StyleSheet.create({
         width: (width - 50),
         backgroundColor: 'white',
       },
+      backButtonImage: {
+        width: 100,
+        height: 50,
+        borderRadius: 50,
+        marginLeft: 12,
+      },
+      dropZone: {
+        alignSelf:'center',
+        height: 125,
+        width: (width - 50),
+        backgroundColor: 'white'
+      },
+      answerBox: {
+        alignSelf: 'center',
+        width: (width - 75),
+        height: 100,
+        backgroundColor: 'white'
+      },
+      text: {
+        textAlign: "center",
+        color: "black",
+        fontSize: 30,
+        fontFamily: 'MaryKate',
+        fontWeight: "bold",
+        alignContent: 'center'
+        },
+      buttonsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+      },
+      buttons: {
+        width: 100,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      image: {
+        width: 100,
+        height: 50,
+        borderRadius: 50
+      },
+      viewHeader: {
+        marginTop: 50,
+      },
 })

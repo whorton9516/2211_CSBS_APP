@@ -3,7 +3,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useColorScheme } from "react-native";
+import { useColorScheme, Image } from "react-native";
 
 import Colors from "../constants/Colors";
 import CalculatorScreen from "../screens/CalculatorScreen"
@@ -11,6 +11,7 @@ import SettingsScreen from "../screens/SettingsScreen"
 import QuizScreen from "../screens/QuizScreen"
 import TestingScreen from "../screens/TestingScreen";
 import ExplanationScreen from "../screens/ExplanationsScreen";
+import styles from '../constants/styles';
 
 
 const BottomTab = createBottomTabNavigator();
@@ -67,72 +68,67 @@ function TabBarIcon(props) {
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 
-const CalculatorStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 function CalculatorNavigator() {
   return (
-    <CalculatorStack.Navigator>
-      <CalculatorStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
       name="CalculatorScreen"
       component={CalculatorScreen}
-      options={{headerTitle: "Calculator", headerTitleAlign: 'center'}}
+      options={{headerShown: false}}
       />
-    </CalculatorStack.Navigator>
+      <Stack.Screen
+      name="ExplanationScreen"
+      component={ExplanationScreen}
+      options={{
+        headerTitle: "Explanation", 
+        headerTitleAlign: 'center',
+        headerBackTitleVisible: false,
+        headerBackImage: () => (
+          <Image
+            source={require('../assets/images/back.png')}
+            style={styles.backButtonImage}
+          />
+        ),
+      }}
+      />
+    </Stack.Navigator>
   )
 }
 
-const SettingStack = createStackNavigator();
-
 function SettingNavigator() {
   return (
-    <SettingStack.Navigator>
-      <SettingStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
       name="SettingsScreen"
       component={SettingsScreen}
       options={{headerTitle: "Settings", headerTitleAlign: 'center'}}
       />
-    </SettingStack.Navigator>
+    </Stack.Navigator>
   )
 }
 
-const QuizStack = createStackNavigator();
-
 function QuizNavigator() {
   return (
-    <QuizStack.Navigator>
-      <QuizStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
       name="QuizScreen"
       component={QuizScreen}
       options={{headerTitle: "Quizes", headerTitleAlign: 'center'}}
       />
-    </QuizStack.Navigator>
+    </Stack.Navigator>
   )
 }
-
-const ExplanationStack = createStackNavigator();
-
-function ExplanationNavigator() {
-  return (
-    <ExplanationStack.Navigator>
-      <ExplanationStack.Screen
-      name="ExplanationScreen"
-      component={ExplanationScreen}
-      options={{headerTitle: "Explanation", headerTitleAlign: 'center'}}
-      />
-    </ExplanationStack.Navigator>
-  )
-}
-
-const TestingStack = createStackNavigator();
 
 function TestingNavigator() {
   return (
-    <TestingStack.Navigator>
-      <TestingStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
       name="Testing"
       component={TestingScreen}
       options={{headerTitle: "Testing", headerTitleAlign: 'center'}}
       />
-    </TestingStack.Navigator>
+    </Stack.Navigator>
   )
 }

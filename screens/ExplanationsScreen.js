@@ -91,14 +91,13 @@ const ExplanationScreen = () => {
               else {
                 return 'deeppink';
               }
-    }
-}
-const [color1, setColor1] = useState(getColor());
-const [color2, setColor2] = useState(getColor());
+      }
+  }
+  const [color1, setColor1] = useState(getColor());
+  const [color2, setColor2] = useState(getColor());
   var views;
-  switch(sym) {
-    case "+":
-      views = 
+  if(sym === '+' || sym === '-') {
+    views = 
       <View style={styles.explanationbox}>
         <Row>
         <Col><ExplanationComponent num1={num1} color1={color1}></ExplanationComponent></Col>
@@ -109,20 +108,6 @@ const [color2, setColor2] = useState(getColor());
         <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={color2} num2={num1} color2={color1}></ExplanationComponent></Col><Col></Col></Row>
         <Row></Row>
       </View>
-      break;
-    case "-":
-      views = 
-      <View style={styles.explanationbox}>
-        <Row>
-        <Col><ExplanationComponent num1={num1} color1={color1}></ExplanationComponent></Col>
-        <Col><Animated.Text style={styles.symbol}>{sym}</Animated.Text></Col>
-        <Col><ExplanationComponent num1={num2} color1={color2}></ExplanationComponent></Col>
-        </Row>
-        <Row><Col></Col><Col><Animated.Text style={styles.symbol}>↓</Animated.Text></Col><Col></Col></Row>
-        <Row><Col></Col><Col><ExplanationComponent num1={ans} color1={color2} num2={num1} color2={color1}></ExplanationComponent></Col><Col></Col></Row>
-        <Row></Row>
-      </View>
-      break;
   }
   return (
     <View>
