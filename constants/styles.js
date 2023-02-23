@@ -39,7 +39,6 @@ export default styles = StyleSheet.create({
     backButtonImage: {
         width: 100,
         height: 50,
-        borderRadius: 50,
         marginLeft: 12,
     },
     dropZone: {
@@ -77,7 +76,6 @@ export default styles = StyleSheet.create({
     image: {
         width: 100,
         height: 50,
-        borderRadius: 50
     },
     viewHeader: {
         marginTop: 50,

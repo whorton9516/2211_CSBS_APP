@@ -12,6 +12,7 @@ import { Flex, Spacer, HStack } from 'react-native-flex-layout';
 import styles from '../constants/styles';
 import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
+import ScrollingWheel from '../components/ScrollingWheel';
 
 const QuizEntry = ({navigation}) => {
 
@@ -22,8 +23,6 @@ const QuizEntry = ({navigation}) => {
             <View style={styles.viewHeader}>
                 <Text style={styles.text}>Quizzes</Text>
             </View>
-
-            <Flex>
                 <View style={{marginTop: 75}}>
                     <Text style={styles.text}>
                         Ready for a quiz? {'\n\n'}
@@ -32,18 +31,57 @@ const QuizEntry = ({navigation}) => {
                     <Text style={[styles.text, {marginTop: 50}]}>
                         Select the type of questions you{'\n'}want to be asked:
                     </Text>
-                    <HStack style={{marginTop: 20}}>
-                        <TouchableOpacity onPress={() => {
-                            
-                        }}/>
-                        <TouchableOpacity
-                        
-                        />
-                    </HStack>
+                    <Flex>
+                        <HStack style={{marginTop: 20, justifyContent: 'center'}}>
+                            <TouchableOpacity 
+                                style={{padding: 10}}
+                                onPress={() => {
+                                    console.log("Addition added");
+                                }}>
+                                <Image
+                                    source={require('../assets/images/addition.png')}
+                                    style={styles.image}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{padding: 10}}
+                                onPress={() => {
+                                    console.log("Subtraction added");
+                                }}>
+                                <Image
+                                    source={require('../assets/images/subtraction.png')}
+                                    style={styles.image}
+                                />
+                            </TouchableOpacity>                       
+                        </HStack>
+                        <HStack style={{justifyContent: 'center'}}>
+                            <TouchableOpacity 
+                                style={{padding: 10}}
+                                onPress={() => {
+                                    console.log("Multiplication added");
+                                }}>
+                                <Image
+                                    source={require('../assets/images/multiplication.png')}
+                                    style={styles.image}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{padding: 10}}
+                                onPress={() => {
+                                    console.log("Multiplication added");
+                                }}>
+                                <Image
+                                    source={require('../assets/images/division.png')}
+                                    style={styles.image}
+                                />
+                            </TouchableOpacity>                       
+                        </HStack>
+                    </Flex>
+                    <Text style={[styles.text, {marginTop: 25, marginBottom: 30}]}>
+                        Select the number of questions you{'\n'}would like to be asked:
+                    </Text>
+                    <ScrollingWheel />
                 </View>
-
-                
-            </Flex>
         </View>
     );
 }
