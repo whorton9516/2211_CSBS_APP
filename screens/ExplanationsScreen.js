@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Dimensions, Button, Animated, Image} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Animated, } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import ExplanationComponent from "../components/ExplanationComponent";
 import GetCalcData from '../hooks/GetCalcData';
