@@ -170,20 +170,20 @@ const CalculatorScreen = ({navigation}) => {
         {/* All Calculator buttons
           TODO: Change the mathematic symbol positions to a dynamic position rather than hardcoded
         */}
-        <CalculatorButton x= {width/5}   y= {50}  value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
-        <CalculatorButton x= {width/5*2} y= {50}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
-        <CalculatorButton x= {width/5*3} y= {50}  value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
-        <CalculatorButton x= {width/5*4} y= {50}  value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
-        <CalculatorButton x= {width/4}   y= {125} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
-        <CalculatorButton x= {width/4*2} y= {125} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
-        <CalculatorButton x= {width/4*3} y= {125} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background} textColor={Colors.green.text} />
+        <CalculatorButton x= {width/5}   y= {50}  value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
+        <CalculatorButton x= {width/5*2} y= {50}  value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
+        <CalculatorButton x= {width/5*3} y= {50}  value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
+        <CalculatorButton x= {width/5*4} y= {50}  value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
+        <CalculatorButton x= {width/4}   y= {125} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
+        <CalculatorButton x= {width/4*2} y= {125} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
+        <CalculatorButton x= {width/4*3} y= {125} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
         <CalculatorButton x= {width/4}   y= {200} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
         <CalculatorButton x= {width/4*2} y= {200} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
         <CalculatorButton x= {width/4*3} y= {200} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.orange.background} textColor={Colors.orange.text} />
-        <CalculatorButton x= {width/4}   y= {275} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
-        <CalculatorButton x= {width/4*2} y= {275} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
-        <CalculatorButton x= {width/4*3} y= {275} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background} textColor={Colors.blue.text} />
-        <CalculatorButton x= {width/4*2} y= {350} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background} textColor={Colors.red.text} />
+        <CalculatorButton x= {width/4}   y= {275} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background}   textColor={Colors.blue.text} />
+        <CalculatorButton x= {width/4*2} y= {275} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background}   textColor={Colors.blue.text} />
+        <CalculatorButton x= {width/4*3} y= {275} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.blue.background}   textColor={Colors.blue.text} />
+        <CalculatorButton x= {width/4*2} y= {350} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
         
       </View>
   )

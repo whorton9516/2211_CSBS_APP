@@ -18,6 +18,8 @@ let num1 = (Math.floor(Math.random() * 12) + 1);
 let num2 = (Math.floor(Math.random() * 12) + 1);
 let sym = (Math.floor(Math.random() * 4) + 1); 
 const {width, height} = Dimensions.get('window');
+
+
 const QuizScreen = () => {
   const [question, setQues] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
   console.log(question);

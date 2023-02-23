@@ -54,14 +54,6 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-      <BottomTab.Screen
-        name="Explanation"
-        component={ExplanationNavigator}
-        options={{
-          headerShown: false,
-          unmountOnBlur: true
-        }}
-      />
     </BottomTab.Navigator>
   );
 }
