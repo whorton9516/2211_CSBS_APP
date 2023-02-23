@@ -11,6 +11,7 @@ import SettingsScreen from "../screens/SettingsScreen"
 import QuizScreen from "../screens/QuizScreen"
 import TestingScreen from "../screens/TestingScreen";
 import ExplanationScreen from "../screens/ExplanationsScreen";
+import QuizEntryScreen from "../screens/QuizEntry";
 import styles from '../constants/styles';
 
 
@@ -53,6 +54,14 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="settings" color={buttoncolor} />
           ),
+        }}
+      />
+      <BottomTab.Screen
+        name="QuizEntry"
+        component={QuizEntryNavigator}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
         }}
       />
     </BottomTab.Navigator>
@@ -103,7 +112,7 @@ function SettingNavigator() {
       <Stack.Screen
       name="SettingsScreen"
       component={SettingsScreen}
-      options={{headerTitle: "Settings", headerTitleAlign: 'center'}}
+      options={{headerShown: false}}
       />
     </Stack.Navigator>
   )
@@ -115,7 +124,19 @@ function QuizNavigator() {
       <Stack.Screen
       name="QuizScreen"
       component={QuizScreen}
-      options={{headerTitle: "Quizes", headerTitleAlign: 'center'}}
+      options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function QuizEntryNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+      name="QuizEntryScreen"
+      component={QuizEntryScreen}
+      options={{headerShown: false}}
       />
     </Stack.Navigator>
   )

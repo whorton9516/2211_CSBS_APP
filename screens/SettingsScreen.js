@@ -69,6 +69,14 @@ export default function SettingsScreen() {
           bright={styles.firstrow.right}
           bwidth={styles.firstrow.width}
           style={styles.firstrow}
+        ></CustomButton>
+        <View style={styles.space} />
+        <CustomButton
+          title="Download Data"
+          btop={styles.firstrow.top}
+          bright={styles.firstrow.right}
+          bwidth={styles.firstrow.width}
+          style={styles.firstrow}
         ></CustomButton></Col>
           <Col size={1}></Col>
         </Grid>

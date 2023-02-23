@@ -35,51 +35,64 @@ export default styles = StyleSheet.create({
         height: 125,
         width: (width - 50),
         backgroundColor: 'white',
-      },
-      backButtonImage: {
+    },
+    backButtonImage: {
         width: 100,
         height: 50,
         borderRadius: 50,
         marginLeft: 12,
-      },
-      dropZone: {
+    },
+    dropZone: {
         alignSelf:'center',
         height: 125,
         width: (width - 50),
         backgroundColor: 'white'
-      },
-      answerBox: {
+    },
+    answerBox: {
         alignSelf: 'center',
         width: (width - 75),
         height: 100,
         backgroundColor: 'white'
-      },
-      text: {
+    },
+    text: {
         textAlign: "center",
         color: "black",
         fontSize: 30,
         fontFamily: 'MaryKate',
         fontWeight: "bold",
         alignContent: 'center'
-        },
-      buttonsContainer: {
+    },
+    buttonsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 10,
-      },
-      buttons: {
+    },
+    buttons: {
         width: 100,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center'
-      },
-      image: {
+    },
+    image: {
         width: 100,
         height: 50,
         borderRadius: 50
-      },
-      viewHeader: {
+    },
+    viewHeader: {
         marginTop: 50,
-      },
+    },
+    overlayBox: {
+        height: (height - 500),
+        width: (width - 100),
+        alignContent: 'center',
+    },
+    overlayText: {
+        alignSelf:'center',
+        color: "black",
+        fontSize: 25,
+        fontWeight: "bold",
+        alignContent: 'center',
+        backgroundColor: 'white',
+    },
 })
