@@ -68,7 +68,7 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity
                                 style={{padding: 10}}
                                 onPress={() => {
-                                    console.log("Multiplication added");
+                                    console.log("Division added");
                                 }}>
                                 <Image
                                     source={require('../assets/images/division.png')}
