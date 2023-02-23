@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import { StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
 import CustomButton from "../components/CustomButton";
-import { Col, Row, Grid } from "react-native-easy-grid";
-import Colors from "../constants/Colors";
-import Expo from 'expo'
+import { Col, Grid } from "react-native-easy-grid";
+import getDb from "../hooks/GetDB"
+
 
 export default function SettingsScreen() {
 
   const [colorTheme, setColorTheme] = useState(0);
   const [colorBlindMode, setColorBlindMode] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
+
+  const db = getDb();
 
   const savePreferences = () => {
     db.transaction(tx => {
@@ -77,6 +79,18 @@ export default function SettingsScreen() {
           bright={styles.firstrow.right}
           bwidth={styles.firstrow.width}
           style={styles.firstrow}
+          onPress={() => {
+            const sql = 'SELECT * FROM calculator_data';
+
+            // Execute the query and convert the result to JSON
+            db.transaction(tx => {
+              tx.executeSql(sql, [], (tx, result) => {
+                const rows = result.rows._array;
+                const json = JSON.stringify(rows);
+                console.log(json);
+              });
+            });
+          }}
         ></CustomButton></Col>
           <Col size={1}></Col>
         </Grid>
