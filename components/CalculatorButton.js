@@ -14,8 +14,9 @@ const CalculatorButton = ({x, y, value, handleRelease, bgColor, textColor}) => {
                 x= {x - 25}
                 y= {y - 25}
                 shouldReverse
-                onRelease= {(e, gesture) => handleRelease(value, -10, 5000, true)}
-                onDragRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY - 50, false)}>
+                // onRelease= {(e, gesture) => handleRelease(value, gesture.moveX, gesture.moveY, true)}
+                onDragRelease= {(e, gesture) => 
+                    handleRelease(value, gesture.moveX, gesture.moveY, false)}>
                     <View style={[styles.calculatorButton, {backgroundColor: bgColor}]}>
                         <Text style={[styles.calculatorButtonText, {color: textColor}]}>
                             {value}
