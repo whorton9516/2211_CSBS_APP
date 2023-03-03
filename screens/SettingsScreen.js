@@ -1,9 +1,12 @@
 import React, { useState, } from "react";
-import { StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
+import { StyleSheet, View, StatusBar, SafeAreaView, Button, Dimensions } from "react-native";
 import CustomButton from "../components/CustomButton";
-import { Col, Grid } from "react-native-easy-grid";
+import { Col, Row, Grid } from "react-native-easy-grid";
 import getDb from "../hooks/GetDB"
+import Theming from "../hooks/Theming"
+import Colors from "../constants/Colors";
 
+const {width, height} = Dimensions.get('window');
 
 export default function SettingsScreen() {
 
@@ -13,6 +16,35 @@ export default function SettingsScreen() {
 
   const db = getDb();
 
+  const setTheme = (darkMode) => {
+    console.log('run');
+  if (darkMode) {
+  }
+  else {
+    if (Theming.colorBlind) {
+      Theming.bg1 = Colors.red.background;
+      Theming.txt1 = Colors.red.text;
+      Theming.bg2 = Colors.green.background;
+      Theming.txt2 = Colors.green.text;
+      Theming.bg3 = Colors.orange.background;
+      Theming.txt3 = Colors.orange.text;
+      Theming.bg4 = Colors.blue.background;
+      Theming.txt4 = Colors.blue.text;
+      Theming.colorBlind = false;
+    }
+    else {
+      Theming.bg1 = Colors.red.bgc;
+      Theming.txt1 = Colors.red.txtc;
+      Theming.bg2 = Colors.green.bgc;
+      Theming.txt2 = Colors.green.txtc;
+      Theming.bg3 = Colors.orange.bgc;
+      Theming.txt3 = Colors.orange.txtc;
+      Theming.bg4 = Colors.blue.bgc;
+      Theming.txt4 = Colors.blue.txtc;
+      Theming.colorBlind = true;
+    }
+  }
+  }
   const savePreferences = () => {
     db.transaction(tx => {
       tx.executeSql(
@@ -25,61 +57,22 @@ export default function SettingsScreen() {
     });
   }
     return (
-      <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <Grid>
-          <Col size={1}></Col>
+        <Grid><Row></Row>
+          <Row><Col size={1}></Col>
         <Col size={3}>
-        <View style={styles.space} />
-        <CustomButton
-          title="Color Blind Mode"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-          onPress = {colorBlindMode => setColorBlindMode(1)}
-        ></CustomButton>
-                <View style={styles.space} />
-                <CustomButton
-          title="Dark Mode"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-        ></CustomButton>
-                <View style={styles.space} />
-                <CustomButton
-          title="Show History"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-        ></CustomButton>
-                <View style={styles.space} />
-                <CustomButton
-          title="Save History"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-        ></CustomButton>
-                <View style={styles.space} />
-                <CustomButton
-          title="Clear History"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-        ></CustomButton>
-        <View style={styles.space} />
-        <CustomButton
-          title="Download Data"
-          btop={styles.firstrow.top}
-          bright={styles.firstrow.right}
-          bwidth={styles.firstrow.width}
-          style={styles.firstrow}
-          onPress={() => {
+        <Button title='Color Blind Mode' onPress={() => setTheme(false)}/>
+        <View style={styles.space}></View>
+        <Button title='Dark Mode' onPress={() => setTheme(true)}/>
+        <View style={styles.space}></View>
+        <Button title='Show History' onPress={() => setTheme(false)}/>
+        <View style={styles.space}></View>
+        <Button title='Save History' onPress={() => setTheme(false)}/>
+        <View style={styles.space}></View>
+        <Button title='Clear History' onPress={() => setTheme(false)}/>
+        <View style={styles.space}></View>
+        <Button title='Download Data' onPress={() => {
             const sql = 'SELECT * FROM calculator_data';
 
             // Execute the query and convert the result to JSON
@@ -90,31 +83,27 @@ export default function SettingsScreen() {
                 console.log(json);
               });
             });
-          }}
-        ></CustomButton></Col>
-          <Col size={1}></Col>
+          }}/></Col>
+          <Col size={1}></Col></Row>
+          <Row></Row>
         </Grid>
       </View>
-      </SafeAreaView>
     );
   }
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      flexDirection: "column",
-      //flexWrap: 'wrap', Don't use unless you are an idiot :)
-      justifyContent: 'space-between',
-      borderWidth: 0,
-      borderColor: "rgba(246,239,239,1)",
-      jusifyContent: "center",
-      alignItems: "center",
-      marginBottom: 10,
-      marginTop: 10,
-      padding: 10
+      alignSelf:'center',
+      height: (height),
+      width: (width),
+      top: 30,
     },
     safe: {
       flex: 1,
+      flexDirection: "column",
+      justifyContent: 'space-evenly',
+      alignItems: "center",
+      paddingVertical: 20,
       paddingTop: StatusBar.currentHeight,
     },
     space: {
