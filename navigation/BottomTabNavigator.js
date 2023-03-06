@@ -30,6 +30,7 @@ export default function BottomTabNavigator() {
         component={CalculatorNavigator}
         options={{
           headerShown: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calculator" color={buttoncolor} />
           ),

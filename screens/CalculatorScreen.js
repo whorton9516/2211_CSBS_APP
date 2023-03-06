@@ -8,9 +8,11 @@ import {
 } from "react-native";
 import CalculatorButton from "../components/CalculatorButton";
 import getDb from "../hooks/GetDB"
+import Theming from "../hooks/Theming"
 import Colors from "../constants/Colors";
 import GetCalcData from '../hooks/GetCalcData';
 import styles from '../constants/styles';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const {width, height} = Dimensions.get('window');
@@ -21,11 +23,13 @@ const CalculatorScreen = ({navigation}) => {
   let ButtonWindowHeight = height - 375;
   
   const db = getDb();
+
   // State management variables
   const [answer, setAnswer] = useState(defaultAnswerWindow);
   const [equation, setEquation] = useState(['','','']);
   const [equationString, setEquationString] = useState('');
   const [remainder, setRemainder] = useState(0);
+  const [initialRun, setInitial] = useState(Theming.initial);
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -43,10 +47,36 @@ const CalculatorScreen = ({navigation}) => {
       }
   }
 
+  const loadData = () => {
+    if (!Theming.initial) {
+      Theming.bg1 = Colors.red.background;
+      Theming.txt1 = Colors.red.text;
+      Theming.bg2 = Colors.green.background;
+      Theming.txt2 = Colors.green.text;
+      Theming.bg3 = Colors.orange.background;
+      Theming.txt3 = Colors.orange.text;
+      Theming.bg4 = Colors.blue.background;
+      Theming.txt4 = Colors.blue.text;
+      Theming.initial = true;
+      Theming.colorBlind = false;
+      setInitial(Theming.initial);
+      console.log('initial load has run');
+    }
+  };
+
   useEffect(() => {
     console.log(equation);
   }, [equation]);
 
+  useEffect(() => {
+   // loadData();
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
   // Handles the undo button
   const handleUndo = () => {
     if(equation[2] != ''){
@@ -171,10 +201,10 @@ const CalculatorScreen = ({navigation}) => {
         </View>
         
         {/* All Calculator buttons */}
-        <CalculatorButton x={width/5}   y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
-        <CalculatorButton x={width/5*2} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
-        <CalculatorButton x={width/5*3} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
-        <CalculatorButton x={width/5*4} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.red.background}    textColor={Colors.red.text} />
+        <CalculatorButton x={width/5}   y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*2} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*3} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*4} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
         <CalculatorButton x={width/4}   y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
         <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
         <CalculatorButton x={width/4*3} y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Colors.green.background}  textColor={Colors.green.text} />
