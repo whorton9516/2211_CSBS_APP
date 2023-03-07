@@ -12,6 +12,7 @@ import styles from '../constants/styles';
 import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
 import Theming from "../hooks/Theming"
+import getDB from '../hooks/GetDB';
 
 let numCorrect = 0;
 let numRun = 1;
@@ -26,7 +27,8 @@ const QuizScreen = () => {
   const [equation, setEquation] = useState("");
   const [elementsInEquation, setElementsInEquation] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [quizActive, setQuizActive] = useState(false);
+
+  const db = getDB();
 
   const [overlayView, setOverlay] = useState(
     <View style={styles.overlayBox}>

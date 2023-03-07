@@ -108,7 +108,6 @@ const CalculatorScreen = ({navigation}) => {
         break;
     }
 
-  {/*
     setEquationString(JSON.stringify(equation));
 
     let date = new Date();
@@ -126,8 +125,6 @@ const CalculatorScreen = ({navigation}) => {
         }
       );
     });
-
-  */}
     
     return answer;
   }

@@ -76,7 +76,6 @@ const StatsScreen = () => {
       <Text>The commonly missed questions are: {commonlyMissedQuestions}</Text>
     </View>
   );
-  );
 }
 
 const PrintBoiler = (totalCalculations, mostPopular, addPercentage, subPercentage, mulPercentage, divPercentage, quizAvgerage, missedType) => {
