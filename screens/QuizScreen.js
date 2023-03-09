@@ -32,21 +32,6 @@ const QuizScreen = () => {
 
   const db = getDB();
 
-  const [overlayView, setOverlay] = useState(
-    <View style={styles.overlayBox}>
-        <Text style={styles.text}>
-        Welcome to the Quizes!
-        </Text>
-        <Text style={styles.text}>
-          You will have 10 questions and will receive your score after.
-        </Text>
-        <Text style={styles.text}>
-        Press Start to begin. Good luck!
-        </Text>
-        <Button title='Start' onPress={() => setVisible(!visible)}/>
-    </View>
-  );
-
   let corr;
 
   // Handles comparing your answer to the actual answer
@@ -61,12 +46,9 @@ const QuizScreen = () => {
     }
     if (numRun == 10) {
       console.log("Done!");
-      changeOverlay(2);
-      toggleOverlay();
     }
     else {
       numRun++;
-      changeOverlay(3);
     }
   }
 
@@ -80,53 +62,6 @@ const QuizScreen = () => {
           console.log(question);
           setEquation([]);
           setElementsInEquation(0);
-  }
-
-  const changeOverlay = (option) => {
-    switch(option) {
-      case 1:
-        setOverlay(
-        <View style={styles.overlayBox}>
-            <Text style={styles.overlayText}>
-            Welcome to the Quizes!
-            </Text>
-            <Text style={styles.overlayText}>
-            You will have 10 questions and will receive your score after.
-            </Text>
-            <Text style={styles.overlayText}>
-            Press Start to begin. Good luck!
-            </Text>
-            <Button title='Start' onPress={() => setVisible(!visible)}/>
-        </View>)
-        break;
-        case 2:
-          setOverlay(
-          <View style={styles.overlayBox}>
-              <Text style={styles.overlayText}>
-              Congrats on completing your quiz with a score of {numCorrect} out of 10!
-              </Text>
-              <Text style={styles.overlayText}>
-              </Text>
-              <Text style={styles.overlayText}>
-              Press anywhere to try another quiz.
-              </Text>
-          </View>)
-          numRun = 1;
-          numCorrect = 0;
-          break;
-        case 3:
-          setOverlay(
-          <View style={styles.overlayBox}>
-              <Text style={styles.overlayText}>
-              You are {corr}
-              </Text>
-              <Text style={styles.overlayText}>
-              Press next to continue.
-              </Text>
-              <Button title='Next' onPress={() => setVisible(!visible)}/>
-          </View>)
-          break;
-    }
   }
 
   // Handles draggable buttons input
@@ -145,9 +80,6 @@ const QuizScreen = () => {
   onChangeText = (key, val) => {
     this.setState({ [key]: val})
   }
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
   return (
       // Main View
@@ -208,21 +140,15 @@ const QuizScreen = () => {
         <CalculatorButton x= {width/4}   y= {75}  value= {1}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg1}  textColor={Theming.txt1} />
         <CalculatorButton x= {width/4*2} y= {75}  value= {2}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg1}  textColor={Theming.txt1} />
         <CalculatorButton x= {width/4*3} y= {75}  value= {3}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg1}  textColor={Theming.txt1} />
-        <CalculatorButton x= {width/4}   y= {150} value= {4}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2} textColor={Theming.txt2} />
-        <CalculatorButton x= {width/4*2} y= {150} value= {5}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2} textColor={Theming.txt2} />
-        <CalculatorButton x= {width/4*3} y= {150} value= {6}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2} textColor={Theming.txt2} />
-        <CalculatorButton x= {width/4}   y= {225} value= {7}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}   textColor={Theming.txt3} />
-        <CalculatorButton x= {width/4*2} y= {225} value= {8}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}   textColor={Theming.txt3} />
-        <CalculatorButton x= {width/4*3} y= {225} value= {9}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}   textColor={Theming.txt3} />
-        <CalculatorButton x= {width/4}   y= {300} value= {'-'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-          {
-            overlayView
-          }
-        </Overlay>
+        <CalculatorButton x= {width/4}   y= {150} value= {4}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2}  textColor={Theming.txt2} />
+        <CalculatorButton x= {width/4*2} y= {150} value= {5}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2}  textColor={Theming.txt2} />
+        <CalculatorButton x= {width/4*3} y= {150} value= {6}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg2}  textColor={Theming.txt2} />
+        <CalculatorButton x= {width/4}   y= {225} value= {7}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
+        <CalculatorButton x= {width/4*2} y= {225} value= {8}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
+        <CalculatorButton x= {width/4*3} y= {225} value= {9}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
+        <CalculatorButton x= {width/4}   y= {300} value= {'-'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
+        <CalculatorButton x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
+        <CalculatorButton x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel-260)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
       </View>        
     );
   }
