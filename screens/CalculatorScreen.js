@@ -33,7 +33,6 @@ const CalculatorScreen = ({navigation}) => {
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
-    console.log('x: ' + xRel + ' y: ' + yRel);
       if (yRel > 100 && yRel < 225 && xRel > 25 && xRel < width-25){
           if(typeof value ==='number'){
             if(equation[1] === ''){
@@ -63,14 +62,6 @@ const CalculatorScreen = ({navigation}) => {
       console.log('initial load has run');
     }
   };
-
-  useEffect(() => {
-    console.log(equation);
-  }, [equation]);
-
-  useEffect(() => {
-   // loadData();
-  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -131,7 +122,6 @@ const CalculatorScreen = ({navigation}) => {
 
   const setData = (equation, answer, remainder) => {
     GetCalcData.equation = equation;
-    console.log("GetCalcData equation = " + GetCalcData.equation);
     GetCalcData.answer = answer;
     GetCalcData.remainder = remainder;
   }

@@ -1,20 +1,23 @@
 import React, { useState, } from "react";
-import { StyleSheet, View, StatusBar, SafeAreaView, Button, Dimensions } from "react-native";
-import CustomButton from "../components/CustomButton";
+import { StyleSheet,
+         View,
+         StatusBar,
+         Button,
+         Dimensions } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
-import getDb from "../hooks/GetDB"
 import Theming from "../hooks/Theming"
 import Colors from "../constants/Colors";
+import * as SQLite from 'expo-sqlite';
 
 const {width, height} = Dimensions.get('window');
 
-export default function SettingsScreen() {
+export default function SettingsScreen({navigation}) {
 
   const [colorTheme, setColorTheme] = useState(0);
   const [colorBlindMode, setColorBlindMode] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
 
-  const db = getDb();
+  const db = SQLite.openDatabase('userData.db');
 
   const setTheme = (darkMode) => {
     console.log('run');
@@ -66,24 +69,11 @@ export default function SettingsScreen() {
         <View style={styles.space}></View>
         <Button title='Dark Mode' onPress={() => setTheme(true)}/>
         <View style={styles.space}></View>
-        <Button title='Show History' onPress={() => setTheme(false)}/>
-        <View style={styles.space}></View>
-        <Button title='Save History' onPress={() => setTheme(false)}/>
-        <View style={styles.space}></View>
         <Button title='Clear History' onPress={() => setTheme(false)}/>
         <View style={styles.space}></View>
-        <Button title='Download Data' onPress={() => {
-            const sql = 'SELECT * FROM calculator_data';
-
-            // Execute the query and convert the result to JSON
-            db.transaction(tx => {
-              tx.executeSql(sql, [], (tx, result) => {
-                const rows = result.rows._array;
-                const json = JSON.stringify(rows);
-                console.log(json);
-              });
-            });
-          }}/></Col>
+        <Button title='See Stats' onPress={() => {
+          navigation.navigate('Settings', {screen: 'StatsScreen'});
+        }}/></Col>
           <Col size={1}></Col></Row>
           <Row></Row>
         </Grid>

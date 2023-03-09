@@ -12,6 +12,7 @@ import QuizScreen from "../screens/QuizScreen"
 import TestingScreen from "../screens/TestingScreen";
 import ExplanationScreen from "../screens/ExplanationsScreen";
 import QuizEntryScreen from "../screens/QuizEntry";
+import StatsScreen from "../screens/StatsScreen";
 import styles from '../constants/styles';
 
 
@@ -115,6 +116,21 @@ function SettingNavigator() {
       component={SettingsScreen}
       options={{headerShown: false}}
       />
+      <Stack.Screen
+      name="StatsScreen"
+      component={StatsScreen}
+      options={{
+        headerTitle: "Stats", 
+        headerTitleAlign: 'center',
+        headerBackTitleVisible: false,
+        headerBackImage: () => (
+          <Image
+            source={require('../assets/images/back.png')}
+            style={styles.backButtonImage}
+          />
+        ),
+      }}
+      />   
     </Stack.Navigator>
   )
 }

@@ -36,67 +36,6 @@ const App = () => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS quiz_questions (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_id INTEGER, question TEXT, result INTEGER, FOREIGN KEY(quiz_id) REFERENCES quizzes(id))',);
     });
 
-    {/*
-      db.transaction(tx => {
-        tx.executeSql('DELETE FROM calculator_data');
-        tx.executeSql('DELETE FROM quizzes');
-        tx.executeSql('DELETE FROM quiz_questions')
-      });
-
-      db.transaction(tx => {
-        tx.executeSql(
-          'INSERT INTO quizzes (quiz_date, total_questions, total_correct) VALUES (?, ?, ?);',
-          ['02022023', 15, 15],
-          (tx, results) => {
-            console.log('Data inserted successfully');
-          },
-          (tx, error) => {
-            console.log('Error inserting data: ', error);
-          }
-        );
-      });
-
-    
-    
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM calculator_data',
-        [],
-        (_, { rows }) => {
-          console.log('Calculator data:');
-          for (let i = 0; i < rows.length; i++) {
-            console.log(rows.item(i));
-          }
-        }
-      );
-    });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM quizzes',
-        [],
-        (_, { rows }) => {
-          console.log('Quiz data:');
-          for (let i = 0; i < rows.length; i++) {
-            console.log(rows.item(i));
-          }
-        }
-      );
-    });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM quiz_questions',
-        [],
-        (_, { rows }) => {
-          console.log('Quiz Questions:');
-          for (let i = 0; i < rows.length; i++) {
-            console.log(rows.item(i));
-          }
-        }
-      );
-    });
-  */}
   
 
     setIsLoading(false);

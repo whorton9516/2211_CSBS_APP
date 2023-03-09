@@ -1,18 +1,14 @@
 import { Overlay } from 'react-native-elements';
-import React, { useState } from "react";
+import React, { useState, useEffect, } from "react";
 import { 
   View,
-  TouchableOpacity, 
-  Dimensions, 
   Text,
-  Image,
-  Button
 } from "react-native";
+import * as SQLite from 'expo-sqlite';
 import styles from '../constants/styles';
 import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
 import Theming from "../hooks/Theming"
-import getDB from '../hooks/GetDB';
 
 const StatsScreen = () => {
   
@@ -25,61 +21,137 @@ const StatsScreen = () => {
   const [quizAverage, setQuizAverage] = useState(0);
   const [missedType, setMissedType] = useState('');
 
-  const db = getDB();
+  const db = SQLite.openDatabase('userData.db');
 
-  useEffect(() => {
-    // Query the database and set the state variables with the results
+  const getTotalCalculations = (db) => {
     db.transaction((tx) => {
       tx.executeSql('SELECT COUNT(*) as total FROM calculator_data', [], (_, { rows }) => {
         setTotalCalculations(rows.item(0).total);
       });
+    });
+
+    return totalCalculations;
+  }
+
+  const getMostPopular = (db) => {
+    db.transaction((tx) => {
       tx.executeSql('SELECT type, COUNT(*) as count FROM calculator_data GROUP BY type ORDER BY count DESC LIMIT 1', [], (_, { rows }) => {
         setMostPopular(rows.item(0).type);
       });
-      tx.executeSql('SELECT COUNT(*) as total, type FROM calculator_data GROUP BY type', [], (_, { rows }) => {
-        rows.forEach((row) => {
-          const percentage = ((row.total / totalCalculations) * 100).toFixed(2);
-          switch (row.type) {
-            case 'addition':
-              setAdditionPercentage(percentage);
-              break;
-            case 'subtraction':
-              setSubtractionPercentage(percentage);
-              break;
-            case 'multiplication':
-              setMultiplicationPercentage(percentage);
-              break;
-            case 'division':
-              setDivisionPercentage(percentage);
-              break;
-          }
-        });
-      });
+    });
+
+    switch(mostPopular){
+      case '+':
+        return 'Addition';
+      case '-':
+        return 'Subtraction';
+      case '*':
+        return 'Multiplication';
+      case '/':
+        return 'Division';
+    }
+  }
+
+  const getAddPercentage = (db) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
+        ['+'],
+        (_, results) => {
+          setAddPercentage(results.rows.item(0).count);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    });
+
+    return addPercentage;
+  }
+
+  const getSubPercentage = (db) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
+        ['-'],
+        (_, results) => {
+          setSubPercentage(results.rows.item(0).count);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    });
+
+    return subPercentage;
+  }
+
+  const getMulPercentage = (db) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
+        ['*'],
+        (_, results) => {
+          setMulPercentage(results.rows.item(0).count);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    });
+
+    return mulPercentage;
+  }
+
+  const getDivPercentage = (db) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
+        ['/'],
+        (_, results) => {
+          setDivPercentage(results.rows.item(0).count);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    });
+
+    return divPercentage;
+  }
+
+  const getQuizAverage = (db) => {
+    db.transaction((tx) => {
       tx.executeSql('SELECT AVG(total_correct / total_questions) as avg_percentage FROM quizzes', [], (_, { rows }) => {
-        setAverageQuizPercentage((rows.item(0).avg_percentage * 100).toFixed(2));
-      });
-      tx.executeSql('SELECT question, type FROM quiz_questions WHERE result = "incorrect" GROUP BY question, type ORDER BY COUNT(*) DESC LIMIT 1', [], (_, { rows }) => {
-        setCommonlyMissedQuestions(`${rows.item(0).type}: ${rows.item(0).question}`);
+        setQuizAverage((rows.item(0).avg_percentage * 100).toFixed(2));
       });
     });
-  }, []);
+
+    return quizAverage;
+  }
+
+  const getMissedTypes = (db) => {
+    db.transaction((tx) => {
+      tx.executeSql('SELECT question, type FROM quiz_questions WHERE result = "incorrect" GROUP BY question, type ORDER BY COUNT(*) DESC LIMIT 1', [], (_, { rows }) => {
+        setMissedType(`${rows.item(0).type}: ${rows.item(0).question}`);
+      });
+    });
+
+    return missedType;
+  }
 
   return (
     <View>
-      <Text>You have done a total of {totalCalculations} Calculations on this device</Text>
-      <Text>The most popular is {mostPopular}</Text>
-      <Text>Addition: {additionPercentage}%</Text>
-      <Text>Subtraction: {subtractionPercentage}%</Text>
-      <Text>Multiplication: {multiplicationPercentage}%</Text>
-      <Text>Division: {divisionPercentage}%</Text>
-      <Text>The average quiz percentage is: {averageQuizPercentage}%</Text>
-      <Text>The commonly missed questions are: {commonlyMissedQuestions}</Text>
+      <Text style={styles.text}>You have done a total of {getTotalCalculations(db)} Calculations on this device</Text>
+      <Text style={styles.text}>The most popular is {getMostPopular(db)}</Text>
+      <Text style={styles.text}>Addition: {getAddPercentage(db)}%</Text>
+      <Text style={styles.text}>Subtraction: {getSubPercentage(db)}%</Text>
+      <Text style={styles.text}>Multiplication: {getMulPercentage(db)}%</Text>
+      <Text style={styles.text}>Division: {getDivPercentage(db)}%</Text>
+      <Text style={styles.text}>The average quiz percentage is: {getQuizAverage(db)}%</Text>
+      <Text style={styles.text}>The commonly missed questions are: {getMissedTypes(db)}</Text>
     </View>
   );
-}
-
-const PrintBoiler = (totalCalculations, mostPopular, addPercentage, subPercentage, mulPercentage, divPercentage, quizAvgerage, missedType) => {
-
 }
 
 
