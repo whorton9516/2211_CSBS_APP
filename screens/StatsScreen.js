@@ -1,10 +1,9 @@
-import { Overlay } from 'react-native-elements';
-import React, { useState, useEffect, } from "react";
+import React, { useState, } from "react";
 import { 
   View,
   Text,
 } from "react-native";
-import * as SQLite from 'expo-sqlite';
+import getDB from '../hooks/GetDB';
 import styles from '../constants/styles';
 import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
@@ -21,7 +20,7 @@ const StatsScreen = () => {
   const [quizAverage, setQuizAverage] = useState(0);
   const [missedType, setMissedType] = useState('');
 
-  const db = SQLite.openDatabase('userData.db');
+  const db = getDB();
 
   const getTotalCalculations = (db) => {
     db.transaction((tx) => {

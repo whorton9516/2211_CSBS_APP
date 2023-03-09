@@ -12,10 +12,22 @@ import { Flex, Spacer, HStack } from 'react-native-flex-layout';
 import styles from '../constants/styles';
 import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
-import ScrollingWheel from '../components/ScrollingWheel';
+import GetQuizData from '../hooks/GetQuizData';
+import { sub } from 'react-native-reanimated';
 
 const QuizEntry = ({navigation}) => {
 
+    const [addition, setAddition] = useState(false);
+    const [subtraction, setSubtraction] = useState(false);
+    const [multiplication, setMultiplication] = useState(false);
+    const [division, setDivision] = useState(false);
+
+    const setData = (addition, subtraction, multiplication, division) => {
+        GetQuizData.addition = addition;
+        GetQuizData.subtraction = subtraction;
+        GetQuizData.multiplication = multiplication;
+        GetQuizData.division = division;
+      }
 
     return (
         <View>
@@ -36,6 +48,7 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity 
                                 style={{padding: 10}}
                                 onPress={() => {
+                                    setAddition(true);
                                     console.log("Addition added");
                                 }}>
                                 <Image
@@ -46,6 +59,7 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity
                                 style={{padding: 10}}
                                 onPress={() => {
+                                    setSubtraction(true);
                                     console.log("Subtraction added");
                                 }}>
                                 <Image
@@ -58,6 +72,7 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity 
                                 style={{padding: 10}}
                                 onPress={() => {
+                                    setMultiplication(true);
                                     console.log("Multiplication added");
                                 }}>
                                 <Image
@@ -68,6 +83,7 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity
                                 style={{padding: 10}}
                                 onPress={() => {
+                                    setDivision(true);
                                     console.log("Division added");
                                 }}>
                                 <Image
@@ -77,10 +93,24 @@ const QuizEntry = ({navigation}) => {
                             </TouchableOpacity>                       
                         </HStack>
                     </Flex>
-                    <Text style={[styles.text, {marginTop: 25, marginBottom: 30}]}>
-                        Select the number of questions you{'\n'}would like to be asked:
-                    </Text>
-                    <ScrollingWheel />
+                    <Text style={styles.text}>Press the button to begin!</Text>
+                    <TouchableOpacity style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',}}
+                            onPress={() => {
+                                setData(addition, subtraction, multiplication, division);
+                                navigation.navigate('Quizzes', {screen: 'QuizScreen'});
+                            }}>
+                        <Image
+                            source={require('../assets/images/start.png')}
+                            style={{
+                                height: 50,
+                                width: 150,
+                                borderRadius: 10,
+                                marginTop: 50
+                            }}
+                        />
+                    </TouchableOpacity>
                 </View>
         </View>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
+import styles from '../constants/styles';
 
 const data = [
   { id: 10, value: 10 },
@@ -16,8 +17,8 @@ const data = [
 
 const renderItem = ({ item }) => {
   return (
-    <View style={{ height: 20, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{item.value}</Text>
+    <View style={{ height: 20, justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
+      <Text style={styles.text}>{item.value}</Text>
     </View>
   );
 };
@@ -32,6 +33,8 @@ const ScrollingWheel = () => {
       decelerationRate={0} // set to 0 to disable deceleration
       snapToAlignment={'center'} // snap to the center of each item
       showsVerticalScrollIndicator={false} // hide scroll indicator
+      initialNumToRender={5}
+
     />
   );
 };

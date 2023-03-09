@@ -13,6 +13,7 @@ import CalculatorButton from '../components/CalculatorButton';
 import Colors from '../constants/Colors';
 import Theming from "../hooks/Theming"
 import getDB from '../hooks/GetDB';
+import GetQuizData from '../hooks/GetQuizData';
 
 let numCorrect = 0;
 let numRun = 1;
@@ -23,6 +24,7 @@ const {width, height} = Dimensions.get('window');
 
 
 const QuizScreen = () => {
+
   const [question, setQuestion] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
   const [equation, setEquation] = useState("");
   const [elementsInEquation, setElementsInEquation] = useState(0);

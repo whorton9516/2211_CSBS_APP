@@ -38,8 +38,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Quizes"
-        component={QuizNavigator}
+        name="Quizzes"
+        component={QuizEntryNavigator}
         options={{
           headerShown: false,
           unmountOnBlur: true,
@@ -56,14 +56,6 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="settings" color={buttoncolor} />
           ),
-        }}
-      />
-      <BottomTab.Screen
-        name="QuizEntry"
-        component={QuizEntryNavigator}
-        options={{
-          headerShown: false,
-          unmountOnBlur: true,
         }}
       />
     </BottomTab.Navigator>
@@ -135,18 +127,6 @@ function SettingNavigator() {
   )
 }
 
-function QuizNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-      name="QuizScreen"
-      component={QuizScreen}
-      options={{headerShown: false}}
-      />
-    </Stack.Navigator>
-  )
-}
-
 function QuizEntryNavigator() {
   return (
     <Stack.Navigator>
@@ -155,7 +135,13 @@ function QuizEntryNavigator() {
       component={QuizEntryScreen}
       options={{headerShown: false}}
       />
+      <Stack.Screen
+      name="QuizScreen"
+      component={QuizScreen}
+      options={{headerShown: false}}
+      />
     </Stack.Navigator>
+    
   )
 }
 
