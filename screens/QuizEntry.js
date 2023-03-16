@@ -21,6 +21,10 @@ const QuizEntry = ({navigation}) => {
     const [subtraction, setSubtraction] = useState(false);
     const [multiplication, setMultiplication] = useState(false);
     const [division, setDivision] = useState(false);
+    const [addSelected, setAddSelected] = useState(false);
+    const [subSelected, setSubSelected] = useState(false);
+    const [mulSelected, setMulSelected] = useState(false);
+    const [divSelected, setDivSelected] = useState(false);
 
     const setData = (addition, subtraction, multiplication, division) => {
         GetQuizData.addition = addition;
@@ -48,23 +52,28 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity 
                                 style={{padding: 10}}
                                 onPress={() => {
-                                    setAddition(true);
-                                    console.log("Addition added");
+                                    setAddition(!addition);
+                                    setAddSelected(!addSelected);
+                                    if (!addSelected) console.log("addition added")
+                                    else console.log("addition removed")
                                 }}>
                                 <Image
                                     source={require('../assets/images/addition.png')}
-                                    style={styles.image}
+                                    style={[styles.image, {opacity: addSelected ? 1 : 0.5}]}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={{padding: 10}}
+                                style={{padding: 10}}                            
                                 onPress={() => {
-                                    setSubtraction(true);
-                                    console.log("Subtraction added");
+                                    setSubtraction(!subtraction);
+                                    setSubSelected(!subSelected);
+                                    if (!subSelected) console.log("subtraction added")
+                                    else console.log("subtraction removed")
                                 }}>
                                 <Image
                                     source={require('../assets/images/subtraction.png')}
-                                    style={styles.image}
+                                    style={[styles.image, {opacity: subSelected ? 1 : 0.5}]}
+                                    
                                 />
                             </TouchableOpacity>                       
                         </HStack>
@@ -72,23 +81,27 @@ const QuizEntry = ({navigation}) => {
                             <TouchableOpacity 
                                 style={{padding: 10}}
                                 onPress={() => {
-                                    setMultiplication(true);
-                                    console.log("Multiplication added");
+                                    setMultiplication(!multiplication);
+                                    setMulSelected(!mulSelected);
+                                    if (!mulSelected) console.log("multiplication added")
+                                    else console.log("multiplication removed")
                                 }}>
                                 <Image
                                     source={require('../assets/images/multiplication.png')}
-                                    style={styles.image}
+                                    style={[styles.image, {opacity: mulSelected ? 1 : 0.5}]}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{padding: 10}}
                                 onPress={() => {
-                                    setDivision(true);
-                                    console.log("Division added");
+                                    setDivision(!division);
+                                    setDivSelected(!divSelected);
+                                    if (!divSelected) console.log("division added")
+                                    else console.log("division removed")
                                 }}>
                                 <Image
                                     source={require('../assets/images/division.png')}
-                                    style={styles.image}
+                                    style={[styles.image, {opacity: divSelected ? 1 : 0.5}]}
                                 />
                             </TouchableOpacity>                       
                         </HStack>

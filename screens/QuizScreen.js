@@ -28,7 +28,6 @@ const QuizScreen = () => {
   const [question, setQuestion] = useState((num1 + ' ' + (ConvertSym(sym)) + ' ' + num2));
   const [equation, setEquation] = useState("");
   const [elementsInEquation, setElementsInEquation] = useState(0);
-  const [visible, setVisible] = useState(true);
 
   const db = getDB();
 
