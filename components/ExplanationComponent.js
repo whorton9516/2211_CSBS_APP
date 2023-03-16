@@ -3,7 +3,7 @@ import { StyleSheet, Animated, Dimensions, View, TextInput } from "react-native"
 
 const {width, height} = Dimensions.get('window');
 
-const ExplanationComponent = ({num1,num2,color1,color2}) => {
+const ExplanationComponent = ({num1,num2,color1,color2,}) => {
     var array = [];
 	for(let i = 0; i < num1; i++){
         if(i < num2){
@@ -15,12 +15,12 @@ const ExplanationComponent = ({num1,num2,color1,color2}) => {
 		)
         }
         else {
-            array.push(
-                <View key = {i}>
-                    <View backgroundColor={color1} style={styles.cube}>
-                    </View>
-                    </View>
-            )
+          array.push(
+            <View key = {i}>
+                <View backgroundColor={color1} style={styles.cube}>
+                </View>
+                </View>
+        )
         }
 	}
   return (

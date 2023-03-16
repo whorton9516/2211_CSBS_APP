@@ -5,6 +5,7 @@ import {
   Dimensions, 
   Text,
   Image,
+  Button,
 } from "react-native";
 import CalculatorButton from "../components/CalculatorButton";
 import getDb from "../hooks/GetDB"
@@ -13,14 +14,14 @@ import Colors from "../constants/Colors";
 import GetCalcData from '../hooks/GetCalcData';
 import styles from '../constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { Overlay } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
 const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
 const CalculatorScreen = ({navigation}) => {
 
-  let ButtonWindowHeight = height - 375;
+  let ButtonWindowHeight = height - 250;
   
   const db = getDb();
 
@@ -30,6 +31,7 @@ const CalculatorScreen = ({navigation}) => {
   const [equationString, setEquationString] = useState('');
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
+  const [visible, setVisible] = useState(false);
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -120,11 +122,46 @@ const CalculatorScreen = ({navigation}) => {
     return answer;
   }
 
-  const setData = (equation, answer, remainder) => {
+  const setData = (equation, answer, remainder, boiler) => {
     GetCalcData.equation = equation;
     GetCalcData.answer = answer;
-    GetCalcData.remainder = remainder;
+    GetCalcData.boilerplate = boiler;
+    if (remainder != '') {
+      GetCalcData.remainder = 'Remainder of ', {remainder};
+    }
+    else {
+      GetCalcData.remainder = '';
+    }
   }
+
+  const navigateExplanation = (equation, answer, remainder) => {
+    var addEquation = ['10','+','5'];
+    var minusEquation = ['17','-','6'];
+    if(answer > 25 || equation[0] > 25 || equation[2] > 25) {
+      if (equation[1] == '+'){
+        setData(addEquation, 15, 0, 'Your question was too hard for us! Here is something similar.');
+        console.log('plus')
+        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+      }
+      if (equation[1] == '-'){
+        setData(minusEquation, 11, 0, 'Your question was too hard for us! Here is something similar.');
+        console.log('minus')
+        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+      }
+    }
+    if (equation[1] == '*' || equation[1] == '/') {
+      console.log('multiplication/division')
+      toggleOverlay();
+    }
+    else {
+      console.log('normal')
+      navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+    }
+  }
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   return (
       // Main View
@@ -174,8 +211,9 @@ const CalculatorScreen = ({navigation}) => {
         {/* Box to display the answer */}
         <View style={styles.answerBox}>
           <TouchableOpacity onPress={() => {
-            setData(equation, answer, remainder);
-            navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+            setData(equation, answer, remainder, '');
+            navigateExplanation(equation, answer, remainder);
+            //navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
           }}>
             <View>
               <Text style={styles.text}>{answer}</Text>
@@ -203,6 +241,11 @@ const CalculatorScreen = ({navigation}) => {
         <CalculatorButton x={width/4*3} y={ButtonWindowHeight/7*4-(ButtonWindowHeight/7)/3} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
         <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*5-(ButtonWindowHeight/7)/3} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
         
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.overlayBox}>
+        <Text style={styles.overlayText}>
+        That question is too hard for us! We can only do addition and subtraction for now! Press anywhere to continue.
+        </Text>
+    </Overlay>
       </View>
   )
 }
