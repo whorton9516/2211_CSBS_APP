@@ -1,11 +1,9 @@
 
-const GetQuizData = () => {
-    let addition;
-    let subtraction;
-    let multiplication;
-    let division;
-
-    return [addition, subtraction, multiplication, division];
+const GetQuizData = {
+    addition: false,
+    subtraction: false,
+    multiplication: false,
+    division: false,
 }
 
 export default GetQuizData;

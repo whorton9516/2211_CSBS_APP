@@ -1,5 +1,4 @@
 
-
 const GetCalcData = () => {
     let equation;
     let answer;

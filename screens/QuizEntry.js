@@ -1,19 +1,13 @@
-import { Overlay } from 'react-native-elements';
 import React, { useState } from "react";
 import { 
   View,
   TouchableOpacity, 
-  Dimensions, 
   Text,
   Image,
-  Button
 } from "react-native";
-import { Flex, Spacer, HStack } from 'react-native-flex-layout';
+import { Flex, HStack } from 'react-native-flex-layout';
 import styles from '../constants/styles';
-import CalculatorButton from '../components/CalculatorButton';
-import Colors from '../constants/Colors';
 import GetQuizData from '../hooks/GetQuizData';
-import { sub } from 'react-native-reanimated';
 
 const QuizEntry = ({navigation}) => {
 
@@ -25,6 +19,7 @@ const QuizEntry = ({navigation}) => {
     const [subSelected, setSubSelected] = useState(false);
     const [mulSelected, setMulSelected] = useState(false);
     const [divSelected, setDivSelected] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const setData = (addition, subtraction, multiplication, division) => {
         GetQuizData.addition = addition;
@@ -54,7 +49,7 @@ const QuizEntry = ({navigation}) => {
                                 onPress={() => {
                                     setAddition(!addition);
                                     setAddSelected(!addSelected);
-                                    if (!addSelected) console.log("addition added")
+                                    if (!addition) console.log("addition added")
                                     else console.log("addition removed")
                                 }}>
                                 <Image
@@ -67,7 +62,7 @@ const QuizEntry = ({navigation}) => {
                                 onPress={() => {
                                     setSubtraction(!subtraction);
                                     setSubSelected(!subSelected);
-                                    if (!subSelected) console.log("subtraction added")
+                                    if (!subtraction) console.log("subtraction added")
                                     else console.log("subtraction removed")
                                 }}>
                                 <Image
@@ -83,7 +78,7 @@ const QuizEntry = ({navigation}) => {
                                 onPress={() => {
                                     setMultiplication(!multiplication);
                                     setMulSelected(!mulSelected);
-                                    if (!mulSelected) console.log("multiplication added")
+                                    if (!multiplication) console.log("multiplication added")
                                     else console.log("multiplication removed")
                                 }}>
                                 <Image
@@ -96,7 +91,7 @@ const QuizEntry = ({navigation}) => {
                                 onPress={() => {
                                     setDivision(!division);
                                     setDivSelected(!divSelected);
-                                    if (!divSelected) console.log("division added")
+                                    if (!division) console.log("division added")
                                     else console.log("division removed")
                                 }}>
                                 <Image
@@ -112,7 +107,12 @@ const QuizEntry = ({navigation}) => {
                                 alignItems: 'center',}}
                             onPress={() => {
                                 setData(addition, subtraction, multiplication, division);
-                                navigation.navigate('Quizzes', {screen: 'QuizScreen'});
+                                if (!addition && !subtraction && !multiplication && !division) {
+                                    setErrorMessage("Select at least one type first!");
+                                } else {
+                                    navigation.navigate('Quizzes', {screen: 'QuizScreen'});
+                                }
+                                
                             }}>
                         <Image
                             source={require('../assets/images/start.png')}
@@ -120,10 +120,12 @@ const QuizEntry = ({navigation}) => {
                                 height: 50,
                                 width: 150,
                                 borderRadius: 10,
-                                marginTop: 50
+                                marginTop: 50,
+                                marginBottom: 50
                             }}
                         />
                     </TouchableOpacity>
+                    <Text style={styles.text}>{errorMessage}</Text>
                 </View>
         </View>
     );
