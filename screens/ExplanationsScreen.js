@@ -15,6 +15,7 @@ const ExplanationScreen = () => {
   const [sym, setSym] = useState(GetCalcData.equation[1]);
   const [ans, setAns] = useState(GetCalcData.answer);
   const [rem, setRem] = useState(GetCalcData.remainder);
+  const [boiler, setBoiler] = useState(GetCalcData.boilerplate);
 
   const loadData = () => {
     setNum1(GetCalcData.equation[0]);
@@ -22,6 +23,7 @@ const ExplanationScreen = () => {
     setSym(GetCalcData.equation[1]);
     setAns(GetCalcData.answer);
     setRem(GetCalcData.remainder);
+    setBoiler(GetCalcData.boilerplate);
   };
 
   useEffect(() => {
@@ -113,10 +115,12 @@ const ExplanationScreen = () => {
     <View>
         {/*<Button title='Close' onPress={() => navigation.navigate('Calculator')}/>*/}
         <View style={styles.container}>
+        <Text>{boiler}</Text>
+        <View style={styles.space}></View>
             <Text style={styles.text}>
                 {num1} {sym} {num2} = {ans}
             </Text>
-        <Text>Remainder of {rem}</Text>
+        <Text>{rem}</Text>
         </View>
         <View style={styles.space}></View>
         {

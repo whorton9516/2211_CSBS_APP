@@ -19,11 +19,7 @@ export default function SettingsScreen({navigation}) {
 
   const db = SQLite.openDatabase('userData.db');
 
-  const setTheme = (darkMode) => {
-    console.log('run');
-  if (darkMode) {
-  }
-  else {
+  const setColorBlind = () => {
     if (Theming.colorBlind) {
       Theming.bg1 = Colors.red.background;
       Theming.txt1 = Colors.red.text;
@@ -47,7 +43,6 @@ export default function SettingsScreen({navigation}) {
       Theming.colorBlind = true;
     }
   }
-  }
   const savePreferences = () => {
     db.transaction(tx => {
       tx.executeSql(
@@ -65,11 +60,9 @@ export default function SettingsScreen({navigation}) {
         <Grid><Row></Row>
           <Row><Col size={1}></Col>
         <Col size={3}>
-        <Button title='Color Blind Mode' onPress={() => setTheme(false)}/>
+        <Button title='Color Blind Mode' onPress={() => setColorBlind()}/>
         <View style={styles.space}></View>
-        <Button title='Dark Mode' onPress={() => setTheme(true)}/>
-        <View style={styles.space}></View>
-        <Button title='Clear History' onPress={() => setTheme(false)}/>
+        <Button title='Clear History'/>
         <View style={styles.space}></View>
         <Button title='See Stats' onPress={() => {
           navigation.navigate('Settings', {screen: 'StatsScreen'});
