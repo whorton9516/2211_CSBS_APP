@@ -226,20 +226,20 @@ const CalculatorScreen = ({navigation}) => {
         </View>
         
         {/* All Calculator buttons */}
-        <CalculatorButton x={width/5}   y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*2} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*3} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*4} y={ButtonWindowHeight/7 - (ButtonWindowHeight/7)/3} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/7*2-(ButtonWindowHeight/7)/3} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/7*3-(ButtonWindowHeight/7)/3} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*3-(ButtonWindowHeight/7)/3} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/7*3-(ButtonWindowHeight/7)/3} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/7*4-(ButtonWindowHeight/7)/3} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*4-(ButtonWindowHeight/7)/3} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/7*4-(ButtonWindowHeight/7)/3} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/7*5-(ButtonWindowHeight/7)/3} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5}   y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*2} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*3} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/5*4} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*5-(ButtonWindowHeight/6)/2 + 40} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
         
         <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.overlayBox}>
         <Text style={styles.overlayText}>
