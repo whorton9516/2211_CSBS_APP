@@ -228,7 +228,6 @@ const QuizScreen = ({navigation}) => {
             Press anywhere to continue
           </Text>
         </Overlay>
-
       </View>        
   );
 }
