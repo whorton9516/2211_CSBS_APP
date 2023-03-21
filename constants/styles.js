@@ -42,13 +42,15 @@ export default styles = StyleSheet.create({
         marginLeft: 12,
     },
     dropZone: {
-        alignSelf:'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
         height: 125,
         width: (width - 50),
         backgroundColor: 'white'
     },
     answerBox: {
         alignSelf: 'center',
+        justifyContent: 'center',
         width: (width - 75),
         height: 100,
         backgroundColor: 'white'
@@ -84,6 +86,8 @@ export default styles = StyleSheet.create({
     overlayBox: {
         height: (height - 500),
         width: (width - 100),
+        alignSelf: 'center',
+        justifyContent: 'center',
         alignContent: 'center',
     },
     overlayText: {
@@ -93,5 +97,6 @@ export default styles = StyleSheet.create({
         fontWeight: "bold",
         alignContent: 'center',
         backgroundColor: 'white',
+        textAlign: 'center',
     },
 })

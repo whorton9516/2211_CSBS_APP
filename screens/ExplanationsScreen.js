@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 
 const {width, height} = Dimensions.get('window');
 
-const ExplanationScreen = () => {
+const ExplanationScreen = ({navigation}) => {
 
   const [num1, setNum1] = useState(GetCalcData.equation[0]);
   const [num2, setNum2] = useState(GetCalcData.equation[2]);
@@ -29,6 +29,17 @@ const ExplanationScreen = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: "none"
+      }
+    });
+    return () => navigation.getParent()?.setOptions({
+      tabBarStyle: undefined
+    });
+  }, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   View,
   TouchableOpacity, 
   Dimensions, 
   Text,
   Image,
+  Animated,
 } from "react-native";
 import styles from '../constants/styles';
+import { Overlay } from 'react-native-elements';
 import CalculatorButton from '../components/CalculatorButton';
 import Theming from "../hooks/Theming"
 import getDB from '../hooks/GetDB';
@@ -15,12 +17,22 @@ import GetQuizData from '../hooks/GetQuizData';
 const {width, height} = Dimensions.get('window');
 
 
-const QuizScreen = () => {
+const QuizScreen = ({navigation}) => {
+  const defaultString = ('Drag your answer here!');
+  const nullAnswerString = ('Enter an answer before submitting!');
+  const [dropZoneString, setDropZoneString] = useState(defaultString);
   const [question, setQuestion] = useState();
   const [answer, setAnswer] = useState();
   const [userAnswer, setUserAnswer] = useState('');
   const [questionsAsked, setQuestionsAsked] = useState(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
+  const [bgColor, setBGColor] = useState('white');
+  const [visible, setVisible] = useState(false);
+  const [resultsString, setResultsString] = useState('');
+
+
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const textColor = useRef(new Animated.Value(1)).current;
   const db = getDB();
 
   // Handles comparing your answer to the actual answer
@@ -28,10 +40,30 @@ const QuizScreen = () => {
     setQuestionsAsked(questionsAsked + 1);
     if (userAnswer == answer){
       setTotalCorrect(totalCorrect + 1);
+      setBGColor('green');
       console.log('Correct')
     } else {
+      setBGColor('red');
       console.log('Wrong Silly')
     }
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 350,
+      useNativeDriver: false,
+    }).start(() => {
+      setBGColor('white');
+      fadeAnim.setValue(1);
+    });
+
+    if (questionsAsked == 9 || userAnswer == '789') {
+      setResultsString(displayFinalScore());
+      toggleOverlay();
+    }
+  }
+
+  const navigateBack = () => {
+    navigation.navigate('Quizzes', {screen: 'QuizEntryScreen'});
+    toggleOverlay();
   }
 
   // Handles generating a new question
@@ -52,8 +84,22 @@ const QuizScreen = () => {
       let eqStr = num1.toString() + sym + num2.toString();
       setQuestion(eqStr);
       setAnswer(eval(eqStr));
+      setDropZoneString(defaultString);
   }
-  
+
+  const displayFinalScore = () => {
+    if (totalCorrect < 3){
+      return 'Uh Oh! Looks like we need to keep practicing';
+    } else if ( totalCorrect >= 3 && totalCorrect < 5) {
+      return 'I know you can do better! Let\'s keep practicing';
+    } else if ( totalCorrect >= 5 && totalCorrect < 7) {
+      return 'Good job! Let\'s keep practicing!';
+    } else if (totalCorrect >= 7 && totalCorrect < 10) {
+      return 'Great job! You\'re almost there! Keep practicing for that perfect score';
+    } else if (totalCorrect == 10) {
+      return 'Wow! You must be really smart!';
+    }
+  }
 
   // Handles draggable buttons input
   const GetPosition = (value, xRel, yRel) => {
@@ -73,6 +119,21 @@ const QuizScreen = () => {
     NextQuestion();
   }, []);
 
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: "none"
+      }
+    });
+    return () => navigation.getParent()?.setOptions({
+      tabBarStyle: undefined
+    });
+  }, [navigation]);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   return (
       // Main View
       <View>
@@ -83,8 +144,9 @@ const QuizScreen = () => {
 
         {/* Button Drop Zone */}
         <View style={styles.dropZone}>
-            {(userAnswer === '') ? (<Text style={styles.text}>Drag your answer here!</Text>) :
-                    (<Text style={[styles.text, {alignItems: "center", justifyContent: "center"}]}>{userAnswer}</Text>)}
+        <Animated.View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: bgColor, opacity: fadeAnim}} />
+            {(userAnswer === '') ? (<Text style={styles.text}>{dropZoneString}</Text>) :
+                    (<Text style={styles.text}>{userAnswer}</Text>)}
         </View>
 
         {/* Clear, Calculate, and Undo buttons */}
@@ -99,8 +161,10 @@ const QuizScreen = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttons} onPress={() => {
-            CheckAnswer();
-            NextQuestion();
+            if (userAnswer != ''){
+              CheckAnswer();
+              NextQuestion();
+            } else { setDropZoneString(nullAnswerString); }
             }}>
             <Image
               source={require('../assets/images/submit.png')}
@@ -117,10 +181,23 @@ const QuizScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Box to display the answer */}
-        <View style={styles.answerBox}>
-          <View>
-            <Text style={styles.text}>Drag your answers into the box above!</Text>
+        {/* Box to display the quiz grade */}
+        <View style={{width: (width - 75), alignSelf: 'center', height: 100, backgroundColor: 'white'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
+              <Text style={[styles.text, {alignSelf: 'center'}]}>Questions Asked</Text>
+            </View>
+            <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-end'}}>
+              <Text style={[styles.text, {alignSelf: 'center'}]}>Total Correct</Text>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
+              <Text style={[styles.text, {alignSelf: 'center'}]}>{questionsAsked}</Text>
+            </View>
+            <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-end'}}>
+              <Text style={[styles.text, {alignSelf: 'center'}]}>{totalCorrect}</Text>
+            </View>
           </View>
         </View>
         
@@ -139,6 +216,19 @@ const QuizScreen = () => {
         <CalculatorButton x= {width/4}   y= {300} value= {'-'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
         <CalculatorButton x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
         <CalculatorButton x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
+
+        <Overlay isVisible={visible} onBackdropPress={navigateBack} style={styles.overlayBox}>
+          <Text style={[styles.text, {padding: 10}]}>
+            You got {totalCorrect} questions correct.
+          </Text>
+          <Text style={[styles.text, {padding: 10}]}>
+            {resultsString}
+          </Text>
+          <Text style={[styles.text, {padding: 10, fontSize: 24, }]}>
+            Press anywhere to continue
+          </Text>
+        </Overlay>
+
       </View>        
   );
 }

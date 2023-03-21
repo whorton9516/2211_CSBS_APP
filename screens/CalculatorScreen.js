@@ -70,7 +70,7 @@ const CalculatorScreen = ({navigation}) => {
       loadData();
     }, [])
   );
-  
+
   // Handles the undo button
   const handleUndo = () => {
     if(equation[2] != ''){
@@ -165,90 +165,90 @@ const CalculatorScreen = ({navigation}) => {
   };
 
   return (
-      // Main View
-      <View>
-        {/* Header */}
-        <View style={styles.viewHeader} height={50}>
-          <Text style={styles.text}>Calculate Here!</Text>
-        </View>
+    // Main View
+    <View>
+      {/* Header */}
+      <View style={styles.viewHeader} height={50}>
+        <Text style={styles.text}>Calculate Here!</Text>
+      </View>
 
-        {/* Button Drop Zone */}
-        <View style={styles.dropZone}>
-            <Text style={styles.text}>{equation}</Text>
-        </View>
+      {/* Button Drop Zone */}
+      <View style={styles.dropZone}>
+          <Text style={styles.text}>{equation}</Text>
+      </View>
 
-        {/* Clear, Calculate, and Undo buttons */}
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.buttons}
-            onPress={() => {
-              setEquation(['','','']);
-              setAnswer(defaultAnswerWindow);
-              setRemainder(0);
-              }}>
-            <Image
-              source={require('../assets/images/clear.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={() => {
-            setAnswer(Calculate(equation)[0]);
-          }}>
-            <Image
-              source={require('../assets/images/calculate.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={() => {
-            handleUndo();
+      {/* Clear, Calculate, and Undo buttons */}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.buttons}
+          onPress={() => {
+            setEquation(['','','']);
             setAnswer(defaultAnswerWindow);
-          }}>
-            <Image
-              source={require('../assets/images/undo.png')}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        </View>
+            setRemainder(0);
+            }}>
+          <Image
+            source={require('../assets/images/clear.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttons} onPress={() => {
+          setAnswer(Calculate(equation)[0]);
+        }}>
+          <Image
+            source={require('../assets/images/calculate.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttons} onPress={() => {
+          handleUndo();
+          setAnswer(defaultAnswerWindow);
+        }}>
+          <Image
+            source={require('../assets/images/undo.png')}
+            style={styles.image}
+          />
+        </TouchableOpacity>
+      </View>
 
-        {/* Box to display the answer */}
-        <View style={styles.answerBox}>
-          <TouchableOpacity onPress={() => {
-            setData(equation, answer, remainder, '');
-            navigateExplanation(equation, answer, remainder);
-            //navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-          }}>
-            <View>
-              <Text style={styles.text}>{answer}</Text>
-            </View>
-            <View>
-            {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
-                (<Text></Text>)}
-            </View>
-          </TouchableOpacity>
-        </View>
-        
-        {/* All Calculator buttons */}
-        <CalculatorButton x={width/5}   y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*2} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*3} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/5*4} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
-        <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
-        <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*5-(ButtonWindowHeight/6)/2 + 40} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
-        
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.overlayBox}>
+      {/* Box to display the answer */}
+      <View style={styles.answerBox}>
+        <TouchableOpacity onPress={() => {
+          setData(equation, answer, remainder, '');
+          navigateExplanation(equation, answer, remainder);
+          //navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+        }}>
+          <View>
+            <Text style={styles.text}>{answer}</Text>
+          </View>
+          <View>
+          {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+              (<Text></Text>)}
+          </View>
+        </TouchableOpacity>
+      </View>
+      
+      {/* All Calculator buttons */}
+      <CalculatorButton x={width/5}   y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'+'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+      <CalculatorButton x={width/5*2} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'-'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+      <CalculatorButton x={width/5*3} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'*'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+      <CalculatorButton x={width/5*4} y={ButtonWindowHeight/9 - (ButtonWindowHeight/6)/2 + 40} value= {'/'} handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+      <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {1}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+      <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {2}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+      <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*2-(ButtonWindowHeight/6)/2 + 40} value= {3}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg2}    textColor={Theming.txt2} />
+      <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {4}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+      <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {5}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+      <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*3-(ButtonWindowHeight/6)/2 + 40} value= {6}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}    textColor={Theming.txt3} />
+      <CalculatorButton x={width/4}   y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {7}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+      <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {8}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+      <CalculatorButton x={width/4*3} y={ButtonWindowHeight/9*4-(ButtonWindowHeight/6)/2 + 40} value= {9}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}    textColor={Theming.txt4} />
+      <CalculatorButton x={width/4*2} y={ButtonWindowHeight/9*5-(ButtonWindowHeight/6)/2 + 40} value= {0}   handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg1}    textColor={Theming.txt1} />
+      
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.overlayBox}>
         <Text style={styles.overlayText}>
         That question is too hard for us! We can only do addition and subtraction for now! Press anywhere to continue.
         </Text>
-    </Overlay>
-      </View>
-  )
+      </Overlay>
+    </View>
+  );
 }
 
 export default CalculatorScreen;
