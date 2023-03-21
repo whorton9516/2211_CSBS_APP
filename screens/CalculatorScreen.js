@@ -70,6 +70,7 @@ const CalculatorScreen = ({navigation}) => {
       loadData();
     }, [])
   );
+  
   // Handles the undo button
   const handleUndo = () => {
     if(equation[2] != ''){

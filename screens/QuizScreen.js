@@ -18,7 +18,7 @@ const {width, height} = Dimensions.get('window');
 const QuizScreen = () => {
   const [question, setQuestion] = useState();
   const [answer, setAnswer] = useState();
-  const [userAnswer, setUserAnswer] = useState();
+  const [userAnswer, setUserAnswer] = useState('');
   const [questionsAsked, setQuestionsAsked] = useState(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
   const db = getDB();
@@ -27,7 +27,6 @@ const QuizScreen = () => {
   const CheckAnswer = () => {
     setQuestionsAsked(questionsAsked + 1);
     if (userAnswer == answer){
-      numCorrect++;
       setTotalCorrect(totalCorrect + 1);
       console.log('Correct')
     } else {
@@ -37,6 +36,7 @@ const QuizScreen = () => {
 
   // Handles generating a new question
   const NextQuestion = () => {
+    setUserAnswer('');
     const symbolMap = {
       '+': GetQuizData.addition,
       '-': GetQuizData.subtraction,
@@ -46,8 +46,8 @@ const QuizScreen = () => {
     const allowedSymbols = Object.entries(symbolMap)
       .filter(([symbol, allowed]) => allowed)
       .map(([symbol]) => symbol);
-      let num1 = Math.floor(Math.random() * 25) + 1;
-      let num2 = Math.floor(Math.random() * 25) + 1;
+      let num1 = Math.floor(Math.random() * 24) + 2;
+      let num2 = Math.floor(Math.random() * num1 - 1) + 2;
       let sym = allowedSymbols[Math.floor(Math.random() * allowedSymbols.length)];
       let eqStr = num1.toString() + sym + num2.toString();
       setQuestion(eqStr);
@@ -65,7 +65,8 @@ const QuizScreen = () => {
 
   // Handles the undo button
   const handleUndo = () => {
-    setUserAnswer(userAnswer.slice(0, userAnswer.length - 1));
+    const newAnswerString = userAnswer.toString().slice(0, -1);
+    setUserAnswer(newAnswerString);
   }
 
   useEffect(() => {
@@ -82,14 +83,15 @@ const QuizScreen = () => {
 
         {/* Button Drop Zone */}
         <View style={styles.dropZone}>
-            <Text style={styles.text}>{userAnswer}</Text>
+            {(userAnswer === '') ? (<Text style={styles.text}>Drag your answer here!</Text>) :
+                    (<Text style={[styles.text, {alignItems: "center", justifyContent: "center"}]}>{userAnswer}</Text>)}
         </View>
 
         {/* Clear, Calculate, and Undo buttons */}
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.buttons}
             onPress={() => {
-              setUserAnswer();
+              setUserAnswer('');
               }}>
             <Image
               source={require('../assets/images/clear.png')}
