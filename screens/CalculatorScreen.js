@@ -25,13 +25,13 @@ const CalculatorScreen = ({navigation}) => {
   const db = getDb();
 
   // State management variables
+  const defaultAnswerWindow = 'Drag the numbers into the box above!';
   const [answer, setAnswer] = useState(defaultAnswerWindow);
   const [equation, setEquation] = useState(['','','']);
   const [equationString, setEquationString] = useState('');
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
-  const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -128,7 +128,7 @@ const CalculatorScreen = ({navigation}) => {
     GetCalcData.answer = answer;
     GetCalcData.boilerplate = setBoilerPlate();
     if (remainder != '') {
-      GetCalcData.remainder = 'Remainder of ', {remainder};
+      GetCalcData.remainder = remainder;
     }
     else {
       GetCalcData.remainder = '';
@@ -149,7 +149,7 @@ const CalculatorScreen = ({navigation}) => {
 
     switch (equation[1]) {
       case '+':
-        boilerText += 'Addition is when we add two groups of things together to get a larger group. ';
+        boilerText += 'Addition is when we add two groups of things together to get a larger group.\n\n';
         break;
       case '-':
         boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.';
@@ -157,11 +157,11 @@ const CalculatorScreen = ({navigation}) => {
       case '*':
         boilerText += 'Mulitiplication is how we find the total numer of items for multiple groups that have the same number of items. ';
         break;
-      case '*':
+      case '/':
         boilerText += 'Division is when we split a large group of items into smaller, equally sized groups. '
         break;
     }
-    console.log(boilerText);
+    boilerText += 'Take a look at this example below.';
     return boilerText;
   }
 

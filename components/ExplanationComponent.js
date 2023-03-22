@@ -1,71 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, 
-         Animated,
-         Dimensions,
-         View} from "react-native";
+import React from 'react';
+import { View,
+         Dimensions 
+        } from 'react-native';
+import { BackgroundImage } from 'react-native-elements/dist/config';
+import styles from '../constants/styles';
 
-const {width, height} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const ExplanationComponent = ({num1,num2,color1,color2,}) => {
-  var array = [];
-	for(let i = 0; i < num1; i++){
-    if(i < num2){
-		  array.push(
-        <View key = {i}>
-          <View backgroundColor={color2} style={styles.cube} />				
-        </View>
-		  )
+const ExplanationComponent = ({ radius, numCircles, color, altColor, altNum }) => {
+  const circleSize = radius / 3
+  const smallCircleSize = radius / 10;
+  const smallCircles = [];
+  let bgColor = color;
+
+  for (let i = 0; i < numCircles; i++) {
+    if (i >= numCircles - altNum){
+      bgColor = altColor
     }
-    else {
-      array.push(
-        <View key = {i}>
-            <View backgroundColor={color1} style={styles.cube} />
-        </View>
-      )
-    }
-	}
+    smallCircles.push(
+      <View
+        key={i}
+        style={[styles.smallCircle, {
+          transform: [
+            { rotate: `${(Math.floor(Math.random() * 360))}deg` },
+            { translateX: circleSize / 2 - smallCircleSize / 2 },
+            { translateY: -smallCircleSize / 12 },
+          ],
+          backgroundColor: bgColor
+        }]}
+      />
+    );
+  }
+  
+  
+
   return (
-
-    <Animated.View style={styles.container}>
-      <View style={styles.cubecontainer}>
-        {
-          array
-        }
-      </View>
-      </Animated.View>
+    <View style={[styles.circle, { width: circleSize, height: circleSize }]}>
+      {smallCircles}
+    </View>
   );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 4,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignSelf:'auto',
-        height: (height - 690),
-        width: (width - 300),
-        top: 10,
-        left: 5,
-        alignContent:'center',
-        backgroundColor: 'lightgray',
-      },
-      cubecontainer: {
-        flexWrap: 'wrap',
-        padding: 12,
-        flexDirection: 'row',
-        alignSelf:'auto',
-        alignItems: 'baseline',
-        alignContent:'flex-start',
-      },
-      cube: {
-        flexWrap: 'wrap',
-        padding: 4,
-        flexDirection: 'row',
-        alignSelf:'auto',
-        alignContent:'center',
-        borderWidth: 1,
-        borderColor: "#000000",
-      },
-});
+};
 
 export default ExplanationComponent;

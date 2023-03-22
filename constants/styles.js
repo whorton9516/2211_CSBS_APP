@@ -35,6 +35,7 @@ export default styles = StyleSheet.create({
         height: 125,
         width: (width - 50),
         backgroundColor: 'white',
+        borderRadius: 30
     },
     backButtonImage: {
         width: 100,
@@ -123,4 +124,22 @@ export default styles = StyleSheet.create({
         alignContent: 'center',
         backgroundColor: 'white',
     },
+    circle: {
+        backgroundColor: 'lightgray',
+        borderRadius: 1000,
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        width: width / 3,
+        borderColor: 'gray',
+        borderWidth: 1,
+    },
+    smallCircle: {
+        width:  width / 20,
+        height: width / 20,
+        borderRadius: 1000,
+        position: 'absolute',
+        borderColor: 'black',
+        borderWidth: 1,
+      }
 })

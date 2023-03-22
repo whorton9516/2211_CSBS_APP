@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Dimensions, Animated, } from 'react-native';
+import { View, 
+         Text, 
+         Dimensions, 
+         Animated,
+         ScrollView,
+        } from 'react-native';
 import { Col, Row, } from "react-native-easy-grid";
 import ExplanationComponent from "../components/ExplanationComponent";
 import GetCalcData from '../hooks/GetCalcData';
@@ -43,6 +48,7 @@ const ExplanationScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
+    loadData();
     navigation.getParent()?.setOptions({
       tabBarStyle: {
         display: "none"
@@ -59,48 +65,132 @@ const ExplanationScreen = ({navigation}) => {
     }, [])
   );
 
-  if(sym === '+' || sym === '-') {
-    views = 
-      <View style={styles.explanationbox}>
-        <Row>
-          <Col>
-            <ExplanationComponent num1={num1} color1={color1} />
-          </Col>
-          <Col>
-            <Animated.Text style={styles.symbol}>
-              {sym}
-            </Animated.Text>
-          </Col>
-          <Col>
-            <ExplanationComponent num1={num2} color1={color2} />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Animated.Text style={styles.symbol}>↓</Animated.Text>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ExplanationComponent num1={ans} color1={color2} num2={num1} color2={color1} />
-          </Col>
-        </Row>
-
-      </View>
+  switch (sym) {
+    case '+':
+      views = (
+        <View>
+          <View style={{width: (width - 50), alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, marginTop: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <View style={{width: (width-50)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
+                <ExplanationComponent radius={width} numCircles={num1} color={color1} />
+              </View>
+              <Text style={[styles.text, {fontSize: 50}]}>{sym}</Text>
+              <View style={{width: (width-50)/2, flex: 1, alignItems: 'flex-end'}}>
+                <ExplanationComponent radius={width} numCircles={num2} color={color2} />
+              </View>
+            </View>
+            <View style={{alignSelf: 'center'}} padding={20}>
+              <Text style={[styles.text, {fontSize: 50}]}>⇊</Text>
+            </View>
+            <View style={{alignSelf: 'center', padding: 10}}>
+              <ExplanationComponent radius={width * 1.5} numCircles={ans} color={color1} altColor={color2} altNum={num2} />
+            </View>
+          </View>
+        </View>
+      );
+      break;
+    case '-':
+      views = (
+        <View>
+          <View style={{width: (width - 50), alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, marginTop: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <View style={{width: (width-50)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
+                <ExplanationComponent radius={width} numCircles={num1} color={color1} />
+              </View>
+              <Text style={[styles.text, {fontSize: 50}]}>{sym}</Text>
+              <View style={{width: (width-50)/2, flex: 1, alignItems: 'flex-end'}}>
+                <ExplanationComponent radius={width} numCircles={num2} color={color2} />
+              </View>
+            </View>
+            <View style={{alignSelf: 'center'}} padding={20}>
+              <Text style={[styles.text, {fontSize: 50}]}>⇊</Text>
+            </View>
+            <View style={{alignSelf: 'center', padding: 10}}>
+              <ExplanationComponent radius={width * .8} numCircles={ans} color={color1} />
+            </View>
+          </View>
+        </View>
+      );
+      break;
+    case '*':
+        const mulElements = [];
+        for (let i = 0; i < num1; i++) {
+          mulElements.push((
+            <View style={{alignItems: 'center'}} padding={10}>
+              <ExplanationComponent radius={width} numCircles={num2} color={getColor()} />
+            </View>
+          ));
+        }
+        views = (
+          <View>
+            <View style={{width: (width - 50), alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, marginTop: 10}}>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{width: (width-50)/2, alignItems: 'center', padding: 10}}>
+                  {mulElements}  
+                </View>
+              </View>
+              <View style={{alignSelf: 'center', padding: 10}}>
+                <ExplanationComponent radius={width * 2} numCircles={ans} color={getColor()} />
+              </View>
+            </View>
+          </View>
+        );
+      break;
+    case '/':
+      const divElements = [];
+        for (let i = 0; i < ans; i++) {
+          divElements.push((
+            <View style={{alignItems: 'center'}} padding={10}>
+              <ExplanationComponent radius={width} numCircles={num2} color={color1} />
+            </View>
+          ));
+        }
+        views = (
+          <View>
+            <View style={{width: (width - 50), alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, marginTop: 10}}>
+              <View style={{alignSelf: 'center', padding: 10}}>
+                <ExplanationComponent radius={width * 2} numCircles={num1} color={getColor()} />
+              </View>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                {divElements}
+                {(rem > 0) ? (
+                  <View style={{alignItems: 'center'}} padding={10}>
+                    <ExplanationComponent radius={width} numCircles={rem} color={getColor()} />
+                  </View>
+                  ) : (
+                    <View />
+                  )}
+              </View>
+            </View>
+          </View>
+        );
+      break;
   }
+
+
   return (
-    <View>
-      <View style={[styles.container, {height: 250}]}>
-        <Text style={[styles.text, {fontSize: 25}]}>
-          We know that {'\n'}
-            {num1} {sym} {num2} = {ans}
-            {'\n'} but how do we know that? {'\n\n'}
-            {boiler}
-        </Text>
-        <Text>{rem}</Text>
+    <ScrollView>
+      <View>
+        <View style={{backgroundColor: 'white', borderRadius: 30, flexGrow: 1, flexShrink: 1, alignSelf: 'center', width: width-50}}>
+          <Text style={[styles.text, {fontSize: 25}]}>
+            We know that {'\n'}
+              {num1} {sym} {num2} = {ans}
+            </Text>
+            {(rem) ? (
+              <Text style={[styles.text, {fontSize: 25}]}>
+                With a remainder of {rem}
+              </Text>
+            ) : (
+              <Text />
+            )}
+            <Text style={[styles.text, {fontSize: 25}]}>
+              {'\n'} but how do we know that? {'\n\n'}
+              {boiler}
+          </Text>
+        </View>
+        <View style={styles.space}>{views}</View>
       </View>
-      <View style={styles.space}>{views}</View>
-    </View>
+    </ScrollView>
   );
 }
 
