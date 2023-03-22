@@ -144,7 +144,7 @@ const QuizScreen = ({navigation}) => {
 
         {/* Button Drop Zone */}
         <View style={styles.dropZone}>
-        <Animated.View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: bgColor, opacity: fadeAnim}} />
+        <Animated.View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: bgColor, opacity: fadeAnim, borderRadius: 30}} />
             {(userAnswer === '') ? (<Text style={styles.text}>{dropZoneString}</Text>) :
                     (<Text style={styles.text}>{userAnswer}</Text>)}
         </View>
@@ -182,7 +182,7 @@ const QuizScreen = ({navigation}) => {
         </View>
 
         {/* Box to display the quiz grade */}
-        <View style={{width: (width - 75), alignSelf: 'center', height: 100, backgroundColor: 'white'}}>
+        <View style={{width: (width - 75), alignSelf: 'center', height: 100, backgroundColor: 'white', borderRadius: 30}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
               <Text style={[styles.text, {alignSelf: 'center'}]}>Questions Asked</Text>

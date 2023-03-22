@@ -49,7 +49,7 @@ const ExplanationScreen = ({navigation}) => {
 
   useEffect(() => {
     loadData();
-    navigation.getParent()?.setOptions({
+    navigation.getParent()?.setOptions({     
       tabBarStyle: {
         display: "none"
       }

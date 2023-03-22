@@ -47,14 +47,16 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         height: 125,
         width: (width - 50),
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 30
     },
     answerBox: {
         alignSelf: 'center',
         justifyContent: 'center',
         width: (width - 75),
         height: 100,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 30
     },
     text: {
         textAlign: "center",

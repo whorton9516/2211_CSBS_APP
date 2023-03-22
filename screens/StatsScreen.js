@@ -5,9 +5,6 @@ import {
 } from "react-native";
 import getDB from '../hooks/GetDB';
 import styles from '../constants/styles';
-import CalculatorButton from '../components/CalculatorButton';
-import Colors from '../constants/Colors';
-import Theming from "../hooks/Theming"
 
 const StatsScreen = () => {
   
