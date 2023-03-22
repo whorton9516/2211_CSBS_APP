@@ -99,4 +99,28 @@ export default styles = StyleSheet.create({
         backgroundColor: 'white',
         textAlign: 'center',
     },
+    explanationbox: {
+        flexDirection: 'column',
+        alignSelf:'center',
+        height: (height - 300),
+        width: (width - 50),
+        backgroundColor: 'white',
+    },
+    mathbox: {
+        alignSelf:'auto',
+        height: (height - 690),
+        width: (width - 300),
+        top: 10,
+        left: 5,
+        backgroundColor: 'lightgray',
+    },
+    symbol: {
+        alignSelf:'center',
+        top: 30,
+        color: "black",
+        fontSize: 35,
+        fontWeight: "bold",
+        alignContent: 'center',
+        backgroundColor: 'white',
+    },
 })

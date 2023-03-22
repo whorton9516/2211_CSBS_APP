@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Animated, Dimensions, View, TextInput } from "react-native";
+import { StyleSheet, 
+         Animated,
+         Dimensions,
+         View} from "react-native";
 
 const {width, height} = Dimensions.get('window');
 
 const ExplanationComponent = ({num1,num2,color1,color2,}) => {
-    var array = [];
+  var array = [];
 	for(let i = 0; i < num1; i++){
-        if(i < num2){
-		array.push(
-			<View key = {i}>
-				<View backgroundColor={color2} style={styles.cube}>
-				</View>
-                </View>
-		)
-        }
-        else {
-          array.push(
-            <View key = {i}>
-                <View backgroundColor={color1} style={styles.cube}>
-                </View>
-                </View>
-        )
-        }
+    if(i < num2){
+		  array.push(
+        <View key = {i}>
+          <View backgroundColor={color2} style={styles.cube} />				
+        </View>
+		  )
+    }
+    else {
+      array.push(
+        <View key = {i}>
+            <View backgroundColor={color1} style={styles.cube} />
+        </View>
+      )
+    }
 	}
   return (
-<Animated.View style={styles.container}><View style={styles.cubecontainer}>
-            {
-              array
-            }
-          </View></Animated.View>
+
+    <Animated.View style={styles.container}>
+      <View style={styles.cubecontainer}>
+        {
+          array
+        }
+      </View>
+      </Animated.View>
   );
 }
 

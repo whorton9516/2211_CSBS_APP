@@ -17,7 +17,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Overlay } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
-const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
 const CalculatorScreen = ({navigation}) => {
 
@@ -32,6 +31,7 @@ const CalculatorScreen = ({navigation}) => {
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
+  const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -123,10 +123,10 @@ const CalculatorScreen = ({navigation}) => {
     return answer;
   }
 
-  const setData = (equation, answer, remainder, boiler) => {
+  const setData = () => {
     GetCalcData.equation = equation;
     GetCalcData.answer = answer;
-    GetCalcData.boilerplate = boiler;
+    GetCalcData.boilerplate = setBoilerPlate();
     if (remainder != '') {
       GetCalcData.remainder = 'Remainder of ', {remainder};
     }
@@ -135,29 +135,34 @@ const CalculatorScreen = ({navigation}) => {
     }
   }
 
-  const navigateExplanation = (equation, answer, remainder) => {
-    var addEquation = ['10','+','5'];
-    var minusEquation = ['17','-','6'];
-    if(answer > 25 || equation[0] > 25 || equation[2] > 25) {
-      if (equation[1] == '+'){
-        setData(addEquation, 15, 0, 'Your question was too hard for us! Here is something similar.');
-        console.log('plus')
-        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-      }
-      if (equation[1] == '-'){
-        setData(minusEquation, 11, 0, 'Your question was too hard for us! Here is something similar.');
-        console.log('minus')
-        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-      }
+  const setBoilerPlate = () => {
+    let boilerText = '';
+    let altText = '';
+
+    if (equation[0] > 25 && equation[2] > 25) {
+      altText += '\n Those numbers are a little big but so let\'s use some smaller numbers for this example\n';
+    } else if (equation[0] > 25 || equation[2] > 25) {
+      altText += '\n One of your numbers is a little big so let\'s use a smaller number for this example\n';
     }
-    if (equation[1] == '*' || equation[1] == '/') {
-      console.log('multiplication/division')
-      toggleOverlay();
+
+    boilerText += altText;
+
+    switch (equation[1]) {
+      case '+':
+        boilerText += 'Addition is when we add two groups of things together to get a larger group. ';
+        break;
+      case '-':
+        boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.';
+        break;
+      case '*':
+        boilerText += 'Mulitiplication is how we find the total numer of items for multiple groups that have the same number of items. ';
+        break;
+      case '*':
+        boilerText += 'Division is when we split a large group of items into smaller, equally sized groups. '
+        break;
     }
-    else {
-      console.log('normal')
-      navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-    }
+    console.log(boilerText);
+    return boilerText;
   }
 
   const toggleOverlay = () => {
@@ -211,19 +216,24 @@ const CalculatorScreen = ({navigation}) => {
 
       {/* Box to display the answer */}
       <View style={styles.answerBox}>
-        <TouchableOpacity onPress={() => {
-          setData(equation, answer, remainder, '');
-          navigateExplanation(equation, answer, remainder);
-          //navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-        }}>
-          <View>
-            <Text style={styles.text}>{answer}</Text>
-          </View>
-          <View>
-          {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
-              (<Text></Text>)}
-          </View>
-        </TouchableOpacity>
+        <View>
+          <Text style={styles.text}>{answer}</Text>
+        </View>
+        <View>
+        {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+            (<Text></Text>)}
+        </View>
+        <View>
+          {(answer != defaultAnswerWindow) ? (
+            <TouchableOpacity onPress={() => {
+              setData();
+              navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+            }}>
+              <Text style={[styles.text, {fontSize: 20, textDecorationLine: 'underline'}]}>Tap here to see why this is the answer!</Text>
+            </TouchableOpacity>
+          ) :
+          (<Text></Text>)}
+        </View>
       </View>
       
       {/* All Calculator buttons */}

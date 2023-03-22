@@ -213,9 +213,7 @@ const QuizScreen = ({navigation}) => {
         <CalculatorButton x= {width/4}   y= {225} value= {7}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
         <CalculatorButton x= {width/4*2} y= {225} value= {8}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
         <CalculatorButton x= {width/4*3} y= {225} value= {9}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
-        <CalculatorButton x= {width/4}   y= {300} value= {'-'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
         <CalculatorButton x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
-        <CalculatorButton x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
 
         <Overlay isVisible={visible} onBackdropPress={navigateBack} style={styles.overlayBox}>
           <Text style={[styles.text, {padding: 10}]}>
