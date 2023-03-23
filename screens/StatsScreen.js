@@ -1,4 +1,4 @@
-import React, { useState, } from "react";
+import React, { useState, useEffect, } from "react";
 import { 
   View,
   Text,
@@ -6,7 +6,7 @@ import {
 import getDB from '../hooks/GetDB';
 import styles from '../constants/styles';
 
-const StatsScreen = () => {
+const StatsScreen = ({navigation}) => {
   
   const [totalCalculations, setTotalCalculations] = useState(0);
   const [mostPopular, setMostPopular] = useState('');
@@ -135,6 +135,17 @@ const StatsScreen = () => {
 
     return missedType;
   }
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: "none"
+      }
+    });
+    return () => navigation.getParent()?.setOptions({
+      tabBarStyle: undefined
+    });
+  }, [navigation]);
 
   return (
     <View>

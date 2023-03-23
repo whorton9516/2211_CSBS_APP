@@ -1,4 +1,4 @@
-import React, { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   View,
   TouchableOpacity, 
@@ -26,13 +26,18 @@ const CalculatorScreen = ({navigation}) => {
 
   // State management variables
   const defaultAnswerWindow = 'Drag the numbers into the box above!';
+  const incorrectValuesString = 'Make sure the first number is\nlarger than the second if you\nwant to do that!';
   const [answer, setAnswer] = useState(defaultAnswerWindow);
   const [equation, setEquation] = useState(['','','']);
   const [equationString, setEquationString] = useState('');
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
-
+  let altEquation = ["","",""];
+  let altAnswer = -1;
+  let altRemainder = 0;
+  let valErrString = 'Your numbers were too big but take a look at a similar example.\nLet\'s try: ' + toString(altEquation) + '=' + altAnswer;
+  let useAltEquation = false;
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
       if (yRel > 100 && yRel < 225 && xRel > 25 && xRel < width-25){
@@ -43,7 +48,7 @@ const CalculatorScreen = ({navigation}) => {
               setEquation([equation[0], equation[1], equation[2] + value.toString()]);
             }
           } else {
-            setEquation([equation[0], equation[1] + value, equation[2]]);
+            setEquation([equation[0], value, equation[2]]);
           }
       }
   }
@@ -133,41 +138,86 @@ const CalculatorScreen = ({navigation}) => {
     else {
       GetCalcData.remainder = '';
     }
+    GetCalcData.altEquation = altEquation;
+    GetCalcData.altAnswer = altAnswer;
+    GetCalcData.altRemainer = altRemainder;
   }
 
   const setBoilerPlate = () => {
     let boilerText = '';
     let altText = '';
 
-    if (equation[0] > 25 && equation[2] > 25) {
-      altText += '\n Those numbers are a little big but so let\'s use some smaller numbers for this example\n';
-    } else if (equation[0] > 25 || equation[2] > 25) {
-      altText += '\n One of your numbers is a little big so let\'s use a smaller number for this example\n';
-    }
-
     boilerText += altText;
 
     switch (equation[1]) {
       case '+':
         boilerText += 'Addition is when we add two groups of things together to get a larger group.\n\n';
+        if (equation[0] > 25 || equation[2] > 25) {
+          useAltEquation = true;
+          if (equation[0] > 25 && equation[2] > 25){
+            altEquation[0] = Math.floor(Math.random() * 24) + 2;
+            altEquation[1] = '+';
+            altEquation[2] = Math.floor(Math.random() * 24) + 2;
+            altAnswer = Calculate(altEquation)[0];
+          } else if(equation[0] > 25 && equation[2] <= 25) {
+
+          } else if(equation[0] <= 25 && equation[2] > 25) {
+
+          }
+        }
         break;
       case '-':
         boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.';
+        if (equation[0] > 25 || equation[2] > 25) {
+          useAltEquation = true;
+          if (equation[0] > 25 && equation[2] > 25){
+            altEquation[0] = Math.floor(Math.random() * 24) + 2;
+            altEquation[1] = '-';
+            altEquation[2] = Math.floor(Math.random() * (altEquation[0] - 1)) + 2;
+            altAnswer = Calculate(altEquation)[0];
+          }
+        }
         break;
       case '*':
         boilerText += 'Mulitiplication is how we find the total numer of items for multiple groups that have the same number of items. ';
+        if (answer > 50) {
+          useAltEquation = true;
+          altEquation[0] = Math.floor(Math.random() * 7) + 2;
+          altEquation[1] = '*';
+          altEquation[2] = Math.floor(Math.random() * 7) + 2;
+          altAnswer = Calculate(altEquation)[0];
+        }
         break;
       case '/':
         boilerText += 'Division is when we split a large group of items into smaller, equally sized groups. '
+        if (equation[0] > 20 || equation[2] > 20){
+          useAltEquation = true;
+          altEquation[0] = Math.floor(Math.random() * 19) + 2;
+          altEquation[1] = '/';
+          altEquation[2] = Math.floor(Math.random() * (altEquation[0] - 1)) + 2;
+          altAnswer = Calculate(altEquation)[0];
+        }
         break;
     }
-    boilerText += 'Take a look at this example below.';
+    if (useAltEquation) {
+      boilerText += valErrString;
+    } else {
+      boilerText += 'Take a look at this example below:'
+    }
     return boilerText;
   }
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setEquation(['','','']);
+      setAnswer(defaultAnswerWindow);
+      setRemainder(0);
+    }, [])
+  );
 
   return (
     // Main View
@@ -196,6 +246,14 @@ const CalculatorScreen = ({navigation}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttons} onPress={() => {
+          if (equation[2] > equation[0]){
+            if (equation[1] == '-' || equation[1] == '/'){
+              setEquation(['','','']);
+              setAnswer(incorrectValuesString);
+              setRemainder(0);
+              return;
+            }
+          }
           setAnswer(Calculate(equation)[0]);
         }}>
           <Image
@@ -224,7 +282,7 @@ const CalculatorScreen = ({navigation}) => {
             (<Text></Text>)}
         </View>
         <View>
-          {(answer != defaultAnswerWindow) ? (
+          {(answer != defaultAnswerWindow && answer != incorrectValuesString) ? (
             <TouchableOpacity onPress={() => {
               setData();
               navigation.navigate('Calculator', {screen: 'ExplanationScreen'});

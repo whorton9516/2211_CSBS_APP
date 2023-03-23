@@ -119,6 +119,10 @@ const QuizScreen = ({navigation}) => {
     NextQuestion();
   }, []);
 
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   useEffect(() => {
     navigation.getParent()?.setOptions({
       tabBarStyle: {
@@ -129,10 +133,6 @@ const QuizScreen = ({navigation}) => {
       tabBarStyle: undefined
     });
   }, [navigation]);
-
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
   return (
       // Main View
