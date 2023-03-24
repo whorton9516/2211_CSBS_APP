@@ -33,10 +33,7 @@ const CalculatorScreen = ({navigation}) => {
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
-  let altEquation = ["","",""];
-  let altAnswer = -1;
-  let altRemainder = 0;
-  let valErrString = 'Your numbers were too big but take a look at a similar example.\nLet\'s try: ' + toString(altEquation) + '=' + altAnswer;
+  let valErrString = 'Your numbers were too big but take a look at a similar example.\nLet\'s try: ';
   let useAltEquation = false;
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -128,7 +125,7 @@ const CalculatorScreen = ({navigation}) => {
     return answer;
   }
 
-  const setData = () => {
+  const setData = (equation, answer, remainder) => {
     GetCalcData.equation = equation;
     GetCalcData.answer = answer;
     GetCalcData.boilerplate = setBoilerPlate();
@@ -138,9 +135,6 @@ const CalculatorScreen = ({navigation}) => {
     else {
       GetCalcData.remainder = '';
     }
-    GetCalcData.altEquation = altEquation;
-    GetCalcData.altAnswer = altAnswer;
-    GetCalcData.altRemainer = altRemainder;
   }
 
   const setBoilerPlate = () => {
@@ -152,55 +146,32 @@ const CalculatorScreen = ({navigation}) => {
     switch (equation[1]) {
       case '+':
         boilerText += 'Addition is when we add two groups of things together to get a larger group.\n\n';
-        if (equation[0] > 25 || equation[2] > 25) {
+        if (GetCalcData.equation[0] > 25 || GetCalcData.equation[2] > 25) {
           useAltEquation = true;
-          if (equation[0] > 25 && equation[2] > 25){
-            altEquation[0] = Math.floor(Math.random() * 24) + 2;
-            altEquation[1] = '+';
-            altEquation[2] = Math.floor(Math.random() * 24) + 2;
-            altAnswer = Calculate(altEquation)[0];
-          } else if(equation[0] > 25 && equation[2] <= 25) {
-
-          } else if(equation[0] <= 25 && equation[2] > 25) {
-
-          }
         }
         break;
       case '-':
         boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.';
-        if (equation[0] > 25 || equation[2] > 25) {
+        if (GetCalcData.equation[0] > 25 || GetCalcData.equation[2] > 25) {
           useAltEquation = true;
-          if (equation[0] > 25 && equation[2] > 25){
-            altEquation[0] = Math.floor(Math.random() * 24) + 2;
-            altEquation[1] = '-';
-            altEquation[2] = Math.floor(Math.random() * (altEquation[0] - 1)) + 2;
-            altAnswer = Calculate(altEquation)[0];
-          }
         }
         break;
       case '*':
         boilerText += 'Mulitiplication is how we find the total numer of items for multiple groups that have the same number of items. ';
-        if (answer > 50) {
+        if (GetCalcData.answer > 50) {
           useAltEquation = true;
-          altEquation[0] = Math.floor(Math.random() * 7) + 2;
-          altEquation[1] = '*';
-          altEquation[2] = Math.floor(Math.random() * 7) + 2;
-          altAnswer = Calculate(altEquation)[0];
         }
         break;
       case '/':
         boilerText += 'Division is when we split a large group of items into smaller, equally sized groups. '
-        if (equation[0] > 20 || equation[2] > 20){
+        if (GetCalcData.equation[0] > 20 || GetCalcData.equation[2] > 20){
           useAltEquation = true;
-          altEquation[0] = Math.floor(Math.random() * 19) + 2;
-          altEquation[1] = '/';
-          altEquation[2] = Math.floor(Math.random() * (altEquation[0] - 1)) + 2;
-          altAnswer = Calculate(altEquation)[0];
         }
         break;
     }
     if (useAltEquation) {
       boilerText += valErrString;
+      useAltEquation = false;
     } else {
       boilerText += 'Take a look at this example below:'
     }
@@ -284,7 +255,7 @@ const CalculatorScreen = ({navigation}) => {
         <View>
           {(answer != defaultAnswerWindow && answer != incorrectValuesString) ? (
             <TouchableOpacity onPress={() => {
-              setData();
+              setData(equation, answer, remainder);
               navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
             }}>
               <Text style={[styles.text, {fontSize: 20, textDecorationLine: 'underline'}]}>Tap here to see why this is the answer!</Text>

@@ -35,7 +35,6 @@ const App = () => {
     db.transaction(tx => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS quiz_questions (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_id INTEGER, question TEXT, result INTEGER, FOREIGN KEY(quiz_id) REFERENCES quizzes(id))',);
     });
-
   
 
     setIsLoading(false);

@@ -128,20 +128,18 @@ export default styles = StyleSheet.create({
     },
     circle: {
         backgroundColor: 'lightgray',
-        borderRadius: 1000,
+        borderRadius: 10000,
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
-        width: width / 3,
         borderColor: 'gray',
         borderWidth: 1,
     },
     smallCircle: {
         width:  width / 20,
         height: width / 20,
-        borderRadius: 1000,
-        position: 'absolute',
+        borderRadius: 10000,
         borderColor: 'black',
         borderWidth: 1,
+        position: 'absolute'
       }
 })
