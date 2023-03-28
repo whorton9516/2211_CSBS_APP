@@ -113,7 +113,7 @@ const CalculatorScreen = ({navigation}) => {
     }
 
     setEquationString(JSON.stringify(equation));
-
+    
     let date = new Date();
     let dateString = date.toLocaleDateString();
     

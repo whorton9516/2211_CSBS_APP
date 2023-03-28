@@ -3,7 +3,7 @@ import {
   View,
   Text,
 } from "react-native";
-import getDB from '../hooks/GetDB';
+import * as SQLite from 'expo-sqlite';
 import styles from '../constants/styles';
 
 const StatsScreen = ({navigation}) => {
@@ -17,7 +17,7 @@ const StatsScreen = ({navigation}) => {
   const [quizAverage, setQuizAverage] = useState(0);
   const [missedType, setMissedType] = useState('');
 
-  const db = getDB();
+  const db = SQLite.openDatabase('userData.db');
 
   const getTotalCalculations = () => {
     db.transaction((tx) => {
@@ -32,7 +32,11 @@ const StatsScreen = ({navigation}) => {
   const getMostPopular = () => {
     db.transaction((tx) => {
       tx.executeSql('SELECT type, COUNT(*) as count FROM calculator_data GROUP BY type ORDER BY count DESC LIMIT 1', [], (_, { rows }) => {
-        setMostPopular(rows.item(0).type);
+        if (rows.length > 0) {
+          setMostPopular(rows.item(0).type);
+        } else {
+          setMostPopular('');
+        }
       });
     });
 
@@ -118,9 +122,16 @@ const StatsScreen = ({navigation}) => {
 
   const getQuizAverage = () => {
     db.transaction((tx) => {
-      tx.executeSql('SELECT AVG(total_correct / total_questions) as avg_percentage FROM quizzes', [], (_, { rows }) => {
-        setQuizAverage((rows.item(0).avg_percentage * 100).toFixed(2));
-      });
+      tx.executeSql(
+        'SELECT AVG(total_correct/10.0) as average_score FROM quizzes',
+        [],
+        (_, results) => {
+          setQuizAverage(Math.floor(results.rows.item(0).average_score * 100));
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     });
 
     return quizAverage;
@@ -128,13 +139,38 @@ const StatsScreen = ({navigation}) => {
 
   const getMissedTypes = () => {
     db.transaction((tx) => {
-      tx.executeSql('SELECT question, type FROM quiz_questions WHERE result = "incorrect" GROUP BY question, type ORDER BY COUNT(*) DESC LIMIT 1', [], (_, { rows }) => {
-        setMissedType(`${rows.item(0).type}: ${rows.item(0).question}`);
-      });
+      tx.executeSql(
+        'SELECT type, COUNT(*) as count FROM quiz_questions WHERE result = ? GROUP BY type ORDER BY count DESC LIMIT 1',
+        [0],
+        (_, { rows }) => {
+          const mostMissedType = rows.item(0).type;
+          switch (mostMissedType) {
+            case '+':
+              setMissedType('Addition');
+              break;
+            case '-':
+              setMissedType('Subtraction');
+              break;
+            case '*':
+              setMissedType('Multiplication');
+              break;
+            case '/':
+              setMissedType('Division');
+              break;
+            default:
+              setMissedType('Unknown');
+              break;
+          }
+          return missedType;
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     });
-
     return missedType;
-  }
+  };
+  
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
@@ -156,7 +192,7 @@ const StatsScreen = ({navigation}) => {
       <Text style={styles.text}>Multiplication: {Math.floor((getMulCount()/getTotalCalculations())*100)}%</Text>
       <Text style={styles.text}>Division: {Math.floor((getDivCount()/getTotalCalculations())*100)}%</Text>
       <Text style={styles.text}>The average quiz percentage is: {getQuizAverage()}%</Text>
-      <Text style={styles.text}>The commonly missed questions are: {getMissedTypes()}</Text>
+      <Text style={styles.text}>The commonly missed type is: {getMissedTypes()}</Text>
     </View>
   );
 }
