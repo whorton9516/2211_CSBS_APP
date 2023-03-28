@@ -191,11 +191,11 @@ const ExplanationScreen = ({navigation}) => {
           <View style={{width: (width - 20), alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, marginTop: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <View style={{width: (width-20)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
-                <ExplanationComponent circleSize={width + (width/5)} numCircles={alt1} colors={getColors} interval={alt1} />
+                <ExplanationComponent circleSize={width + (width/5)} numCircles={alt1} colors={getColors()} interval={alt1} />
               </View>
               <Text style={[styles.text, {fontSize: 50}]}>{sym}</Text>
               <View style={{width: (width-20)/2, flex: 1, alignItems: 'flex-end', padding: 10}}>
-                <ExplanationComponent circleSize={width + (width/5)} numCircles={alt2} colors={getColors} interval={alt2} />
+                <ExplanationComponent circleSize={width + (width/5)} numCircles={alt2} colors={getColors()} interval={alt2} />
               </View>
             </View>
             <View style={{alignSelf: 'center'}} padding={20}>

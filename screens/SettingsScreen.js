@@ -62,7 +62,20 @@ export default function SettingsScreen({navigation}) {
         <Col size={3}>
         <Button title='Color Blind Mode' onPress={() => setColorBlind()}/>
         <View style={styles.space}></View>
-        <Button title='Clear History'/>
+        <Button title='Clear History' onPress={() => {
+          db.transaction((tx) => {
+            tx.executeSql(
+              'DELETE FROM calculator_data',
+              [],
+              (txObj, resultSet) => {
+                console.log('Table cleared successfully');
+              },
+              (txObj, error) => {
+                console.log('Error while clearing table:', error);
+              }
+            );
+          });
+        }}/>
         <View style={styles.space}></View>
         <Button title='See Stats' onPress={() => {
           navigation.navigate('Settings', {screen: 'StatsScreen'});
