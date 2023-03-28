@@ -11,14 +11,14 @@ import styles from '../constants/styles';
 import { Overlay } from 'react-native-elements';
 import CalculatorButton from '../components/CalculatorButton';
 import Theming from "../hooks/Theming"
-import getDB from '../hooks/GetDB';
+import * as SQLite from 'expo-sqlite';
 import GetQuizData from '../hooks/GetQuizData';
 
 const {width, height} = Dimensions.get('window');
 
 
 const QuizScreen = ({navigation}) => {
-  const defaultString = ('Drag your answer here!');
+  const defaultString = ('Drag your answer here!\n(ignore any remainders)');
   const nullAnswerString = ('Enter an answer before submitting!');
   const [dropZoneString, setDropZoneString] = useState(defaultString);
   const [question, setQuestion] = useState();
@@ -29,22 +29,26 @@ const QuizScreen = ({navigation}) => {
   const [bgColor, setBGColor] = useState('white');
   const [visible, setVisible] = useState(false);
   const [resultsString, setResultsString] = useState('');
+  const [quizId, setQuizId] = useState('');
+  const [symbol, setSymbol] = useState('');
 
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const textColor = useRef(new Animated.Value(1)).current;
-  const db = getDB();
+  const db = SQLite.openDatabase('userData.db');
 
   // Handles comparing your answer to the actual answer
   const CheckAnswer = () => {
     setQuestionsAsked(questionsAsked + 1);
-    if (userAnswer == answer){
+    let isCorrect = 0;
+    if (userAnswer === answer){
       setTotalCorrect(totalCorrect + 1);
       setBGColor('green');
       console.log('Correct')
+      isCorrect = 1;
     } else {
       setBGColor('red');
-      console.log('Wrong Silly')
+      console.log('Wrong Silly');
     }
     Animated.timing(fadeAnim, {
       toValue: 0,
@@ -55,15 +59,43 @@ const QuizScreen = ({navigation}) => {
       fadeAnim.setValue(1);
     });
 
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO quiz_questions (quiz_id, question, type, result) VALUES (?,?,?,?)',
+        [quizId, question, symbol, isCorrect],
+        (tx, results) => {
+          console.log('Question Saved');
+        },
+        (tx, error) => {
+          console.log('Error saving data: ', error);
+        }
+      );
+    });
+
+
     if (questionsAsked == 9 || userAnswer == '789') {
       setResultsString(displayFinalScore());
       toggleOverlay();
     }
-  }
+  };
 
   const navigateBack = () => {
-    navigation.navigate('Quizzes', {screen: 'QuizEntryScreen'});
+
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE quizzes SET total_correct = ? WHERE id = ?',
+        [totalCorrect, quizId],
+        (tx, results) => {
+          console.log('Quiz Saved');
+        },
+        (tx, error) => {
+          console.log('Error saving quiz: ', error);
+        }
+      )
+    })
+
     toggleOverlay();
+    navigation.navigate('Quizzes', {screen: 'QuizEntryScreen'});
   }
 
   // Handles generating a new question
@@ -83,6 +115,7 @@ const QuizScreen = ({navigation}) => {
       let sym = allowedSymbols[Math.floor(Math.random() * allowedSymbols.length)];
       let eqStr = num1.toString() + sym + num2.toString();
       setQuestion(eqStr);
+      setSymbol(sym);
       setAnswer(eval(eqStr));
       setDropZoneString(defaultString);
   }
@@ -96,7 +129,7 @@ const QuizScreen = ({navigation}) => {
       return 'Good job! Let\'s keep practicing!';
     } else if (totalCorrect >= 7 && totalCorrect < 10) {
       return 'Great job! You\'re almost there! Keep practicing for that perfect score';
-    } else if (totalCorrect == 10) {
+    } else if (totalCorrect >= 10) {
       return 'Wow! You must be really smart!';
     }
   }
@@ -116,8 +149,22 @@ const QuizScreen = ({navigation}) => {
   }
 
   useEffect(() => {
+    let date = new Date();
+    let dateString = date.toLocaleDateString();
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO quizzes (quiz_date) VALUES (?)',
+        [dateString],
+        (tx, result) => {
+        setQuizId(result.insertId);
+      });
+    });
     NextQuestion();
   }, []);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
@@ -130,10 +177,6 @@ const QuizScreen = ({navigation}) => {
     });
   }, [navigation]);
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
   return (
       // Main View
       <View>
@@ -144,7 +187,7 @@ const QuizScreen = ({navigation}) => {
 
         {/* Button Drop Zone */}
         <View style={styles.dropZone}>
-        <Animated.View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: bgColor, opacity: fadeAnim}} />
+        <Animated.View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: bgColor, opacity: fadeAnim, borderRadius: 30}} />
             {(userAnswer === '') ? (<Text style={styles.text}>{dropZoneString}</Text>) :
                     (<Text style={styles.text}>{userAnswer}</Text>)}
         </View>
@@ -161,7 +204,7 @@ const QuizScreen = ({navigation}) => {
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttons} onPress={() => {
-            if (userAnswer != ''){
+            if (userAnswer !== ''){
               CheckAnswer();
               NextQuestion();
             } else { setDropZoneString(nullAnswerString); }
@@ -182,10 +225,10 @@ const QuizScreen = ({navigation}) => {
         </View>
 
         {/* Box to display the quiz grade */}
-        <View style={{width: (width - 75), alignSelf: 'center', height: 100, backgroundColor: 'white'}}>
+        <View style={{width: (width - 75), alignSelf: 'center', height: 100, backgroundColor: 'white', borderRadius: 30}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-start', padding: 10}}>
-              <Text style={[styles.text, {alignSelf: 'center'}]}>Questions Asked</Text>
+              <Text style={[styles.text, {alignSelf: 'center'}]}>Questions Answered</Text>
             </View>
             <View style={{width: (width-75)/2, flex: 1, alignItems: 'flex-end'}}>
               <Text style={[styles.text, {alignSelf: 'center'}]}>Total Correct</Text>
@@ -213,9 +256,7 @@ const QuizScreen = ({navigation}) => {
         <CalculatorButton x= {width/4}   y= {225} value= {7}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
         <CalculatorButton x= {width/4*2} y= {225} value= {8}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
         <CalculatorButton x= {width/4*3} y= {225} value= {9}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg3}  textColor={Theming.txt3} />
-        <CalculatorButton x= {width/4}   y= {300} value= {'-'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
         <CalculatorButton x= {width/4*2} y= {300} value= {0}    handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
-        <CalculatorButton x= {width/4*3} y= {300} value= {'.'}  handleRelease={(num, xRel, yRel) => GetPosition(num, xRel, yRel)} bgColor={Theming.bg4}  textColor={Theming.txt4} />
 
         <Overlay isVisible={visible} onBackdropPress={navigateBack} style={styles.overlayBox}>
           <Text style={[styles.text, {padding: 10}]}>

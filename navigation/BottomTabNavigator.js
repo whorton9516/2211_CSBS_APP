@@ -1,10 +1,11 @@
 // Learn more about createBottomTabNavigator:
 // https://reactnavigation.org/docs/bottom-tab-navigator
+import { TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useColorScheme, Image } from "react-native";
-
+import { CommonActions } from '@react-navigation/native';
 import Colors from "../constants/Colors";
 import CalculatorScreen from "../screens/CalculatorScreen"
 import SettingsScreen from "../screens/SettingsScreen"
@@ -25,13 +26,12 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Calculator"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
-    >
+      >
       <BottomTab.Screen
         name="Calculator"
         component={CalculatorNavigator}
         options={{
           headerShown: false,
-          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calculator" color={buttoncolor} />
           ),
@@ -42,7 +42,6 @@ export default function BottomTabNavigator() {
         component={QuizEntryNavigator}
         options={{
           headerShown: false,
-          unmountOnBlur: true,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="book" color={buttoncolor} />
           ),
@@ -62,6 +61,7 @@ export default function BottomTabNavigator() {
   );
 }
 
+
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 function TabBarIcon(props) {
@@ -73,7 +73,7 @@ function TabBarIcon(props) {
 
 const Stack = createStackNavigator();
 
-function CalculatorNavigator() {
+function CalculatorNavigator({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -100,7 +100,7 @@ function CalculatorNavigator() {
   )
 }
 
-function SettingNavigator() {
+function SettingNavigator({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -120,7 +120,7 @@ function SettingNavigator() {
             source={require('../assets/images/back.png')}
             style={styles.backButtonImage}
           />
-        ),
+        ),       
       }}
       />   
     </Stack.Navigator>

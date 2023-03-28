@@ -8,6 +8,7 @@ import { useColorScheme, Text, View } from "react-native";
 import {useFonts} from 'expo-font';
 import { useState, useEffect } from 'react';
 import getDb from "./hooks/GetDB"
+import * as SQLite from 'expo-sqlite';
 
 const App = () => {
 
@@ -24,19 +25,45 @@ const App = () => {
   });
 
   useEffect(() => {
+
     db.transaction(tx => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS calculator_data (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, equation TEXT, type TEXT)',);
     });
 
     db.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS quizzes (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_date TEXT, total_questions INTEGER, total_correct INTEGER)',)
+      tx.executeSql('CREATE TABLE IF NOT EXISTS quizzes (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_date TEXT, total_correct INTEGER)',)
     });
 
     db.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS quiz_questions (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_id INTEGER, question TEXT, result INTEGER, FOREIGN KEY(quiz_id) REFERENCES quizzes(id))',);
+      tx.executeSql('CREATE TABLE IF NOT EXISTS quiz_questions (id INTEGER PRIMARY KEY AUTOINCREMENT, quiz_id INTEGER, question TEXT, type Text, result INTEGER, FOREIGN KEY(quiz_id) REFERENCES quizzes(id))',);
+    });
+    
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM quiz_questions',
+        [],
+        (_, { rows }) => {
+          console.log(rows);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     });
 
-  
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM quizzes',
+        [],
+        (_, { rows }) => {
+          console.log(rows);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    });
 
     setIsLoading(false);
   }, []);

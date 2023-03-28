@@ -1,4 +1,4 @@
-import React, { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   View,
   TouchableOpacity, 
@@ -17,7 +17,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Overlay } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
-const defaultAnswerWindow = 'Drag the numbers into the box above!';
 
 const CalculatorScreen = ({navigation}) => {
 
@@ -26,13 +25,16 @@ const CalculatorScreen = ({navigation}) => {
   const db = getDb();
 
   // State management variables
+  const defaultAnswerWindow = 'Drag the numbers into the box above!';
+  const incorrectValuesString = 'Make sure the first number is\nlarger than the second if you\nwant to do that!';
   const [answer, setAnswer] = useState(defaultAnswerWindow);
   const [equation, setEquation] = useState(['','','']);
   const [equationString, setEquationString] = useState('');
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
-
+  let valErrString = 'Your numbers were too big but let\'s take a look at a similar example.\nLet\'s try: \n';
+  let useAltEquation = false;
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
       if (yRel > 100 && yRel < 225 && xRel > 25 && xRel < width-25){
@@ -43,7 +45,7 @@ const CalculatorScreen = ({navigation}) => {
               setEquation([equation[0], equation[1], equation[2] + value.toString()]);
             }
           } else {
-            setEquation([equation[0], equation[1] + value, equation[2]]);
+            setEquation([equation[0], value, equation[2]]);
           }
       }
   }
@@ -84,26 +86,34 @@ const CalculatorScreen = ({navigation}) => {
 
   // Main driver function for the calculator
   const Calculate = (equation) => {
-    let answer = [];
+    let ans = [];
 
     switch(equation[1]) {
       case '+':
-        answer = [parseInt(equation[0]) + parseInt(equation[2]), setRemainder(0)];
+        ans = [parseInt(equation[0]) + parseInt(equation[2]), setRemainder(0)];
         break;
       case '-':
-        answer = [parseInt(equation[0]) - parseInt(equation[2]), setRemainder(0)];
+        if (parseInt(equation[2]) >= parseInt(equation[0])){
+          return [incorrectValuesString, 0];
+        } else {
+          ans = [parseInt(equation[0]) - parseInt(equation[2]), setRemainder(0)];
+        }
         break;
       case '*':
-        answer = [parseInt(equation[0]) * parseInt(equation[2]), setRemainder(0)];
+        ans = [parseInt(equation[0]) * parseInt(equation[2]), setRemainder(0)];
         break;
       case '/':
-        setRemainder(parseInt(equation[0]) % parseInt(equation[2]))
-        answer = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
+        if (parseInt(equation[2]) >= parseInt(equation[0])){
+          return [incorrectValuesString, 0];
+        } else {
+          setRemainder(parseInt(equation[0]) % parseInt(equation[2]))
+          ans = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
+        }
         break;
     }
 
     setEquationString(JSON.stringify(equation));
-
+    
     let date = new Date();
     let dateString = date.toLocaleDateString();
     
@@ -120,49 +130,73 @@ const CalculatorScreen = ({navigation}) => {
       );
     });
     
-    return answer;
+    return ans;
   }
 
-  const setData = (equation, answer, remainder, boiler) => {
+  const setData = (equation, answer, remainder) => {
     GetCalcData.equation = equation;
     GetCalcData.answer = answer;
-    GetCalcData.boilerplate = boiler;
+    GetCalcData.boilerplate = setBoilerPlate();
     if (remainder != '') {
-      GetCalcData.remainder = 'Remainder of ', {remainder};
+      GetCalcData.remainder = remainder;
     }
     else {
       GetCalcData.remainder = '';
     }
   }
 
-  const navigateExplanation = (equation, answer, remainder) => {
-    var addEquation = ['10','+','5'];
-    var minusEquation = ['17','-','6'];
-    if(answer > 25 || equation[0] > 25 || equation[2] > 25) {
-      if (equation[1] == '+'){
-        setData(addEquation, 15, 0, 'Your question was too hard for us! Here is something similar.');
-        console.log('plus')
-        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-      }
-      if (equation[1] == '-'){
-        setData(minusEquation, 11, 0, 'Your question was too hard for us! Here is something similar.');
-        console.log('minus')
-        navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-      }
+  const setBoilerPlate = () => {
+    let boilerText = '';
+    let altText = '';
+
+    boilerText += altText;
+
+    switch (equation[1]) {
+      case '+':
+        boilerText += 'Addition is when we add two groups of things together to get a larger group.\n\n';
+        if (equation[0] > 15 || equation[2] > 15) {
+          useAltEquation = true;
+        }
+        break;
+      case '-':
+        boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.\n\n';
+        if (equation[0] > 15 || equation[2] > 15) {
+          useAltEquation = true;
+        }
+        break;
+      case '*':
+        boilerText += 'Mulitiplication is how we find the total number of items for multiple groups that have the same number of items.\n\n';
+        if (equation[0] > 6 || equation[2] > 6) {
+          useAltEquation = true;
+        }
+        break;
+      case '/':
+        boilerText += 'Division is when we split a large group of items into smaller, equally sized groups.\n\n'
+        if (equation[0] > 20 || equation[2] > 20){
+          useAltEquation = true;
+        }
+        break;
     }
-    if (equation[1] == '*' || equation[1] == '/') {
-      console.log('multiplication/division')
-      toggleOverlay();
+    if (useAltEquation) {
+      boilerText += valErrString;
+      useAltEquation = false;
+    } else {
+      boilerText += 'Take a look:'
     }
-    else {
-      console.log('normal')
-      navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-    }
+    return boilerText;
   }
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setEquation(['','','']);
+      setAnswer(defaultAnswerWindow);
+      setRemainder(0);
+    }, [])
+  );
 
   return (
     // Main View
@@ -211,19 +245,24 @@ const CalculatorScreen = ({navigation}) => {
 
       {/* Box to display the answer */}
       <View style={styles.answerBox}>
-        <TouchableOpacity onPress={() => {
-          setData(equation, answer, remainder, '');
-          navigateExplanation(equation, answer, remainder);
-          //navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
-        }}>
-          <View>
-            <Text style={styles.text}>{answer}</Text>
-          </View>
-          <View>
-          {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
-              (<Text></Text>)}
-          </View>
-        </TouchableOpacity>
+        <View>
+          <Text style={styles.text}>{answer}</Text>
+        </View>
+        <View>
+        {(remainder > 0) ? (<Text style={styles.text}>With a remainder of {remainder}</Text>) :
+            (<Text></Text>)}
+        </View>
+        <View>
+          {(answer != defaultAnswerWindow && answer != incorrectValuesString) ? (
+            <TouchableOpacity onPress={() => {
+              setData(equation, answer, remainder);
+              navigation.navigate('Calculator', {screen: 'ExplanationScreen'});
+            }}>
+              <Text style={[styles.text, {fontSize: 20, textDecorationLine: 'underline'}]}>Tap here to see why this is the answer!</Text>
+            </TouchableOpacity>
+          ) :
+          (<Text></Text>)}
+        </View>
       </View>
       
       {/* All Calculator buttons */}

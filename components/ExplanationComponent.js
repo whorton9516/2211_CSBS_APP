@@ -1,67 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Animated, Dimensions, View, TextInput } from "react-native";
+import React from 'react';
+import { View, } from 'react-native';
+import styles from '../constants/styles';
 
-const {width, height} = Dimensions.get('window');
+const ExplanationComponent = ({ circleSize, numCircles, colors, interval, }) => {
+  const diameter = circleSize / 3
+  const radius = diameter / 2;
+  const offset = (circleSize / 30);
+  const midpoint = radius - (offset)/2;
+  const circles = [];
+  let loopInterval = 0;
+  let colorIndex = 0;
 
-const ExplanationComponent = ({num1,num2,color1,color2,}) => {
-    var array = [];
-	for(let i = 0; i < num1; i++){
-        if(i < num2){
-		array.push(
-			<View key = {i}>
-				<View backgroundColor={color2} style={styles.cube}>
-				</View>
-                </View>
-		)
+
+  const smallCircles = [];
+  let bgColor = colors[0];
+
+  const getDistance = (x1, y1, x2, y2) => {
+    return Math.sqrt(((x2-x1)**2) + ((y2-y1)**2));
+  }
+
+  // TODO: implement a poisson distribution to distribute the elements more evenly.
+
+  while (smallCircles.length < numCircles) {
+    let overlapping = false
+    const deg = Math.random() * 360;
+    let translate = Math.random() * midpoint;
+    const degInRadians = deg * Math.PI / 180;
+    const x = translate * Math.cos(degInRadians);
+    const y = translate * Math.sin(degInRadians);
+    let zone = 0;
+    
+    if (translate < radius/2) zone = 1;
+    else zone = 2;
+  
+    for (const circle of circles) {
+      if (zone == circle.zone) {
+        if (getDistance(x, y, circle.x, circle.y) < offset) {
+          overlapping = true;
+          break;
         }
-        else {
-          array.push(
-            <View key = {i}>
-                <View backgroundColor={color1} style={styles.cube}>
-                </View>
-                </View>
-        )
+      }
+    }
+    
+    if (!overlapping) {
+
+      circles.push({ x, y, zone });
+
+      if (loopInterval >= interval){
+        loopInterval = 1;
+        colorIndex++;
+        if (colorIndex >= colors.length){
+          colorIndex = colors.length - 1;
         }
-	}
+        bgColor = colors[colorIndex];
+      } else {
+        loopInterval++;
+      }
+      
+      smallCircles.push(
+        <View
+          key={smallCircles.length}
+          style={[styles.smallCircle, {
+            backgroundColor: bgColor,
+            transform: [
+              {rotate: deg + 'deg'},
+              {translateX: translate},
+            ]
+          }]}
+        />
+      );
+    }
+  }
+
   return (
-<Animated.View style={styles.container}><View style={styles.cubecontainer}>
-            {
-              array
-            }
-          </View></Animated.View>
+    <View style={[styles.circle, { width: diameter, height: diameter }]}>
+      {smallCircles}
+    </View>
   );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 4,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignSelf:'auto',
-        height: (height - 690),
-        width: (width - 300),
-        top: 10,
-        left: 5,
-        alignContent:'center',
-        backgroundColor: 'lightgray',
-      },
-      cubecontainer: {
-        flexWrap: 'wrap',
-        padding: 12,
-        flexDirection: 'row',
-        alignSelf:'auto',
-        alignItems: 'baseline',
-        alignContent:'flex-start',
-      },
-      cube: {
-        flexWrap: 'wrap',
-        padding: 4,
-        flexDirection: 'row',
-        alignSelf:'auto',
-        alignContent:'center',
-        borderWidth: 1,
-        borderColor: "#000000",
-      },
-});
+};
 
 export default ExplanationComponent;

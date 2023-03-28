@@ -35,6 +35,7 @@ export default styles = StyleSheet.create({
         height: 125,
         width: (width - 50),
         backgroundColor: 'white',
+        borderRadius: 30
     },
     backButtonImage: {
         width: 100,
@@ -46,14 +47,16 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         height: 125,
         width: (width - 50),
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 30
     },
     answerBox: {
         alignSelf: 'center',
         justifyContent: 'center',
         width: (width - 75),
         height: 100,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 30
     },
     text: {
         textAlign: "center",
@@ -99,4 +102,44 @@ export default styles = StyleSheet.create({
         backgroundColor: 'white',
         textAlign: 'center',
     },
+    explanationbox: {
+        flexDirection: 'column',
+        alignSelf:'center',
+        height: (height - 300),
+        width: (width - 50),
+        backgroundColor: 'white',
+    },
+    mathbox: {
+        alignSelf:'auto',
+        height: (height - 690),
+        width: (width - 300),
+        top: 10,
+        left: 5,
+        backgroundColor: 'lightgray',
+    },
+    symbol: {
+        alignSelf:'center',
+        top: 30,
+        color: "black",
+        fontSize: 35,
+        fontWeight: "bold",
+        alignContent: 'center',
+        backgroundColor: 'white',
+    },
+    circle: {
+        backgroundColor: 'lightgray',
+        borderRadius: 10000,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: 'gray',
+        borderWidth: 1,
+    },
+    smallCircle: {
+        width:  width / 30,
+        height: width / 30,
+        borderRadius: 10000,
+        borderColor: 'black',
+        borderWidth: 1,
+        position: 'absolute'
+      }
 })

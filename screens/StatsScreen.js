@@ -1,28 +1,25 @@
-import React, { useState, } from "react";
+import React, { useState, useEffect, } from "react";
 import { 
   View,
   Text,
 } from "react-native";
-import getDB from '../hooks/GetDB';
+import * as SQLite from 'expo-sqlite';
 import styles from '../constants/styles';
-import CalculatorButton from '../components/CalculatorButton';
-import Colors from '../constants/Colors';
-import Theming from "../hooks/Theming"
 
-const StatsScreen = () => {
+const StatsScreen = ({navigation}) => {
   
   const [totalCalculations, setTotalCalculations] = useState(0);
   const [mostPopular, setMostPopular] = useState('');
-  const [addPercentage, setAddPercentage] = useState(0);
-  const [subPercentage, setSubPercentage] = useState(0);
-  const [mulPercentage, setMulPercentage] = useState(0);
-  const [divPercentage, setDivPercentage] = useState(0);
+  const [addCount, setAddCount] = useState(0);
+  const [subCount, setSubCount] = useState(0);
+  const [mulCount, setMulCount] = useState(0);
+  const [divCount, setDivCount] = useState(0);
   const [quizAverage, setQuizAverage] = useState(0);
   const [missedType, setMissedType] = useState('');
 
-  const db = getDB();
+  const db = SQLite.openDatabase('userData.db');
 
-  const getTotalCalculations = (db) => {
+  const getTotalCalculations = () => {
     db.transaction((tx) => {
       tx.executeSql('SELECT COUNT(*) as total FROM calculator_data', [], (_, { rows }) => {
         setTotalCalculations(rows.item(0).total);
@@ -32,10 +29,14 @@ const StatsScreen = () => {
     return totalCalculations;
   }
 
-  const getMostPopular = (db) => {
+  const getMostPopular = () => {
     db.transaction((tx) => {
       tx.executeSql('SELECT type, COUNT(*) as count FROM calculator_data GROUP BY type ORDER BY count DESC LIMIT 1', [], (_, { rows }) => {
-        setMostPopular(rows.item(0).type);
+        if (rows.length > 0) {
+          setMostPopular(rows.item(0).type);
+        } else {
+          setMostPopular('');
+        }
       });
     });
 
@@ -51,13 +52,13 @@ const StatsScreen = () => {
     }
   }
 
-  const getAddPercentage = (db) => {
+  const getAddCount = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
         ['+'],
         (_, results) => {
-          setAddPercentage(results.rows.item(0).count);
+          setAddCount(results.rows.item(0).count);
         },
         (error) => {
           console.log(error);
@@ -65,16 +66,16 @@ const StatsScreen = () => {
       );
     });
 
-    return addPercentage;
+    return addCount;
   }
 
-  const getSubPercentage = (db) => {
+  const getSubCount = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
         ['-'],
         (_, results) => {
-          setSubPercentage(results.rows.item(0).count);
+          setSubCount(results.rows.item(0).count);
         },
         (error) => {
           console.log(error);
@@ -82,16 +83,16 @@ const StatsScreen = () => {
       );
     });
 
-    return subPercentage;
+    return subCount;
   }
 
-  const getMulPercentage = (db) => {
+  const getMulCount = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
         ['*'],
         (_, results) => {
-          setMulPercentage(results.rows.item(0).count);
+          setMulCount(results.rows.item(0).count);
         },
         (error) => {
           console.log(error);
@@ -99,16 +100,16 @@ const StatsScreen = () => {
       );
     });
 
-    return mulPercentage;
+    return mulCount;
   }
 
-  const getDivPercentage = (db) => {
+  const getDivCount = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(*) as count FROM calculator_data WHERE type = ?',
         ['/'],
         (_, results) => {
-          setDivPercentage(results.rows.item(0).count);
+          setDivCount(results.rows.item(0).count);
         },
         (error) => {
           console.log(error);
@@ -116,39 +117,82 @@ const StatsScreen = () => {
       );
     });
 
-    return divPercentage;
+    return divCount;
   }
 
-  const getQuizAverage = (db) => {
+  const getQuizAverage = () => {
     db.transaction((tx) => {
-      tx.executeSql('SELECT AVG(total_correct / total_questions) as avg_percentage FROM quizzes', [], (_, { rows }) => {
-        setQuizAverage((rows.item(0).avg_percentage * 100).toFixed(2));
-      });
+      tx.executeSql(
+        'SELECT AVG(total_correct/10.0) as average_score FROM quizzes',
+        [],
+        (_, results) => {
+          setQuizAverage(Math.floor(results.rows.item(0).average_score * 100));
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     });
 
     return quizAverage;
   }
 
-  const getMissedTypes = (db) => {
+  const getMissedTypes = () => {
     db.transaction((tx) => {
-      tx.executeSql('SELECT question, type FROM quiz_questions WHERE result = "incorrect" GROUP BY question, type ORDER BY COUNT(*) DESC LIMIT 1', [], (_, { rows }) => {
-        setMissedType(`${rows.item(0).type}: ${rows.item(0).question}`);
-      });
+      tx.executeSql(
+        'SELECT type, COUNT(*) as count FROM quiz_questions WHERE result = ? GROUP BY type ORDER BY count DESC LIMIT 1',
+        [0],
+        (_, { rows }) => {
+          const mostMissedType = rows.item(0).type;
+          switch (mostMissedType) {
+            case '+':
+              setMissedType('Addition');
+              break;
+            case '-':
+              setMissedType('Subtraction');
+              break;
+            case '*':
+              setMissedType('Multiplication');
+              break;
+            case '/':
+              setMissedType('Division');
+              break;
+            default:
+              setMissedType('Unknown');
+              break;
+          }
+          return missedType;
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     });
-
     return missedType;
-  }
+  };
+  
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: "none"
+      }
+    });
+    return () => navigation.getParent()?.setOptions({
+      tabBarStyle: undefined
+    });
+  }, [navigation]);
 
   return (
     <View>
-      <Text style={styles.text}>You have done a total of {getTotalCalculations(db)} Calculations on this device</Text>
-      <Text style={styles.text}>The most popular is {getMostPopular(db)}</Text>
-      <Text style={styles.text}>Addition: {getAddPercentage(db)}%</Text>
-      <Text style={styles.text}>Subtraction: {getSubPercentage(db)}%</Text>
-      <Text style={styles.text}>Multiplication: {getMulPercentage(db)}%</Text>
-      <Text style={styles.text}>Division: {getDivPercentage(db)}%</Text>
-      <Text style={styles.text}>The average quiz percentage is: {getQuizAverage(db)}%</Text>
-      <Text style={styles.text}>The commonly missed questions are: {getMissedTypes(db)}</Text>
+      <Text style={styles.text}>You have done a total of {getTotalCalculations()} Calculations on this device</Text>
+      <Text style={styles.text}>The most popular is {getMostPopular()}</Text>
+      <Text style={styles.text}>Addition: {Math.floor((getAddCount()/getTotalCalculations())*100)}%</Text>
+      <Text style={styles.text}>Subtraction: {Math.floor((getSubCount()/getTotalCalculations())*100)}%</Text>
+      <Text style={styles.text}>Multiplication: {Math.floor((getMulCount()/getTotalCalculations())*100)}%</Text>
+      <Text style={styles.text}>Division: {Math.floor((getDivCount()/getTotalCalculations())*100)}%</Text>
+      <Text style={styles.text}>The average quiz percentage is: {getQuizAverage()}%</Text>
+      <Text style={styles.text}>The commonly missed type is: {getMissedTypes()}</Text>
     </View>
   );
 }
