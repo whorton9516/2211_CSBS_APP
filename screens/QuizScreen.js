@@ -116,7 +116,7 @@ const QuizScreen = ({navigation}) => {
       let eqStr = num1.toString() + sym + num2.toString();
       setQuestion(eqStr);
       setSymbol(sym);
-      setAnswer(eval(eqStr));
+      setAnswer(Math.floor(eval(eqStr)));
       setDropZoneString(defaultString);
   }
 
