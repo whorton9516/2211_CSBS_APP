@@ -135,8 +135,8 @@ export default styles = StyleSheet.create({
         borderWidth: 1,
     },
     smallCircle: {
-        width:  width / 20,
-        height: width / 20,
+        width:  width / 30,
+        height: width / 30,
         borderRadius: 10000,
         borderColor: 'black',
         borderWidth: 1,

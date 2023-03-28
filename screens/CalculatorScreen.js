@@ -33,7 +33,7 @@ const CalculatorScreen = ({navigation}) => {
   const [remainder, setRemainder] = useState(0);
   const [initialRun, setInitial] = useState(Theming.initial);
   const [visible, setVisible] = useState(false);
-  let valErrString = 'Your numbers were too big but take a look at a similar example.\nLet\'s try: ';
+  let valErrString = 'Your numbers were too big but let\'s take a look at a similar example.\nLet\'s try: \n';
   let useAltEquation = false;
   // Handles the on-screen position functionality of the onDragRelease event
   const GetPosition = (value, xRel, yRel) => {
@@ -86,21 +86,29 @@ const CalculatorScreen = ({navigation}) => {
 
   // Main driver function for the calculator
   const Calculate = (equation) => {
-    let answer = [];
+    let ans = [];
 
     switch(equation[1]) {
       case '+':
-        answer = [parseInt(equation[0]) + parseInt(equation[2]), setRemainder(0)];
+        ans = [parseInt(equation[0]) + parseInt(equation[2]), setRemainder(0)];
         break;
       case '-':
-        answer = [parseInt(equation[0]) - parseInt(equation[2]), setRemainder(0)];
+        if (parseInt(equation[2]) >= parseInt(equation[0])){
+          return [incorrectValuesString, 0];
+        } else {
+          ans = [parseInt(equation[0]) - parseInt(equation[2]), setRemainder(0)];
+        }
         break;
       case '*':
-        answer = [parseInt(equation[0]) * parseInt(equation[2]), setRemainder(0)];
+        ans = [parseInt(equation[0]) * parseInt(equation[2]), setRemainder(0)];
         break;
       case '/':
-        setRemainder(parseInt(equation[0]) % parseInt(equation[2]))
-        answer = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
+        if (parseInt(equation[2]) >= parseInt(equation[0])){
+          return [incorrectValuesString, 0];
+        } else {
+          setRemainder(parseInt(equation[0]) % parseInt(equation[2]))
+          ans = [Math.floor((equation[0]) / parseInt(equation[2])), remainder];
+        }
         break;
     }
 
@@ -122,7 +130,7 @@ const CalculatorScreen = ({navigation}) => {
       );
     });
     
-    return answer;
+    return ans;
   }
 
   const setData = (equation, answer, remainder) => {
@@ -146,25 +154,25 @@ const CalculatorScreen = ({navigation}) => {
     switch (equation[1]) {
       case '+':
         boilerText += 'Addition is when we add two groups of things together to get a larger group.\n\n';
-        if (GetCalcData.equation[0] > 25 || GetCalcData.equation[2] > 25) {
+        if (equation[0] > 15 || equation[2] > 15) {
           useAltEquation = true;
         }
         break;
       case '-':
-        boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.';
-        if (GetCalcData.equation[0] > 25 || GetCalcData.equation[2] > 25) {
+        boilerText += 'Subtraction is when we take some things out of a group and are left with a smaller group of items.\n\n';
+        if (equation[0] > 15 || equation[2] > 15) {
           useAltEquation = true;
         }
         break;
       case '*':
-        boilerText += 'Mulitiplication is how we find the total numer of items for multiple groups that have the same number of items. ';
-        if (GetCalcData.answer > 50) {
+        boilerText += 'Mulitiplication is how we find the total number of items for multiple groups that have the same number of items.\n\n';
+        if (equation[0] > 6 || equation[2] > 6) {
           useAltEquation = true;
         }
         break;
       case '/':
-        boilerText += 'Division is when we split a large group of items into smaller, equally sized groups. '
-        if (GetCalcData.equation[0] > 20 || GetCalcData.equation[2] > 20){
+        boilerText += 'Division is when we split a large group of items into smaller, equally sized groups.\n\n'
+        if (equation[0] > 20 || equation[2] > 20){
           useAltEquation = true;
         }
         break;
@@ -173,7 +181,7 @@ const CalculatorScreen = ({navigation}) => {
       boilerText += valErrString;
       useAltEquation = false;
     } else {
-      boilerText += 'Take a look at this example below:'
+      boilerText += 'Take a look:'
     }
     return boilerText;
   }
@@ -217,14 +225,6 @@ const CalculatorScreen = ({navigation}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttons} onPress={() => {
-          if (equation[2] > equation[0]){
-            if (equation[1] == '-' || equation[1] == '/'){
-              setEquation(['','','']);
-              setAnswer(incorrectValuesString);
-              setRemainder(0);
-              return;
-            }
-          }
           setAnswer(Calculate(equation)[0]);
         }}>
           <Image

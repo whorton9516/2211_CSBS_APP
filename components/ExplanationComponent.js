@@ -2,15 +2,18 @@ import React from 'react';
 import { View, } from 'react-native';
 import styles from '../constants/styles';
 
-const ExplanationComponent = ({ circleSize, numCircles, color, altColor, altNum }) => {
+const ExplanationComponent = ({ circleSize, numCircles, colors, interval, }) => {
   const diameter = circleSize / 3
-  const radius = diameter/2;
-  const offset = (circleSize/20);
-  const midpoint = (radius) - ((offset)/2);
+  const radius = diameter / 2;
+  const offset = (circleSize / 30);
+  const midpoint = radius - (offset)/2;
   const circles = [];
+  let loopInterval = 0;
+  let colorIndex = 0;
+
 
   const smallCircles = [];
-  let bgColor = color;
+  let bgColor = colors[0];
 
   const getDistance = (x1, y1, x2, y2) => {
     return Math.sqrt(((x2-x1)**2) + ((y2-y1)**2));
@@ -21,51 +24,39 @@ const ExplanationComponent = ({ circleSize, numCircles, color, altColor, altNum 
   while (smallCircles.length < numCircles) {
     let overlapping = false
     const deg = Math.random() * 360;
-    const translate = Math.random() * midpoint;
+    let translate = Math.random() * midpoint;
     const degInRadians = deg * Math.PI / 180;
     const x = translate * Math.cos(degInRadians);
     const y = translate * Math.sin(degInRadians);
-    let grid = 0;
-    if(deg >= 0 && deg < 90){
-      if (translate > midpoint/2){
-        grid = 12;
-      } else {
-        grid = 11;
-      }
-    } else if(deg >= 90 && deg < 180){
-      if (translate > midpoint/2){
-        grid = 22;
-      } else {
-        grid = 21;
-      }
-    } else if(deg >= 180 && deg < 270) {
-      if (translate > midpoint/2){
-        grid = 32;
-      } else {
-        grid = 31;
-      }
-    } else if(deg >= 270 && deg < 360) {
-      if (translate > midpoint/2){
-        grid = 42;
-      } else {
-        grid = 41;
-      }
-    }
+    let zone = 0;
+    
+    if (translate < radius/2) zone = 1;
+    else zone = 2;
   
     for (const circle of circles) {
-      if (grid == circle.grid) {
-        if (getDistance(x, y, circle.x, circle.y) < offset-(offset/10)) {
+      if (zone == circle.zone) {
+        if (getDistance(x, y, circle.x, circle.y) < offset) {
           overlapping = true;
           break;
         }
       }
     }
-  
+    
     if (!overlapping) {
-      circles.push({ x, y, grid })
-      if (smallCircles.length >= numCircles - altNum){
-        bgColor = altColor
+
+      circles.push({ x, y, zone });
+
+      if (loopInterval >= interval){
+        loopInterval = 1;
+        colorIndex++;
+        if (colorIndex >= colors.length){
+          colorIndex = colors.length - 1;
+        }
+        bgColor = colors[colorIndex];
+      } else {
+        loopInterval++;
       }
+      
       smallCircles.push(
         <View
           key={smallCircles.length}
